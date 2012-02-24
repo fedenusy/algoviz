@@ -2,7 +2,7 @@ package edu.upenn.cis.cis350.algorithmvisualization;
 
 import java.util.ArrayList;
 
-class Bin {
+public class Bin {
 	
 	private double capacity;
 	private double weight;

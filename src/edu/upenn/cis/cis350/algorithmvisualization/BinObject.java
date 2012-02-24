@@ -1,6 +1,6 @@
 package edu.upenn.cis.cis350.algorithmvisualization;
 
-class BinObject {
+public class BinObject {
 	
 	private double weight;
 	private double value;
