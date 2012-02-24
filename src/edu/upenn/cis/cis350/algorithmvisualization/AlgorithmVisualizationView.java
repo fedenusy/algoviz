@@ -8,7 +8,7 @@ import android.view.View;
 
 public class AlgorithmVisualizationView extends View {
 
-	//Constructors
+		//Constructors
 		public AlgorithmVisualizationView(Context c) {
 			super(c);
 		}
