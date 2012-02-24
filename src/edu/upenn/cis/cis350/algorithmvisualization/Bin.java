@@ -21,9 +21,9 @@ class Bin {
 	public double getValue() { return value; }
 	
 	/**
-	 * Insert an object into the bin.
+	 * Inserts an object into the bin.
 	 * @param obj The object to be inserted.
-	 * @return true if the object was inserted, false if it didn't fit.
+	 * @return true if the object was inserted, or false if it didn't fit.
 	 */
 	public boolean insert(BinObject obj) {
 		if (weight + obj.getWeight() > capacity) return false;
@@ -36,9 +36,9 @@ class Bin {
 	}
 	
 	/**
-	 * Remove an object from the bin.
+	 * Removes an object from the bin.
 	 * @param obj The object to be removed.
-	 * @return true if the object was removed, false if the object wasn't in this bin.
+	 * @return true if the object was removed, or false if the object wasn't in this bin.
 	 */
 	public boolean remove(BinObject obj) {
 		if (contents.contains(obj)) {
