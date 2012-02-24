@@ -23,7 +23,7 @@ class Bin {
 	/**
 	 * Insert an object into the bin.
 	 * @param obj The object to be inserted.
-	 * @return true if the object fits in the bin, false otherwise.
+	 * @return true if the object was inserted, false if it didn't fit.
 	 */
 	public boolean insert(BinObject obj) {
 		if (weight + obj.getWeight() > capacity) return false;
