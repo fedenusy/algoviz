@@ -23,10 +23,10 @@ class Bin {
 	/**
 	 * Inserts an object into the bin.
 	 * @param obj The object to be inserted.
-	 * @return true if the object was inserted, or false if it didn't fit.
+	 * @return true if the object was inserted correctly, false otherwise.
 	 */
 	public boolean insert(BinObject obj) {
-		if (weight + obj.getWeight() > capacity) return false;
+		if (weight + obj.getWeight() > capacity || contents.contains(obj)) return false;
 		else {
 			weight += obj.getWeight();
 			value += obj.getValue();
