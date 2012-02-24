@@ -6,6 +6,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * View where user packs objects into bins.
+ */
 public class BinPackingView extends View {
 
 	//Constructors
