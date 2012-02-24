@@ -21,6 +21,7 @@ public class BinPackingView extends View {
 		//TODO Draw initial layout
 	}
 	
+	//Event handler
 	public boolean onTouchEvent(MotionEvent event) {
 		//TODO Handle user input
 		return false;
