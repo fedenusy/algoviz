@@ -3,6 +3,9 @@ package edu.upenn.cis.cis350.algorithmvisualization;
 import android.app.Activity;
 import android.os.Bundle;
 
+/**
+ * Main activity. User chooses between Bin-Packing and Max-Flow here.
+ */
 public class AlgorithmVisualizationActivity extends Activity {
     
 	/** Called when the activity is first created. */
@@ -11,6 +14,5 @@ public class AlgorithmVisualizationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     }
-    
     
 }
