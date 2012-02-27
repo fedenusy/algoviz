@@ -15,22 +15,38 @@ import java.util.ArrayList;
  */
 public class BinPackingView extends View {
 	
+	//givens
 	//list of shapes
 	private static ArrayList<ShapeObject> shapelist = new ArrayList<ShapeObject>();
 	
-	//colors
-	private static int colorS = Color.CYAN;
-	private static int colorR = Color.RED;
-	
 	//base colors
-	private final static int bas_col1 = Color.CYAN;
-	private final static int bas_col2 = Color.RED;
+	private static ArrayList<Integer> bases = new ArrayList<Integer>();
 	
 	//selected colors
-	private final static int sel_col1 = Color.YELLOW;
-	private final static int sel_col2 = Color.GREEN;
+	private static ArrayList<Integer> sels = new ArrayList<Integer>();
 	
-	//positions object 1
+	//shape widths
+	private static ArrayList<Integer> widths = new ArrayList<Integer>();
+	
+	//shape lengths
+	private static ArrayList<Integer> lengths = new ArrayList<Integer>();
+	
+	//currents	
+	//colors
+	private static ArrayList<Integer> colors = new ArrayList<Integer>();
+	
+	//positions object
+	private static ArrayList<Integer> xpos = new ArrayList<Integer>();
+	private static ArrayList<Integer> ypos = new ArrayList<Integer>();
+	private static ArrayList<Float> xdiff = new ArrayList<Float>();
+	private static ArrayList<Float> ydiff = new ArrayList<Float>();
+	private static ArrayList<Integer> xposold = new ArrayList<Integer>();
+	private static ArrayList<Integer> yposold = new ArrayList<Integer>();
+	
+	private static final int MAX_WIDTH = 100;
+	private static final int MAX_LENGTH = 100;
+	
+	/**
 	private static int squareX = 100;
 	private static int squareY = 100;
 	private static float diffX;
@@ -43,10 +59,10 @@ public class BinPackingView extends View {
 	private static float diffYr;
 		
 	//old positions of objects for snapback
-	private static int squareXold = 100; 
-	private static int squareYold = 100;
-	private static int rectXold = 400;
-	private static int rectYold = 400;
+	private static int squareXold = squareX;
+	private static int squareYold = squareY;
+	private static int rectXold = rectX;
+	private static int rectYold = rectY;**/
 	
 	private static int moveflag = 0;
 	//flag = 0 => no object
@@ -63,37 +79,65 @@ public class BinPackingView extends View {
 		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100);
 		shapelist.add(square);
 		shapelist.add(rect);
+		for(int x = 0; x < shapelist.size(); x++)
+		{
+			widths.add(shapelist.get(x).getWidth());
+			lengths.add(shapelist.get(x).getLength());
+			bases.add(shapelist.get(x).getBase());
+			sels.add(shapelist.get(x).getSel());
+			
+			
+			colors.add(shapelist.get(x).getBase());
+			xpos.add(x*(MAX_LENGTH+1));
+			ypos.add(x*(MAX_WIDTH+1));
+			xdiff.add((float)0.0);
+			ydiff.add((float)0.0);			
+			xposold.add(x*(MAX_LENGTH+1));
+			yposold.add(x*(MAX_WIDTH+1));
+			
+		}
 	}
 	public BinPackingView(Context c, AttributeSet a) 
 	{
-		super(c, a);
+		super(c,a);
+		ShapeObject square = new ShapeObject();
+		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100);
+		shapelist.add(square);
+		shapelist.add(rect);
+		for(int x = 0; x < shapelist.size(); x++)
+		{
+			widths.add(shapelist.get(x).getWidth());
+			lengths.add(shapelist.get(x).getLength());
+			bases.add(shapelist.get(x).getBase());
+			sels.add(shapelist.get(x).getSel());
+			
+			
+			colors.add(shapelist.get(x).getBase());
+			xpos.add(x*(MAX_LENGTH+1));
+			ypos.add(x*(MAX_WIDTH+1));
+			xdiff.add((float)0.0);
+			ydiff.add((float)0.0);			
+			xposold.add(x*(MAX_LENGTH+1));
+			yposold.add(x*(MAX_WIDTH+1));
+			
+		}
 	}
 	
 // This method is called when the View is displayed
 	
 	//Should add functionality to generalize with passed arraylist.  See shapeobject class for parameters.
-	protected void onDraw(Canvas canvas) {
+	protected void onDraw(Canvas canvas) 
+	{
 	
 		// this is the "paintbrush"
-		Paint paint = new Paint();
-
-		
-		// draw Rectangle with corners at (40, 20) and (90, 80)
-		paint.setColor(colorR);
-		canvas.drawRect(rectX, rectY, rectX + 60, rectY + 100, paint);
-		
-		paint.setColor(colorS);
-		canvas.drawRect(squareX, squareY, squareX + 50, squareY + 50, paint);
-		
-		// change the color
-		//paint.setColor(Color.BLUE);
-		// set a shadow
-		//paint.setShadowLayer(10, 10, 10, Color.GREEN);
-				
-		// create a bounding rectangle”
-		//RectF rect = new RectF(150, 150, 280, 280);
-		// draw an oval in the bounding rectangle
-		//canvas.drawOval(rect, paint);
+		Paint paint = new Paint();		
+		// draw objects
+		for(int x = 0; x < shapelist.size(); x++)
+		{
+			paint.setColor(colors.get(x));
+			//105 multiplier is outside maximum bounds on a shape objects width or length
+			canvas.drawRect(xpos.get(x), ypos.get(x), xpos.get(x) + lengths.get(x), ypos.get(x) + widths.get(x), paint);
+		}
 	} 
 	
 	public boolean onTouchEvent(MotionEvent event)
@@ -106,62 +150,65 @@ public class BinPackingView extends View {
 			/**Log.v("test", "action detected");
 			Log.v("xloc", xloc + "");
 			Log.v("yloc", yloc + "");
-			Log.v("rectX", rectX + "");
-			Log.v("rectY", rectY + "");**/
+			Log.v("sqX", xpos.get(0) + "");
+			Log.v("sqY", ypos.get(0) + "");
+			Log.v("rectX", xpos.get(1) + "");
+			Log.v("rectY", ypos.get(1) + "");**/
 			
-			if (xloc < squareX + 50 && xloc > squareX && yloc < squareY + 50 && yloc > squareY)
+			for (int n = 0; n < shapelist.size(); n ++)
 			{
-				diffX = xloc - squareX;
-				diffY = yloc - squareY;
-				colorS = sel_col1;
-				moveflag = 1;
-				invalidate();
-				return true;
+				if (xloc < xpos.get(n) + lengths.get(n) && xloc > xpos.get(n) && yloc < ypos.get(n) + widths.get(n) && yloc > ypos.get(n))
+				{
+					xdiff.remove(n);
+					xdiff.add(n, xloc - xpos.get(n));
+					ydiff.remove(n);
+					ydiff.add(n, yloc - ypos.get(n));
+					colors.remove(n);
+					colors.add(n, sels.get(n));
+					moveflag = n+1;
+					invalidate();
+					return true;
+				}
 			}
-			else if (xloc < rectX + 60 && xloc > rectX && yloc < rectY + 100 && yloc > rectY)
-			{
-				diffXr = xloc - rectX;
-				diffYr = yloc - rectY;
-				colorR = sel_col2;
-				moveflag = 2;
-				invalidate();
-				return true;
-			}
-			return false;			
 		}
 		else if (action == MotionEvent.ACTION_MOVE)
 		{
-			if (moveflag == 1)
-			{
-				squareX = (int)(xloc - diffX);
-				squareY = (int)(yloc - diffY);
-			}
-			else if (moveflag == 2)
-			{
-				rectX = (int)(xloc - diffXr);
-				rectY = (int)(yloc - diffYr);
-			}
+			if (moveflag == 0)
+				throw new IndexOutOfBoundsException();
+			xpos.remove(moveflag-1);
+			xpos.add(moveflag-1, (int)(xloc - xdiff.get(moveflag-1)));
+			
+			ypos.remove(moveflag-1);
+			ypos.add(moveflag-1, (int)(yloc - ydiff.get(moveflag-1)));
+			
 			invalidate();
 			return true;
 		}
 		else if (action == MotionEvent.ACTION_UP)
 		{
-			if (rectX < squareX + 50 && rectX > squareX - 60 && rectY < squareY + 50 && rectY > squareY - 100 && moveflag == 2) 
+			for (int n = 0; n < shapelist.size(); n ++)
 			{
-				rectX = rectXold;
-				rectY = rectYold;
+				for (int m = 0; m < shapelist.size(); m++)
+				{
+					if (n != m)
+					{
+						if (xpos.get(n) < xpos.get(m) + lengths.get(m) && xpos.get(n) > xpos.get(m) - lengths.get(n) &&
+							ypos.get(n) <  ypos.get(m) + widths.get(m) && ypos.get(n) > ypos.get(m) - widths.get(n))
+						{
+							xpos.remove(n);
+							xpos.add(n, xposold.get(n));
+							ypos.remove(n);
+							ypos.add(n, yposold.get(n));
+						}
+					}
+				}
 			}
-			if (squareX < rectX + 60 && squareX > rectX - 50 && squareY < rectY + 100 && squareY > rectY - 50 && moveflag == 1)
-			{
-				squareX = squareXold;
-				squareY = squareYold;
-			}
-			squareXold = squareX;
-			squareYold = squareY;
-			rectXold = rectX;
-			rectYold = rectY;
-			colorS = bas_col1;
-			colorR = bas_col2;
+			xposold.clear();
+			xposold.addAll(xpos);
+			yposold.clear();
+			yposold.addAll(ypos);
+			colors.clear();
+			colors.addAll(bases);
 			moveflag = 0;
 			invalidate();
 			return true;
