@@ -4,9 +4,39 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:orientation="vertical" >
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/bin_packing_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onBinPackingButtonClick"
+            android:text="@string/bin_packing"
+            />
+        <Button 
+            android:id="@+id/max_flow_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onMaxFlowButtonClick"
+            android:text="@string/max_flow"
+            />
+        
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, AlgorithmVisualizationActivity!</string>
     <string name="app_name">AlgorithmVisualization</string>
+    <string name="bin_packing">Bin Packing</string>
+    <string name="max_flow">Max Flow</string>
 
 </resources>
