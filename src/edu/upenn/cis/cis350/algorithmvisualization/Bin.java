@@ -2,6 +2,9 @@ package edu.upenn.cis.cis350.algorithmvisualization;
 
 import java.util.ArrayList;
 
+/**
+ * A Bin with a specified capacity. Objects can be inserted to or removed from the bin.
+ */
 public class Bin {
 	
 	private double capacity;
