@@ -10,7 +10,7 @@ public class BinObject extends ShapeObject {
 	private String type;
 	
 	BinObject(double weight, double value, String type) {
-		super(Color.BLUE, Color.GRAY, 40, 80, weight + ", " + value);
+		super(Color.BLUE, Color.GRAY, 40, 80, 0, 0, weight + ", " + value);
 		this.weight = weight;
 		this.value = value;
 		this.type = type;

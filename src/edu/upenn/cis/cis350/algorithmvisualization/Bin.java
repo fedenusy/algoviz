@@ -21,7 +21,7 @@ public class Bin extends ShapeObject {
 	
 	Bin(double capacity) {
 
-		super(Color.RED, Color.GREEN, 60, 100, "0, 0, Cap:" + capacity);
+		super(Color.RED, Color.GREEN, 60, 100, 0, 0, "0, 0, Cap:" + capacity);
 
 		this.capacity = capacity;
 		this.contents = new ArrayList<BinObject>();
@@ -44,6 +44,7 @@ public class Bin extends ShapeObject {
 			weight += obj.getWeight();
 			value += obj.getValue();
 			contents.add(obj);
+			message = weight + " ," + value + " , Cap: " + capacity; 
 			return true;
 		}
 	}
@@ -58,6 +59,7 @@ public class Bin extends ShapeObject {
 			weight -= obj.getWeight();
 			value -= obj.getValue();
 			contents.remove(obj);
+			message = weight + " ," + value + " , Cap: " + capacity; 
 			return true;
 		} else return false;
 	}
