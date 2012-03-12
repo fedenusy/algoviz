@@ -11,6 +11,9 @@ public class ShapeObject
 	//top-left point
 	protected float locx;
 	protected float locy;
+	//record the old positions
+	public float oldx;
+	public float oldy;
 	
 
 	public ShapeObject()
@@ -21,6 +24,8 @@ public class ShapeObject
 		length = 50;
 		locx=300;
 		locy=300;
+		oldx=300;
+		oldy=300;
 	}
 	
 	
@@ -33,6 +38,8 @@ public class ShapeObject
 		length = mylength;
 		locx=300;
 		locy=300;
+		oldx=300;
+		oldy=300;
 	}
 	
 	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength, int x, int y)
@@ -44,6 +51,8 @@ public class ShapeObject
 		length = mylength;
 		locx=x;
 		locy=y;
+		oldx=x;
+		oldy=y;
 	}
 	
 	public int getBase()
@@ -74,11 +83,11 @@ public class ShapeObject
 		return locy;
 	}
 	
-	public void setX(int x){
+	public void setX(float x){
 		locx=x;
 	}
 	
-	public void getY(int y){
+	public void setY(float y){
 		locy=y;
 	}
 
