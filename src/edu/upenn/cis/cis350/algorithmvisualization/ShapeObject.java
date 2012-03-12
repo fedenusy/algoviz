@@ -9,7 +9,11 @@ public class ShapeObject
 	private int width;
 	private int length;
 	private String message;
+	//top-left point
+	protected float locx;
+	protected float locy;
 	
+
 	public ShapeObject()
 	{
 		baseColor = Color.RED;
@@ -21,15 +25,27 @@ public class ShapeObject
 	
 	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength, String mymessage)
 	{
+		locx=300;
+		locy=300;
 		baseColor = basColor;
 		selColor = selectColor;
-		if (mywidth < 0 || mywidth > 100)
-			throw new IllegalArgumentException("Width out of bounds");
-		if (mylength < 0 || mylength > 100)
-			throw new IllegalArgumentException("Length out of bounds");
+	
 		width = mywidth;
 		length = mylength;
 		message = mymessage;
+		locx=300;
+		locy=300;
+	}
+	
+	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength, int x, int y)
+	{
+		baseColor = basColor;
+		selColor = selectColor;
+
+		width = mywidth;
+		length = mylength;
+		locx=x;
+		locy=y;
 	}
 	
 	public int getBase()
@@ -63,5 +79,39 @@ public class ShapeObject
 	}
 	
 	//public abstract void takeAction()
+
+	public float getX(){
+		return locx;
+	}
+	
+	public float getY(){
+		return locy;
+	}
+	
+	public void setX(int x){
+		locx=x;
+	}
+	
+	public void getY(int y){
+		locy=y;
+	}
+
+	//check if two shapes collides
+	public boolean collidesWith(ShapeObject s2) {
+
+		if( ( (locx>=s2.locx && locx<=s2.locx+s2.width) || (locx+width>=s2.locx && locx+width<=s2.locx+s2.width) )
+				&& ( (locy>=s2.locy && locy<=s2.locy+s2.width) || (locy+width>=s2.locy && locy+width<=s2.locy+s2.width) ))
+			return true;
+		return false;
+	}
+	
+	//check if the shape contains the given point
+	public boolean containsPoint(float x, float y) {
+		if((x>locx)&&(x<locx+length)&&(y>locy)&&(y<locy+width))
+			return true;
+		return false;
+	}
+	
+	
 
 }

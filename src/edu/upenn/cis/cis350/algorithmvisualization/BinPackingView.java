@@ -17,7 +17,15 @@ import java.awt.*;
 public class BinPackingView extends View {
 	
 	//givens
-	//list of shapes
+	//factory
+	private static BinPackingProblemFactory factory;
+	
+	//list of objects
+	private static ArrayList<BinObject> objects = new ArrayList<BinObject>();
+	
+	//list of bins
+	private static ArrayList<Bin> bins = new ArrayList<Bin>();
+	
 	private static ArrayList<ShapeObject> shapelist = new ArrayList<ShapeObject>();
 	
 	//base colors
@@ -59,31 +67,8 @@ public class BinPackingView extends View {
 	
 	// you must implement these constructors!!
 	//2/24/12: context and or attribute set should pass in an arraylist of shapeobjects to draw
-	public BinPackingView(Context c) 
-	{
+	public BinPackingView(Context c) {
 		super(c);
-		ShapeObject square = new ShapeObject();
-		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100, "test");
-		shapelist.add(square);
-		shapelist.add(rect);
-		for(int x = 0; x < shapelist.size(); x++)
-		{
-			widths.add(shapelist.get(x).getWidth());
-			lengths.add(shapelist.get(x).getLength());
-			bases.add(shapelist.get(x).getBase());
-			sels.add(shapelist.get(x).getSel());
-			texts.add(shapelist.get(x).getText());
-			
-			
-			colors.add(shapelist.get(x).getBase());
-			xpos.add(x*(MAX_LENGTH+1));
-			ypos.add(x*(MAX_WIDTH+1));
-			xdiff.add((float)0.0);
-			ydiff.add((float)0.0);			
-			xposold.add(x*(MAX_LENGTH+1));
-			yposold.add(x*(MAX_WIDTH+1));
-			
-		}
 	}
 	public BinPackingView(Context c, AttributeSet a) 
 	{
@@ -91,7 +76,7 @@ public class BinPackingView extends View {
 		ShapeObject square = new ShapeObject();
 		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100, "test2");
 		Bin bin1 = new Bin(100);
-		BinObject obj1 = new BinObject(10, 20);
+		BinObject obj1 = new BinObject(10, 20, "type unknown");
 		shapelist.add(square);
 		shapelist.add(rect);
 		shapelist.add(bin1);
@@ -114,9 +99,46 @@ public class BinPackingView extends View {
 			yposold.add(x*(MAX_WIDTH+1));
 			
 		}
+//		this.factory = new BinPackingProblemFactory(c);
+//		this.bins = (ArrayList)factory.getBins("easy");
+//		this.objects = (ArrayList)factory.getBinObjects("easy");
+		this.bins.add(new Bin(10));
 	}
 	
-// This method is called when the View is displayed
+//	public BinPackingView(Context c, AttributeSet a) {
+//		super(c, a);
+//		this.factory = new BinPackingProblemFactory(c);
+//		this.bins = (ArrayList)factory.getBins("easy");
+//		this.objects = (ArrayList)factory.getBinObjects("easy");
+//		this.bins.add(new Bin(10));
+//	}
+
+	//Should add functionality to generalize with passed arraylist.  See shapeobject class for parameters.
+	
+	/**protected void onDraw(Canvas canvas) {
+		Paint paint = new Paint();
+		int binWidth = bins.get(0).getWidth();
+		int binHeight = bins.get(0).getLength();
+		paint.setColor(bins.get(0).getBase());
+		if (bins.size() < 1 || bins.size() > 3) {
+			System.out.println("Number of bins must be 1, 2, or 3!");
+		}
+		switch (bins.size()) {
+			case 1:	canvas.drawRect(this.getWidth()/2 - binWidth/2, binHeight,
+							this.getWidth()/2 + binWidth/2, 0, paint);
+			case 2: canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 + 10, binHeight,
+							this.getWidth()/2 + binWidth + 10, 0, paint);
+			case 3: canvas.drawRect(this.getWidth()/2 - binWidth/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - binWidth/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 + binWidth/2 + 10, binHeight,
+							this.getWidth()/2 + binWidth/2 + binWidth + 10, 0, paint);
+		}
+		
+	}**/
 	
 	protected void onDraw(Canvas canvas) 
 	{
@@ -132,7 +154,7 @@ public class BinPackingView extends View {
 			paint.setColor(Color.WHITE);
 			canvas.drawText(texts.get(x), xpos.get(x)+TEXT_X_OFFSET, ypos.get(x)+widths.get(x)/2, paint);
 		}
-	} 
+	}
 	
 	public boolean onTouchEvent(MotionEvent event)
 	{
@@ -148,8 +170,6 @@ public class BinPackingView extends View {
 			Log.v("sqY", ypos.get(0) + "");
 			Log.v("rectX", xpos.get(1) + "");
 			Log.v("rectY", ypos.get(1) + "");**/
-			
-			
 			
 			for (int n = 0; n < shapelist.size(); n ++)
 			{
@@ -212,4 +232,4 @@ public class BinPackingView extends View {
 		return false;
 	}
 	
-}
+} 
