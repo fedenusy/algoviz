@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * View where user packs objects into bins.
@@ -84,6 +85,8 @@ public class BinPackingView extends View {
 //		this.bins = (ArrayList)factory.getBins("easy");
 //		this.objects = (ArrayList)factory.getBinObjects("easy");
 		this.bins.add(new Bin(10));
+		this.bins.add(new Bin(10));
+		this.bins.add(new Bin(10));
 	}
 	
 	public BinPackingView(Context c, AttributeSet a) {
@@ -91,6 +94,8 @@ public class BinPackingView extends View {
 //		this.factory = new BinPackingProblemFactory(c);
 //		this.bins = (ArrayList)factory.getBins("easy");
 //		this.objects = (ArrayList)factory.getBinObjects("easy");
+		this.bins.add(new Bin(10));
+		this.bins.add(new Bin(10));
 		this.bins.add(new Bin(10));
 	}
 	
@@ -102,22 +107,35 @@ public class BinPackingView extends View {
 		int binWidth = bins.get(0).getWidth();
 		int binHeight = bins.get(0).getLength();
 		paint.setColor(bins.get(0).getBase());
+		
+		//ensures correct number of bins
 		if (bins.size() < 1 || bins.size() > 3) {
 			System.out.println("Number of bins must be 1, 2, or 3!");
 		}
+		
+		//draws bins
 		switch (bins.size()) {
-			case 1:	canvas.drawRect(this.getWidth()/2 - binWidth/2, binHeight,
-							this.getWidth()/2 + binWidth/2, 0, paint);
-			case 2: canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
-							this.getWidth()/2 - 10, 0, paint);
-					canvas.drawRect(this.getWidth()/2 + 10, binHeight,
-							this.getWidth()/2 + binWidth + 10, 0, paint);
-			case 3: canvas.drawRect(this.getWidth()/2 - binWidth/2 - binWidth - 10, binHeight,
-							this.getWidth()/2 - binWidth/2 - 10, 0, paint);
-					canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
-							this.getWidth()/2 - 10, 0, paint);
-					canvas.drawRect(this.getWidth()/2 + binWidth/2 + 10, binHeight,
-							this.getWidth()/2 + binWidth/2 + binWidth + 10, 0, paint);
+			case 1:	canvas.drawRect(this.getWidth()/2 - binWidth/2, this.getHeight() - binHeight,
+							this.getWidth()/2 + binWidth/2, this.getHeight(), paint);
+			case 2: canvas.drawRect(this.getWidth()/2 - binWidth - 20, this.getHeight() - binHeight,
+							this.getWidth()/2 - 20, this.getHeight(), paint);
+					canvas.drawRect(this.getWidth()/2 + 20, this.getHeight() - binHeight,
+							this.getWidth()/2 + binWidth + 20, this.getHeight(), paint);
+			case 3: canvas.drawRect(this.getWidth()/2 - binWidth/2 - binWidth - 20, this.getHeight() - binHeight,
+							this.getWidth()/2 - binWidth/2 - 20, this.getHeight(), paint);
+					canvas.drawRect(this.getWidth()/2 - binWidth/2, this.getHeight() - binHeight,
+							this.getWidth()/2 + binWidth/2, this.getHeight(), paint);
+					canvas.drawRect(this.getWidth()/2 + binWidth/2 + 20, this.getHeight() - binHeight,
+							this.getWidth()/2 + binWidth/2 + binWidth + 20, this.getHeight(), paint);
+		}
+		
+		//draws objects
+		Iterator<BinObject> it = objects.iterator();
+		int sectionWidth = this.getWidth()/5;
+		for (int row = 1; row < 5; row++) {
+			for (int col = 1; col < 5; col++) {
+				
+			}
 		}
 		
 	}
