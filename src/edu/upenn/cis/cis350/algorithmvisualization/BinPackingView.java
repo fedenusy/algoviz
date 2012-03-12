@@ -80,9 +80,18 @@ public class BinPackingView extends View {
 	//2/24/12: context and or attribute set should pass in an arraylist of shapeobjects to draw
 	public BinPackingView(Context c) {
 		super(c);
-		this.factory = new BinPackingProblemFactory(c);
-		this.bins = (ArrayList)factory.getBins("easy");
-		this.objects = (ArrayList)factory.getBinObjects("easy");
+//		this.factory = new BinPackingProblemFactory(c);
+//		this.bins = (ArrayList)factory.getBins("easy");
+//		this.objects = (ArrayList)factory.getBinObjects("easy");
+		this.bins.add(new Bin(10));
+	}
+	
+	public BinPackingView(Context c, AttributeSet a) {
+		super(c, a);
+//		this.factory = new BinPackingProblemFactory(c);
+//		this.bins = (ArrayList)factory.getBins("easy");
+//		this.objects = (ArrayList)factory.getBinObjects("easy");
+		this.bins.add(new Bin(10));
 	}
 	
 		
@@ -90,11 +99,25 @@ public class BinPackingView extends View {
 	
 	protected void onDraw(Canvas canvas) {
 		Paint paint = new Paint();
-		if (bins.size() >= 1 && bins.size() <= 3) {
+		int binWidth = bins.get(0).getWidth();
+		int binHeight = bins.get(0).getLength();
+		paint.setColor(bins.get(0).getBase());
+		if (bins.size() < 1 || bins.size() > 3) {
 			System.out.println("Number of bins must be 1, 2, or 3!");
 		}
-		for (Bin bin : this.bins) {
-			paint.setColor(bin.getBase());
+		switch (bins.size()) {
+			case 1:	canvas.drawRect(this.getWidth()/2 - binWidth/2, binHeight,
+							this.getWidth()/2 + binWidth/2, 0, paint);
+			case 2: canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 + 10, binHeight,
+							this.getWidth()/2 + binWidth + 10, 0, paint);
+			case 3: canvas.drawRect(this.getWidth()/2 - binWidth/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - binWidth/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 + binWidth/2 + 10, binHeight,
+							this.getWidth()/2 + binWidth/2 + binWidth + 10, 0, paint);
 		}
 		
 	}

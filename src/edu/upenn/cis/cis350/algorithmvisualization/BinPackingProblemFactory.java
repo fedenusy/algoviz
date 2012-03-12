@@ -7,6 +7,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
+import android.content.res.Resources.NotFoundException;
 import android.content.res.XmlResourceParser;
 
 /**
@@ -73,7 +74,8 @@ public class BinPackingProblemFactory {
 		hardOptSol = -1;
 		
 		//Parse problems.xml
-		XmlResourceParser parser = context.getResources().getXml(R.id.bin_packing);
+		XmlResourceParser parser;
+		parser = context.getResources().getXml(R.id.bin_packing);
 		try {
 			int event = parser.next();
 			while (!(event == XmlPullParser.END_TAG && parser.getName().equalsIgnoreCase("item"))) {
