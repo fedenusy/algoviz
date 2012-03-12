@@ -18,16 +18,13 @@ public class BinPackingView extends View {
 	
 	//givens
 	//factory
-	private static BinPackingProblemFactory factory;
+	//private static BinPackingProblemFactory factory;
 	
 	//list of objects
 	private static ArrayList<BinObject> objects = new ArrayList<BinObject>();
 	
 	//list of bins
 	private static ArrayList<Bin> bins = new ArrayList<Bin>();
-	
-	//temporary old code
-	private static ArrayList<ShapeObject> shapelist = new ArrayList<ShapeObject>();
 	
 	//base colors
 	private static ArrayList<Integer> bases = new ArrayList<Integer>();
@@ -56,14 +53,13 @@ public class BinPackingView extends View {
 	//text
 	private static ArrayList<String> texts = new ArrayList<String>();
 	
-	private static final int MAX_WIDTH = 100;
+	//private static final int MAX_WIDTH = 100;
 	private static final int MAX_LENGTH = 100;
 	private static final int TEXT_X_OFFSET = 10;
 	
-	private static int moveflag = 0;
+	private static int moveID = 0;
 	//flag = 0 => no object
-	//flag = 1 => square
-	//flag = 2 => rect
+	//Otherwise, flag corresponds to an object that is defined
 
 	
 
@@ -73,39 +69,24 @@ public class BinPackingView extends View {
 	public BinPackingView(Context c, AttributeSet a) 
 	{
 		super(c,a);
-		ShapeObject square = new ShapeObject();
-		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100, "test2");
+		//ShapeObject square = new ShapeObject();
+		//ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100, "test2");
+		
+//		this.factory = new BinPackingProblemFactory(c);
+//		this.bins = (ArrayList)factory.getBins("easy");
+//		this.objects = (ArrayList)factory.getBinObjects("easy");
+		
 		Bin bin1 = new Bin(100);
 		BinObject obj1 = new BinObject(10, 20, "type unknown");
 		Bin bin2 = new Bin(50);
 		BinObject obj2 = new BinObject(20,30, "type unknown");
 		Bin bin3 = new Bin(20);
-		shapelist.add(bin1);
-		shapelist.add(obj1);
-		shapelist.add(bin2);
-		shapelist.add(obj2);
-		shapelist.add(bin3);
 		bins.add(bin1);
 		bins.add(bin2);
 		bins.add(bin3);
 		objects.add(obj1);
 		objects.add(obj2);
-		for(int x = 0; x < bins.size(); x++)
-		{
-			widths.add(bins.get(x).getWidth());
-			lengths.add(bins.get(x).getLength());
-			bases.add(bins.get(x).getBase());
-			sels.add(bins.get(x).getSel());
-			texts.add(bins.get(x).getText());
-						
-			colors.add(bins.get(x).getBase());
-			xpos.add(x*(MAX_LENGTH+1));
-			ypos.add(350);
-			xdiff.add((float)0.0);
-			ydiff.add((float)0.0);			
-			xposold.add(x*(MAX_LENGTH+1));
-			yposold.add(350);			
-		}
+
 		
 		for(int x = 0; x < objects.size(); x++)
 		{
@@ -123,9 +104,24 @@ public class BinPackingView extends View {
 			xposold.add(x*(MAX_LENGTH+1));
 			yposold.add(10);		
 		}
-//		this.factory = new BinPackingProblemFactory(c);
-//		this.bins = (ArrayList)factory.getBins("easy");
-//		this.objects = (ArrayList)factory.getBinObjects("easy");
+		
+		for(int x = 0; x < bins.size(); x++)
+		{
+			widths.add(bins.get(x).getWidth());
+			lengths.add(bins.get(x).getLength());
+			bases.add(bins.get(x).getBase());
+			sels.add(bins.get(x).getSel());
+			texts.add(bins.get(x).getText());
+						
+			colors.add(bins.get(x).getBase());
+			xpos.add(x*(MAX_LENGTH+1));
+			ypos.add(350);
+			xdiff.add((float)0.0);
+			ydiff.add((float)0.0);			
+			xposold.add(x*(MAX_LENGTH+1));
+			yposold.add(350);			
+		}
+
 
 	}
 	
@@ -191,6 +187,82 @@ public class BinPackingView extends View {
 			Log.v("rectX", xpos.get(1) + "");
 			Log.v("rectY", ypos.get(1) + "");**/
 			
+			for (int n = 0; n < objects.size(); n ++)
+			{
+				if (xloc < xpos.get(n) + lengths.get(n) && xloc > xpos.get(n) && yloc < ypos.get(n) + widths.get(n) && yloc > ypos.get(n))
+				{
+					xdiff.remove(n);
+					xdiff.add(n, xloc - xpos.get(n));
+					ydiff.remove(n);
+					ydiff.add(n, yloc - ypos.get(n));
+					colors.remove(n);
+					colors.add(n, sels.get(n));
+					moveID = n+1;
+					invalidate();
+					return true;
+				}
+			}
+		}
+		else if (action == MotionEvent.ACTION_MOVE)
+		{
+			if (moveID == 0)
+				throw new IndexOutOfBoundsException();
+			xpos.remove(moveID-1);
+			xpos.add(moveID-1, (int)(xloc - xdiff.get(moveID-1)));
+			
+			ypos.remove(moveID-1);
+			ypos.add(moveID-1, (int)(yloc - ydiff.get(moveID-1)));
+			
+			invalidate();
+			return true;
+		}
+		else if (action == MotionEvent.ACTION_UP)
+		{
+			for (int n = 0; n < objects.size() + bins.size(); n ++)
+			{
+				for (int m = 0; m < objects.size() + bins.size(); m++)
+				{
+					if (n != m)
+					{
+						if (xpos.get(n) < xpos.get(m) + lengths.get(m) && xpos.get(n) > xpos.get(m) - lengths.get(n) &&
+							ypos.get(n) <  ypos.get(m) + widths.get(m) && ypos.get(n) > ypos.get(m) - widths.get(n))
+						{
+							xpos.remove(n);
+							xpos.add(n, xposold.get(n));
+							ypos.remove(n);
+							ypos.add(n, yposold.get(n));
+						}
+					}
+				}
+			}
+			xposold.clear();
+			xposold.addAll(xpos);
+			yposold.clear();
+			yposold.addAll(ypos);
+			colors.clear();
+			colors.addAll(bases);
+			moveID = 0;
+			invalidate();
+			return true;
+		}
+		return false;
+	}
+	
+	/**public boolean onTouchEvent(MotionEvent event)
+	{
+		int action = event.getAction();
+		float xloc = event.getX();
+		float yloc = event.getY();
+		if (action == MotionEvent.ACTION_DOWN)
+		{
+			/**Log.v("test", "action detected");
+			Log.v("xloc", xloc + "");
+			Log.v("yloc", yloc + "");
+			Log.v("sqX", xpos.get(0) + "");
+			Log.v("sqY", ypos.get(0) + "");
+			Log.v("rectX", xpos.get(1) + "");
+			Log.v("rectY", ypos.get(1) + "");
+			
 			for (int n = 0; n < shapelist.size(); n ++)
 			{
 				if (xloc < xpos.get(n) + lengths.get(n) && xloc > xpos.get(n) && yloc < ypos.get(n) + widths.get(n) && yloc > ypos.get(n))
@@ -201,7 +273,7 @@ public class BinPackingView extends View {
 					ydiff.add(n, yloc - ypos.get(n));
 					colors.remove(n);
 					colors.add(n, sels.get(n));
-					moveflag = n+1;
+					moveID = n+1;
 					invalidate();
 					return true;
 				}
@@ -209,13 +281,13 @@ public class BinPackingView extends View {
 		}
 		else if (action == MotionEvent.ACTION_MOVE)
 		{
-			if (moveflag == 0)
+			if (moveID == 0)
 				throw new IndexOutOfBoundsException();
-			xpos.remove(moveflag-1);
-			xpos.add(moveflag-1, (int)(xloc - xdiff.get(moveflag-1)));
+			xpos.remove(moveID-1);
+			xpos.add(moveID-1, (int)(xloc - xdiff.get(moveID-1)));
 			
-			ypos.remove(moveflag-1);
-			ypos.add(moveflag-1, (int)(yloc - ydiff.get(moveflag-1)));
+			ypos.remove(moveID-1);
+			ypos.add(moveID-1, (int)(yloc - ydiff.get(moveID-1)));
 			
 			invalidate();
 			return true;
@@ -245,11 +317,11 @@ public class BinPackingView extends View {
 			yposold.addAll(ypos);
 			colors.clear();
 			colors.addAll(bases);
-			moveflag = 0;
+			moveID = 0;
 			invalidate();
 			return true;
 		}
 		return false;
-	}
+	} **/
 	
 } 
