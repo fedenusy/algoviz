@@ -1,99 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <problem name="easy">
-        <bin capacity="20" />
-        <object weight="2.5" value="10" type="default" />
-        <object weight="5" value="29" type="default" />
-        <object weight="7.8" value="33" type="default" />
-        <object weight="1.9" value="8.5" type="default" />
-        <object weight="11" value="30" type="default" />
-        <object weight="20" value="50" type="default" />
-        <object weight="4" value="9" type="default" />
-        <object weight="16" value="43" type="default" />
-    </problem>
-
-    <problem name="medium">
-        <bin capacity="25" />
-        <bin capacity="25" />
-        <object weight="2.5" value="10" type="default" />
-        <object weight="5" value="29" type="default" />
-        <object weight="7.8" value="33" type="default" />
-        <object weight="1.9" value="8.5" type="default" />
-        <object weight="11" value="30" type="default" />
-        <object weight="20" value="50" type="default" />
-        <object weight="4" value="9" type="default" />
-        <object weight="16" value="43" type="default" />
-        <object weight="19" value="70" type="default" />
-        <object weight="13.4" value="41" type="default" />
-        <object weight="18" value="65" type="default" />
-        <object weight="25" value="90" type="default" />
-        <object weight="11" value="45" type="default" />
-        <object weight="6.7" value="22.5" type="default" />
-        <object weight="13" value="49.8" type="default" />
-        <object weight="2" value="17" type="default" />
-        <object weight="1" value="5.5" type="default" />
-        <object weight="7.3" value="31" type="default" />
-        <object weight="8" value="34" type="default" />
-        <object weight="13" value="24" type="default" />
-        <object weight="6" value="31" type="default" />
-        <object weight="14" value="50" type="default" />
-        <object weight="4" value="9" type="default" />
-        <object weight="16" value="43" type="default" />
-    </problem>
+    <algorithm name="binpacking">
+	    <problem difficulty="easy">
+	        <bin capacity="20" />
+	        <object weight="2.5" value="10" type="default" />
+	        <object weight="5" value="29" type="default" />
+	        <object weight="7.8" value="33" type="default" />
+	        <object weight="1.9" value="8.5" type="default" />
+	        <object weight="11" value="30" type="default" />
+	        <object weight="20" value="50" type="default" />
+	        <object weight="4" value="9" type="default" />
+	        <object weight="16" value="43" type="default" />
+	    </problem>
+	
+	    <problem difficulty="medium">
+	        <bin capacity="25" />
+	        <bin capacity="25" />
+	        <object weight="2.5" value="10" type="default" />
+	        <object weight="5" value="29" type="default" />
+	        <object weight="7.8" value="33" type="default" />
+	        <object weight="1.9" value="8.5" type="default" />
+	        <object weight="11" value="30" type="default" />
+	        <object weight="20" value="50" type="default" />
+	        <object weight="4" value="9" type="default" />
+	        <object weight="16" value="43" type="default" />
+	        <object weight="19" value="70" type="default" />
+	        <object weight="13.4" value="41" type="default" />
+	        <object weight="18" value="65" type="default" />
+	        <object weight="25" value="90" type="default" />
+	        <object weight="11" value="45" type="default" />
+	        <object weight="6.7" value="22.5" type="default" />
+	        <object weight="13" value="49.8" type="default" />
+	        <object weight="2" value="17" type="default" />
+	        <object weight="1" value="5.5" type="default" />
+	        <object weight="7.3" value="31" type="default" />
+	        <object weight="8" value="34" type="default" />
+	        <object weight="13" value="24" type="default" />
+	        <object weight="6" value="31" type="default" />
+	        <object weight="14" value="50" type="default" />
+	        <object weight="4" value="9" type="default" />
+	        <object weight="16" value="43" type="default" />
+	    </problem>
+	    
+	    <problem difficulty="hard">
+	        <bin capacity="25" />
+	        <bin capacity="30" />
+	        <bin capacity="50" />
+	        <object weight="2.5" value="10" type="default" />
+	        <object weight="5" value="29" type="default" />
+	        <object weight="7.8" value="33" type="default" />
+	        <object weight="1.9" value="8.5" type="default" />
+	        <object weight="11" value="30" type="default" />
+	        <object weight="20" value="50" type="default" />
+	        <object weight="4" value="9" type="default" />
+	        <object weight="16" value="43" type="default" />
+	        <object weight="19" value="70" type="default" />
+	        <object weight="13.4" value="41" type="default" />
+	        <object weight="18" value="65" type="default" />
+	        <object weight="25" value="90" type="default" />
+	        <object weight="11" value="45" type="default" />
+	        <object weight="6.7" value="22.5" type="default" />
+	        <object weight="13" value="49.8" type="default" />
+	        <object weight="2" value="17" type="default" />
+	        <object weight="1" value="5.5" type="default" />
+	        <object weight="7.3" value="31" type="default" />
+	        <object weight="8" value="34" type="default" />
+	        <object weight="13" value="24" type="default" />
+	        <object weight="6" value="31" type="default" />
+	        <object weight="14" value="50" type="default" />
+	        <object weight="4" value="9" type="default" />
+	        <object weight="16" value="43" type="default" />
+	        <object weight="30" value="90" type="default" />
+	        <object weight="35" value="100.5" type="default" />
+	        <object weight="28" value="72" type="default" />
+	        <object weight="45" value="120" type="default" />
+	        <object weight="36" value="98" type="default" />
+	        <object weight="48" value="123.5" type="default" />
+	        <object weight="20" value="60" type="default" />
+	        <object weight="16" value="34.2" type="default" />
+	        <object weight="40" value="111" type="default" />
+	        <object weight="50" value="140" type="default" />
+	        <object weight="30" value="92" type="default" />
+	        <object weight="21" value="73" type="default" />
+	        <object weight="22" value="78" type="default" />
+	        <object weight="3.5" value="29" type="default" />
+	        <object weight="7" value="41.8" type="default" />
+	        <object weight=".25" value="11" type="default" />
+	        <object weight="6" value="24.2" type="default" />
+	        <object weight="16.7" value="34" type="default" />
+	        <object weight="9" value="20" type="default" />
+	        <object weight="1" value="5" type="default" />
+	        <object weight=".5" value="10" type="default" />
+	        <object weight="19" value="40" type="default" />
+	        <object weight="40" value="120" type="default" />
+	        <object weight="37" value="110" type="default" />
+	    </problem>
+    </algorithm>
     
-    <problem name="hard">
-        <bin capacity="25" />
-        <bin capacity="30" />
-        <bin capacity="50" />
-        <object weight="2.5" value="10" type="default" />
-        <object weight="5" value="29" type="default" />
-        <object weight="7.8" value="33" type="default" />
-        <object weight="1.9" value="8.5" type="default" />
-        <object weight="11" value="30" type="default" />
-        <object weight="20" value="50" type="default" />
-        <object weight="4" value="9" type="default" />
-        <object weight="16" value="43" type="default" />
-        <object weight="19" value="70" type="default" />
-        <object weight="13.4" value="41" type="default" />
-        <object weight="18" value="65" type="default" />
-        <object weight="25" value="90" type="default" />
-        <object weight="11" value="45" type="default" />
-        <object weight="6.7" value="22.5" type="default" />
-        <object weight="13" value="49.8" type="default" />
-        <object weight="2" value="17" type="default" />
-        <object weight="1" value="5.5" type="default" />
-        <object weight="7.3" value="31" type="default" />
-        <object weight="8" value="34" type="default" />
-        <object weight="13" value="24" type="default" />
-        <object weight="6" value="31" type="default" />
-        <object weight="14" value="50" type="default" />
-        <object weight="4" value="9" type="default" />
-        <object weight="16" value="43" type="default" />
-        <object weight="30" value="90" type="default" />
-        <object weight="35" value="100.5" type="default" />
-        <object weight="28" value="72" type="default" />
-        <object weight="45" value="120" type="default" />
-        <object weight="36" value="98" type="default" />
-        <object weight="48" value="123.5" type="default" />
-        <object weight="20" value="60" type="default" />
-        <object weight="16" value="34.2" type="default" />
-        <object weight="40" value="111" type="default" />
-        <object weight="50" value="140" type="default" />
-        <object weight="30" value="92" type="default" />
-        <object weight="21" value="73" type="default" />
-        <object weight="22" value="78" type="default" />
-        <object weight="3.5" value="29" type="default" />
-        <object weight="7" value="41.8" type="default" />
-        <object weight=".25" value="11" type="default" />
-        <object weight="6" value="24.2" type="default" />
-        <object weight="16.7" value="34" type="default" />
-        <object weight="9" value="20" type="default" />
-        <object weight="1" value="5" type="default" />
-        <object weight=".5" value="10" type="default" />
-        <object weight="19" value="40" type="default" />
-        <object weight="40" value="120" type="default" />
-        <object weight="37" value="110" type="default" />
-    </problem>
+    
+    <algorithm name="maxflow">
+        <problem difficulty="easy">
+            
+        </problem>
+        
+        <problem difficulty="medium">
+            
+        </problem>
+        
+        <problem difficulty="hard">
+            
+        </problem>
+    </algorithm>
     
 </resources>

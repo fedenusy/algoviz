@@ -6,7 +6,7 @@ import java.util.Collection;
  * Generates the Bins and BinObjects for each problem difficulty, as specified in
  * res/xml/problems.xml.
  */
-public class ProblemFactory {
+public class BinPackingProblemFactory {
 
 	private Collection<BinObject> easyObjects, mediumObjects, hardObjects;
 	private Collection<Bin> easyBins, mediumBins, hardBins;
@@ -17,7 +17,7 @@ public class ProblemFactory {
 	 * generates the corresponding Bin and BinObject collections, and calculates
 	 * the value of the optimal solution.
 	 */
-	public ProblemFactory() {
+	public BinPackingProblemFactory() {
 		//TODO
 	}
 	
