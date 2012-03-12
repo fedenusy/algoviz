@@ -9,8 +9,8 @@ public class ShapeObject
 	private int width;
 	private int length;
 	//top-left point
-	private float locx;
-	private float locy;
+	protected float locx;
+	protected float locy;
 	
 
 	public ShapeObject()
@@ -82,14 +82,22 @@ public class ShapeObject
 		locy=y;
 	}
 
+	//check if two shapes collides
 	public boolean collidesWith(ShapeObject s2) {
-		
-		/**
-		if( ( (x>=s2.x && x<=s2.x+s2.width) || (x+width>=s2.x && x+width<=s2.x+s2.width) )
-				&& ( (y>=s2.y && y<=s2.y+s2.width) || (y+width>=s2.y && y+width<=s2.y+s2.width) ))
-			return true;*/
+
+		if( ( (locx>=s2.locx && locx<=s2.locx+s2.width) || (locx+width>=s2.locx && locx+width<=s2.locx+s2.width) )
+				&& ( (locy>=s2.locy && locy<=s2.locy+s2.width) || (locy+width>=s2.locy && locy+width<=s2.locy+s2.width) ))
+			return true;
 		return false;
 	}
+	
+	//check if the shape contains the given point
+	public boolean containsPoint(float x, float y) {
+		if((x>locx)&&(x<locx+length)&&(y>locy)&&(y<locy+width))
+			return true;
+		return false;
+	}
+	
 	
 
 }
