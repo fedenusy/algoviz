@@ -76,9 +76,7 @@ public class BinPackingProblemFactory {
 		XmlResourceParser parser = context.getResources().getXml(R.id.bin_packing);
 		try {
 			int event = parser.next();
-			while (!"item".equals(parser.getName()) && 
-					!"bin_packing".equals(parser.getAttributeValue("","name"))) event = parser.next();
-			while (event != XmlPullParser.END_DOCUMENT) {
+			while (!(event == XmlPullParser.END_TAG && parser.getName().equalsIgnoreCase("item"))) {
 				String difficulty = "";
 				if (event == XmlPullParser.START_TAG) {
 					String element = parser.getName();
@@ -103,7 +101,7 @@ public class BinPackingProblemFactory {
 						else if ("medium".equalsIgnoreCase(difficulty)) mediumObjects.add(obj);
 						else if ("hard".equalsIgnoreCase(difficulty)) hardObjects.add(obj);
 						else throw new XmlPullParserException("Invalidly formatted file");
-					} else if ("item".equals(element)) break;
+					}
 				}
 				event = parser.next();
 			}
