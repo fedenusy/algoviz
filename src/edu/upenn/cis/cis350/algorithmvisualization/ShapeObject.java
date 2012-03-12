@@ -8,9 +8,13 @@ public class ShapeObject
 	private int selColor;	
 	private int width;
 	private int length;
+	protected String message;
 	//top-left point
-	protected float locx;
-	protected float locy;
+	protected int locx;
+	protected int locy;
+	//record the old positions
+	protected int oldx;
+	protected int oldy;
 	
 
 	public ShapeObject()
@@ -19,23 +23,14 @@ public class ShapeObject
 		selColor = Color.WHITE;
 		width = 50;
 		length = 50;
+		message = "Null";
 		locx=300;
 		locy=300;
+		oldx=300;
+		oldy=300;
 	}
 	
-	
-	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength)
-	{
-		baseColor = basColor;
-		selColor = selectColor;
-	
-		width = mywidth;
-		length = mylength;
-		locx=300;
-		locy=300;
-	}
-	
-	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength, int x, int y)
+	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength, int x, int y, String mymessage)
 	{
 		baseColor = basColor;
 		selColor = selectColor;
@@ -44,6 +39,9 @@ public class ShapeObject
 		length = mylength;
 		locx=x;
 		locy=y;
+		oldx = locx;
+		oldy = locy;
+		message = mymessage;
 	}
 	
 	public int getBase()
@@ -65,12 +63,24 @@ public class ShapeObject
 	{
 		return length;
 	}
+	
+	public String getText()
+	{
+		return message;
+	}
+	
+	public void setText(String text)
+	{
+		message = text;
+	}
+	
+	//public abstract void takeAction()
 
-	public float getX(){
+	public int getX(){
 		return locx;
 	}
 	
-	public float getY(){
+	public int getY(){
 		return locy;
 	}
 	
@@ -78,7 +88,7 @@ public class ShapeObject
 		locx=x;
 	}
 	
-	public void getY(int y){
+	public void setY(int y){
 		locy=y;
 	}
 

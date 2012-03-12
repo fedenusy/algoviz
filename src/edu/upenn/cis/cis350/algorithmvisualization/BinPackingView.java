@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
-import java.util.Iterator;
+//import java.awt.*;
 
 /**
  * View where user packs objects into bins.
@@ -43,118 +43,149 @@ public class BinPackingView extends View {
 	private static ArrayList<Integer> colors = new ArrayList<Integer>();
 	
 	//positions object
-	private static ArrayList<Integer> xpos = new ArrayList<Integer>();
-	private static ArrayList<Integer> ypos = new ArrayList<Integer>();
+	private static ArrayList<Integer> xpos = new ArrayList<Integer>(); //deprecated
+	private static ArrayList<Integer> ypos = new ArrayList<Integer>(); //deprecated
 	private static ArrayList<Float> xdiff = new ArrayList<Float>();
 	private static ArrayList<Float> ydiff = new ArrayList<Float>();
-	private static ArrayList<Integer> xposold = new ArrayList<Integer>();
-	private static ArrayList<Integer> yposold = new ArrayList<Integer>();
+	private static ArrayList<Integer> xposold = new ArrayList<Integer>(); //deprecated
+	private static ArrayList<Integer> yposold = new ArrayList<Integer>(); //deprecated
 	
-	private static final int MAX_WIDTH = 100;
+	//text
+	private static ArrayList<String> texts = new ArrayList<String>(); //deprecated
+	
+	//private static final int MAX_WIDTH = 100;
 	private static final int MAX_LENGTH = 100;
+	private static final int TEXT_X_OFFSET = 10;
 	
-	/**
-	private static int squareX = 100;
-	private static int squareY = 100;
-	private static float diffX;
-	private static float diffY;
-	
-	//positions object 2
-	private static int rectX = 400;
-	private static int rectY = 400;
-	private static float diffXr;
-	private static float diffYr;
-		
-	//old positions of objects for snapback
-	private static int squareXold = squareX;
-	private static int squareYold = squareY;
-	private static int rectXold = rectX;
-	private static int rectYold = rectY;**/
-	
-	private static int moveflag = 0;
+	private static int moveID = 0;
 	//flag = 0 => no object
-	//flag = 1 => square
-	//flag = 2 => rect
+	//Otherwise, flag corresponds to an object that is defined
 
 	
-	// you must implement these constructors!!
-	//2/24/12: context and or attribute set should pass in an arraylist of shapeobjects to draw
+
 	public BinPackingView(Context c) {
 		super(c);
-//		this.factory = new BinPackingProblemFactory(c);
-//		this.bins = (ArrayList)factory.getBins("easy");
-//		this.objects = (ArrayList)factory.getBinObjects("easy");
-		this.bins.add(new Bin(10));
-		this.bins.add(new Bin(10));
-		this.bins.add(new Bin(10));
 	}
-	
-	public BinPackingView(Context c, AttributeSet a) {
-		super(c, a);
-//		this.factory = new BinPackingProblemFactory(c);
-//		this.bins = (ArrayList)factory.getBins("easy");
-//		this.objects = (ArrayList)factory.getBinObjects("easy");
-		this.bins.add(new Bin(10));
-		this.bins.add(new Bin(10));
-		this.bins.add(new Bin(10));
-	}
-	
+	public BinPackingView(Context c, AttributeSet a) 
+	{
+		super(c,a);
 		
-	//Should add functionality to generalize with passed arraylist.  See shapeobject class for parameters.
+		//this.factory = new BinPackingProblemFactory(c);
+		//this.bins = (ArrayList)factory.getBins("easy");
+		//this.objects = (ArrayList)factory.getBinObjects("easy");
+		
+		Bin bin1 = new Bin(100);
+		BinObject obj1 = new BinObject(10, 20, "type unknown");
+		Bin bin2 = new Bin(50);
+		BinObject obj2 = new BinObject(20,30, "type unknown");
+		Bin bin3 = new Bin(20);
+		
+		bin1.setX(0);
+		bin2.setX(102);
+		bin3.setX(204);
+		bin1.setY(300);
+		bin2.setY(300);
+		bin3.setY(300);
+		obj1.setX(0);
+		obj2.setX(100);
+		obj1.setY(50);
+		obj2.setY(50);
+		obj1.oldx = obj1.locx;
+		obj1.oldy = obj1.locy;
+		obj2.oldx = obj2.locx;
+		obj2.oldy = obj2.locy;
+		
+		bins.add(bin1);
+		bins.add(bin2);
+		bins.add(bin3);
+		objects.add(obj1);
+		objects.add(obj2);
+
+		for(int x = 0; x < objects.size(); x++)
+		{
+			widths.add(objects.get(x).getWidth());
+			lengths.add(objects.get(x).getLength());
+			bases.add(objects.get(x).getBase());
+			sels.add(objects.get(x).getSel());
+						
+			colors.add(objects.get(x).getBase());
+			xdiff.add((float)0.0);
+			ydiff.add((float)0.0);					
+		}
+		
+		for(int x = 0; x < bins.size(); x++)
+		{
+			widths.add(bins.get(x).getWidth());
+			lengths.add(bins.get(x).getLength());
+			bases.add(bins.get(x).getBase());
+			sels.add(bins.get(x).getSel());
+						
+			colors.add(bins.get(x).getBase());
+			xdiff.add((float)0.0);
+			ydiff.add((float)0.0);				
+		}
+	}
 	
-	protected void onDraw(Canvas canvas) {
+	
+	/**protected void onDraw(Canvas canvas) {
 		Paint paint = new Paint();
 		int binWidth = bins.get(0).getWidth();
 		int binHeight = bins.get(0).getLength();
 		paint.setColor(bins.get(0).getBase());
-		
-		//ensures correct number of bins
 		if (bins.size() < 1 || bins.size() > 3) {
-			System.out.println("Number of bins must be 1, 2, or 3!");
+			Log.v("Bin file loading error", "Number of bins must be 1, 2, or 3!");
 		}
-		
-		//draws bins
 		switch (bins.size()) {
-			case 1:	canvas.drawRect(this.getWidth()/2 - binWidth/2, this.getHeight() - binHeight,
-							this.getWidth()/2 + binWidth/2, this.getHeight(), paint);
-			case 2: canvas.drawRect(this.getWidth()/2 - binWidth - 20, this.getHeight() - binHeight,
-							this.getWidth()/2 - 20, this.getHeight(), paint);
-					canvas.drawRect(this.getWidth()/2 + 20, this.getHeight() - binHeight,
-							this.getWidth()/2 + binWidth + 20, this.getHeight(), paint);
-			case 3: canvas.drawRect(this.getWidth()/2 - binWidth/2 - binWidth - 20, this.getHeight() - binHeight,
-							this.getWidth()/2 - binWidth/2 - 20, this.getHeight(), paint);
-					canvas.drawRect(this.getWidth()/2 - binWidth/2, this.getHeight() - binHeight,
-							this.getWidth()/2 + binWidth/2, this.getHeight(), paint);
-					canvas.drawRect(this.getWidth()/2 + binWidth/2 + 20, this.getHeight() - binHeight,
-							this.getWidth()/2 + binWidth/2 + binWidth + 20, this.getHeight(), paint);
+			case 1:	canvas.drawRect(this.getWidth()/2 - binWidth/2, binHeight,
+							this.getWidth()/2 + binWidth/2, 0, paint);
+			case 2: canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 + 10, binHeight,
+							this.getWidth()/2 + binWidth + 10, 0, paint);
+			case 3: canvas.drawRect(this.getWidth()/2 - binWidth/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - binWidth/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 - binWidth - 10, binHeight,
+							this.getWidth()/2 - 10, 0, paint);
+					canvas.drawRect(this.getWidth()/2 + binWidth/2 + 10, binHeight,
+							this.getWidth()/2 + binWidth/2 + binWidth + 10, 0, paint);
 		}
 		
-		//draws objects
-		Iterator<BinObject> it = objects.iterator();
-		int sectionWidth = this.getWidth()/5;
-		for (int row = 1; row < 5; row++) {
-			for (int col = 1; col < 5; col++) {
-				
-			}
-		}
 		
-	}
+		
+	}**/
 	
-	/*protected void onDraw(Canvas canvas) 
+	protected void onDraw(Canvas canvas) 
 	{
-	
-		// this is the "paintbrush"
 		Paint paint = new Paint();		
-		// draw objects
-		for(int x = 0; x < shapelist.size(); x++)
+		if (bins.size() < 1 || bins.size() > 3) 
+		{
+			Log.v("Bin file loading error", "Number of bins must be 1, 2, or 3!");
+		}
+			
+		for(int x = 0; x < bins.size() + objects.size(); x++)
 		{
 			paint.setColor(colors.get(x));
-			//105 multiplier is outside maximum bounds on a shape objects width or length
-			canvas.drawRect(xpos.get(x), ypos.get(x), xpos.get(x) + lengths.get(x), ypos.get(x) + widths.get(x), paint);
+			ShapeObject curobj = null;
+			if (x < objects.size())
+			{
+				curobj = objects.get(x);
+				canvas.drawRect(curobj.getX(), curobj.getY(), curobj.getX() + lengths.get(x), curobj.getY() + widths.get(x), paint);
+				paint.setColor(Color.WHITE);
+				canvas.drawText(curobj.getText(), curobj.getX()+TEXT_X_OFFSET, curobj.getY()+widths.get(x)/2, paint);
+			}
+			else
+			{
+				//Log.v("bin index", "" + (x - objects.size()));
+				curobj = bins.get(x - objects.size());
+				canvas.drawRect(curobj.getX(), curobj.getY(), curobj.getX() + lengths.get(x), curobj.getY() + widths.get(x), paint);
+				paint.setColor(Color.WHITE);
+				canvas.drawText(curobj.getText(), curobj.getX()+TEXT_X_OFFSET, curobj.getY()+widths.get(x)/2, paint);
+			}
+
 		}
-	} */
+	}
 	
-/*	public boolean onTouchEvent(MotionEvent event)
+	public boolean onTouchEvent(MotionEvent event)
 	{
 		int action = event.getAction();
 		float xloc = event.getX();
@@ -169,17 +200,19 @@ public class BinPackingView extends View {
 			Log.v("rectX", xpos.get(1) + "");
 			Log.v("rectY", ypos.get(1) + "");**/
 			
-/*			for (int n = 0; n < shapelist.size(); n ++)
+			for (int n = 0; n < objects.size(); n ++)
 			{
-				if (xloc < xpos.get(n) + lengths.get(n) && xloc > xpos.get(n) && yloc < ypos.get(n) + widths.get(n) && yloc > ypos.get(n))
+				BinObject curobj = objects.get(n);
+				if (xloc < curobj.getX() + lengths.get(n) && xloc > curobj.getX() && 
+						yloc < curobj.getY() + widths.get(n) && yloc > curobj.getY())
 				{
 					xdiff.remove(n);
-					xdiff.add(n, xloc - xpos.get(n));
+					xdiff.add(n, xloc - curobj.getX());
 					ydiff.remove(n);
-					ydiff.add(n, yloc - ypos.get(n));
+					ydiff.add(n, yloc - curobj.getY());
 					colors.remove(n);
 					colors.add(n, sels.get(n));
-					moveflag = n+1;
+					moveID = n+1;
 					invalidate();
 					return true;
 				}
@@ -187,47 +220,55 @@ public class BinPackingView extends View {
 		}
 		else if (action == MotionEvent.ACTION_MOVE)
 		{
-			if (moveflag == 0)
+			if (moveID == 0)
 				throw new IndexOutOfBoundsException();
-			xpos.remove(moveflag-1);
-			xpos.add(moveflag-1, (int)(xloc - xdiff.get(moveflag-1)));
-			
-			ypos.remove(moveflag-1);
-			ypos.add(moveflag-1, (int)(yloc - ydiff.get(moveflag-1)));
+
+			objects.get(moveID-1).setX((int)(xloc - xdiff.get(moveID-1)));
+			objects.get(moveID-1).setY((int)(yloc - ydiff.get(moveID-1)));
 			
 			invalidate();
 			return true;
 		}
 		else if (action == MotionEvent.ACTION_UP)
 		{
-			for (int n = 0; n < shapelist.size(); n ++)
+			BinObject curobj = objects.get(moveID-1);
+			Log.v("xpos", "" + curobj.getX());
+			for (int n = 0; n < bins.size(); n++)
 			{
-				for (int m = 0; m < shapelist.size(); m++)
+				Bin curbin = bins.get(n);
+				if (curobj.collidesWith(curbin))
 				{
-					if (n != m)
+					curbin.insert(curobj);
+					objects.remove(curobj);
+					bases.remove(moveID - 1);
+					sels.remove(moveID - 1);
+					widths.remove(moveID - 1);
+					lengths.remove(moveID - 1);
+					colors.remove(moveID - 1);
+					xdiff.remove(moveID - 1);
+					ydiff.remove(moveID - 1);
+				}
+			}
+			for (int n = 0; n < objects.size(); n++)
+			{
+				if (n != moveID-1)
+				{
+					BinObject checkobj = objects.get(n);
+					if (curobj.collidesWith(checkobj))
 					{
-						if (xpos.get(n) < xpos.get(m) + lengths.get(m) && xpos.get(n) > xpos.get(m) - lengths.get(n) &&
-							ypos.get(n) <  ypos.get(m) + widths.get(m) && ypos.get(n) > ypos.get(m) - widths.get(n))
-						{
-							xpos.remove(n);
-							xpos.add(n, xposold.get(n));
-							ypos.remove(n);
-							ypos.add(n, yposold.get(n));
-						}
+						curobj.setX(curobj.oldx);
+						curobj.setY(curobj.oldy);
 					}
 				}
 			}
-			xposold.clear();
-			xposold.addAll(xpos);
-			yposold.clear();
-			yposold.addAll(ypos);
+			curobj.oldx = curobj.locx;
+			curobj.oldy = curobj.locy;
 			colors.clear();
 			colors.addAll(bases);
-			moveflag = 0;
+			moveID = 0;
 			invalidate();
 			return true;
 		}
 		return false;
 	}
-	*/
 } 

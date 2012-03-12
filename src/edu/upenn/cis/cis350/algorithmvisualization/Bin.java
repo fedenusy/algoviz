@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import android.graphics.Color;
 
+
+
 /**
  * A Bin with a specified capacity. Objects can be inserted to or removed from the bin.
  */
 public class Bin extends ShapeObject {
+
 	
 	private double capacity;
 	private double weight;
@@ -17,7 +20,9 @@ public class Bin extends ShapeObject {
 	
 	
 	Bin(double capacity) {
-		super(Color.BLUE, Color.BLUE, 50, 50);
+
+		super(Color.RED, Color.GREEN, 60, 100, 0, 0, "0, 0, Cap:" + capacity);
+
 		this.capacity = capacity;
 		this.contents = new ArrayList<BinObject>();
 		this.weight = 0;
@@ -39,6 +44,7 @@ public class Bin extends ShapeObject {
 			weight += obj.getWeight();
 			value += obj.getValue();
 			contents.add(obj);
+			message = weight + " ," + value + " , Cap: " + capacity; 
 			return true;
 		}
 	}
@@ -53,6 +59,7 @@ public class Bin extends ShapeObject {
 			weight -= obj.getWeight();
 			value -= obj.getValue();
 			contents.remove(obj);
+			message = weight + " ," + value + " , Cap: " + capacity; 
 			return true;
 		} else return false;
 	}
