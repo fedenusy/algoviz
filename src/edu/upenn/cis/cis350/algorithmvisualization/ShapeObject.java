@@ -9,6 +9,7 @@ public class ShapeObject
 	private int width;
 	private int length;
 	
+
 	public ShapeObject()
 	{
 		baseColor = Color.RED;
@@ -21,10 +22,11 @@ public class ShapeObject
 	{
 		baseColor = basColor;
 		selColor = selectColor;
+		/*
 		if (mywidth < 0 || mywidth > 100)
 			throw new IllegalArgumentException("Width out of bounds");
 		if (mylength < 0 || mylength > 100)
-			throw new IllegalArgumentException("Length out of bounds");
+			throw new IllegalArgumentException("Length out of bounds");*/
 		width = mywidth;
 		length = mylength;
 	}
