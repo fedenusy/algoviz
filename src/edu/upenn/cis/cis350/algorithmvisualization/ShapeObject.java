@@ -8,6 +8,7 @@ public class ShapeObject
 	private int selColor;	
 	private int width;
 	private int length;
+	private String message;
 	
 	public ShapeObject()
 	{
@@ -15,9 +16,10 @@ public class ShapeObject
 		selColor = Color.WHITE;
 		width = 50;
 		length = 50;
+		message = "Null";
 	}
 	
-	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength)
+	public ShapeObject(int basColor, int selectColor, int mywidth, int mylength, String mymessage)
 	{
 		baseColor = basColor;
 		selColor = selectColor;
@@ -27,6 +29,7 @@ public class ShapeObject
 			throw new IllegalArgumentException("Length out of bounds");
 		width = mywidth;
 		length = mylength;
+		message = mymessage;
 	}
 	
 	public int getBase()
@@ -48,5 +51,17 @@ public class ShapeObject
 	{
 		return length;
 	}
+	
+	public String getText()
+	{
+		return message;
+	}
+	
+	public void setText(String text)
+	{
+		message = text;
+	}
+	
+	//public abstract void takeAction()
 
 }

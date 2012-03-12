@@ -2,7 +2,9 @@ package edu.upenn.cis.cis350.algorithmvisualization;
 
 import java.util.ArrayList;
 
-public class Bin {
+import android.graphics.Color;
+
+public class Bin extends ShapeObject{
 	
 	private double capacity;
 	private double weight;
@@ -10,6 +12,7 @@ public class Bin {
 	private ArrayList<BinObject> contents;
 	
 	Bin(double capacity) {
+		super(Color.RED, Color.GREEN, 60, 100, "0, 0, Cap:" + capacity);
 		this.capacity = capacity;
 		this.contents = new ArrayList<BinObject>();
 		this.weight = 0;

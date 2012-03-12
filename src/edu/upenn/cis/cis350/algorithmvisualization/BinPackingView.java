@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
+import java.awt.*;
 
 /**
  * View where user packs objects into bins.
@@ -43,26 +44,12 @@ public class BinPackingView extends View {
 	private static ArrayList<Integer> xposold = new ArrayList<Integer>();
 	private static ArrayList<Integer> yposold = new ArrayList<Integer>();
 	
+	//text
+	private static ArrayList<String> texts = new ArrayList<String>();
+	
 	private static final int MAX_WIDTH = 100;
 	private static final int MAX_LENGTH = 100;
-	
-	/**
-	private static int squareX = 100;
-	private static int squareY = 100;
-	private static float diffX;
-	private static float diffY;
-	
-	//positions object 2
-	private static int rectX = 400;
-	private static int rectY = 400;
-	private static float diffXr;
-	private static float diffYr;
-		
-	//old positions of objects for snapback
-	private static int squareXold = squareX;
-	private static int squareYold = squareY;
-	private static int rectXold = rectX;
-	private static int rectYold = rectY;**/
+	private static final int TEXT_X_OFFSET = 10;
 	
 	private static int moveflag = 0;
 	//flag = 0 => no object
@@ -76,7 +63,7 @@ public class BinPackingView extends View {
 	{
 		super(c);
 		ShapeObject square = new ShapeObject();
-		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100);
+		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100, "test");
 		shapelist.add(square);
 		shapelist.add(rect);
 		for(int x = 0; x < shapelist.size(); x++)
@@ -85,6 +72,7 @@ public class BinPackingView extends View {
 			lengths.add(shapelist.get(x).getLength());
 			bases.add(shapelist.get(x).getBase());
 			sels.add(shapelist.get(x).getSel());
+			texts.add(shapelist.get(x).getText());
 			
 			
 			colors.add(shapelist.get(x).getBase());
@@ -101,23 +89,28 @@ public class BinPackingView extends View {
 	{
 		super(c,a);
 		ShapeObject square = new ShapeObject();
-		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100);
+		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100, "test2");
+		Bin bin1 = new Bin(100);
+		BinObject obj1 = new BinObject(10, 20);
 		shapelist.add(square);
 		shapelist.add(rect);
+		shapelist.add(bin1);
+		shapelist.add(obj1);
 		for(int x = 0; x < shapelist.size(); x++)
 		{
 			widths.add(shapelist.get(x).getWidth());
 			lengths.add(shapelist.get(x).getLength());
 			bases.add(shapelist.get(x).getBase());
 			sels.add(shapelist.get(x).getSel());
+			texts.add(shapelist.get(x).getText());
 			
 			
 			colors.add(shapelist.get(x).getBase());
-			xpos.add(x*(MAX_LENGTH+1));
+			xpos.add(5);
 			ypos.add(x*(MAX_WIDTH+1));
 			xdiff.add((float)0.0);
 			ydiff.add((float)0.0);			
-			xposold.add(x*(MAX_LENGTH+1));
+			xposold.add(5);
 			yposold.add(x*(MAX_WIDTH+1));
 			
 		}
@@ -125,7 +118,6 @@ public class BinPackingView extends View {
 	
 // This method is called when the View is displayed
 	
-	//Should add functionality to generalize with passed arraylist.  See shapeobject class for parameters.
 	protected void onDraw(Canvas canvas) 
 	{
 	
@@ -137,6 +129,8 @@ public class BinPackingView extends View {
 			paint.setColor(colors.get(x));
 			//105 multiplier is outside maximum bounds on a shape objects width or length
 			canvas.drawRect(xpos.get(x), ypos.get(x), xpos.get(x) + lengths.get(x), ypos.get(x) + widths.get(x), paint);
+			paint.setColor(Color.WHITE);
+			canvas.drawText(texts.get(x), xpos.get(x)+TEXT_X_OFFSET, ypos.get(x)+widths.get(x)/2, paint);
 		}
 	} 
 	
@@ -154,6 +148,8 @@ public class BinPackingView extends View {
 			Log.v("sqY", ypos.get(0) + "");
 			Log.v("rectX", xpos.get(1) + "");
 			Log.v("rectY", ypos.get(1) + "");**/
+			
+			
 			
 			for (int n = 0; n < shapelist.size(); n ++)
 			{
