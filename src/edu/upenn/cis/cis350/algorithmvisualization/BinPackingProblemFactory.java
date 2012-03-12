@@ -81,21 +81,21 @@ public class BinPackingProblemFactory {
 				if (event == XmlPullParser.START_TAG) {
 					String element = parser.getName();
 					if ("problem".equals(element)) { //Parse problem difficulty
-						difficulty = parser.getAttributeValue("", "difficulty");
+						difficulty = parser.getAttributeValue(null, "difficulty");
 						if (!"easy".equalsIgnoreCase(difficulty) && !"medium".equalsIgnoreCase(difficulty)
 								&& !"hard".equalsIgnoreCase(difficulty)) 
 							throw new XmlPullParserException("Invalidly formatted file");
 					} else if ("bin".equals(element)) { //Parse Bin element
-						double capacity = new Double(parser.getAttributeValue("","capacity"));
+						double capacity = new Double(parser.getAttributeValue(null,"capacity"));
 						Bin bin = new Bin(capacity);
 						if ("easy".equalsIgnoreCase(difficulty)) easyBins.add(bin);
 						else if ("medium".equalsIgnoreCase(difficulty)) mediumBins.add(bin);
 						else if ("hard".equalsIgnoreCase(difficulty)) hardBins.add(bin);
 						else throw new XmlPullParserException("Invalidly formatted file");
 					} else if ("object".equals(element)) { //Parse BinObject element
-						double weight = new Double(parser.getAttributeValue("","weight"));
-						double value = new Double(parser.getAttributeValue("","value"));
-						String type = parser.getAttributeValue("","type");
+						double weight = new Double(parser.getAttributeValue(null,"weight"));
+						double value = new Double(parser.getAttributeValue(null,"value"));
+						String type = parser.getAttributeValue(null,"type");
 						BinObject obj = new BinObject(weight, value, type);
 						if ("easy".equalsIgnoreCase(difficulty)) easyObjects.add(obj);
 						else if ("medium".equalsIgnoreCase(difficulty)) mediumObjects.add(obj);
