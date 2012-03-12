@@ -16,8 +16,14 @@ import java.util.ArrayList;
 public class BinPackingView extends View {
 	
 	//givens
-	//list of shapes
-	private static ArrayList<ShapeObject> shapelist = new ArrayList<ShapeObject>();
+	//factory
+	private static BinPackingProblemFactory factory;
+	
+	//list of objects
+	private static ArrayList<BinObject> objects = new ArrayList<BinObject>();
+	
+	//list of bins
+	private static ArrayList<Bin> bins = new ArrayList<Bin>();
 	
 	//base colors
 	private static ArrayList<Integer> bases = new ArrayList<Integer>();
@@ -72,61 +78,28 @@ public class BinPackingView extends View {
 	
 	// you must implement these constructors!!
 	//2/24/12: context and or attribute set should pass in an arraylist of shapeobjects to draw
-	public BinPackingView(Context c) 
-	{
+	public BinPackingView(Context c) {
 		super(c);
-		ShapeObject square = new ShapeObject();
-		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100);
-		shapelist.add(square);
-		shapelist.add(rect);
-		for(int x = 0; x < shapelist.size(); x++)
-		{
-			widths.add(shapelist.get(x).getWidth());
-			lengths.add(shapelist.get(x).getLength());
-			bases.add(shapelist.get(x).getBase());
-			sels.add(shapelist.get(x).getSel());
-			
-			
-			colors.add(shapelist.get(x).getBase());
-			xpos.add(x*(MAX_LENGTH+1));
-			ypos.add(x*(MAX_WIDTH+1));
-			xdiff.add((float)0.0);
-			ydiff.add((float)0.0);			
-			xposold.add(x*(MAX_LENGTH+1));
-			yposold.add(x*(MAX_WIDTH+1));
-			
-		}
-	}
-	public BinPackingView(Context c, AttributeSet a) 
-	{
-		super(c,a);
-		ShapeObject square = new ShapeObject();
-		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100);
-		shapelist.add(square);
-		shapelist.add(rect);
-		for(int x = 0; x < shapelist.size(); x++)
-		{
-			widths.add(shapelist.get(x).getWidth());
-			lengths.add(shapelist.get(x).getLength());
-			bases.add(shapelist.get(x).getBase());
-			sels.add(shapelist.get(x).getSel());
-			
-			
-			colors.add(shapelist.get(x).getBase());
-			xpos.add(x*(MAX_LENGTH+1));
-			ypos.add(x*(MAX_WIDTH+1));
-			xdiff.add((float)0.0);
-			ydiff.add((float)0.0);			
-			xposold.add(x*(MAX_LENGTH+1));
-			yposold.add(x*(MAX_WIDTH+1));
-			
-		}
+		this.factory = new BinPackingProblemFactory(c);
+		this.bins = (ArrayList)factory.getBins("easy");
+		this.objects = (ArrayList)factory.getBinObjects("easy");
 	}
 	
-// This method is called when the View is displayed
-	
+		
 	//Should add functionality to generalize with passed arraylist.  See shapeobject class for parameters.
-	protected void onDraw(Canvas canvas) 
+	
+	protected void onDraw(Canvas canvas) {
+		Paint paint = new Paint();
+		if (bins.size() >= 1 && bins.size() <= 3) {
+			System.out.println("Number of bins must be 1, 2, or 3!");
+		}
+		for (Bin bin : this.bins) {
+			paint.setColor(bin.getBase());
+		}
+		
+	}
+	
+	/*protected void onDraw(Canvas canvas) 
 	{
 	
 		// this is the "paintbrush"
@@ -138,9 +111,9 @@ public class BinPackingView extends View {
 			//105 multiplier is outside maximum bounds on a shape objects width or length
 			canvas.drawRect(xpos.get(x), ypos.get(x), xpos.get(x) + lengths.get(x), ypos.get(x) + widths.get(x), paint);
 		}
-	} 
+	} */
 	
-	public boolean onTouchEvent(MotionEvent event)
+/*	public boolean onTouchEvent(MotionEvent event)
 	{
 		int action = event.getAction();
 		float xloc = event.getX();
@@ -155,7 +128,7 @@ public class BinPackingView extends View {
 			Log.v("rectX", xpos.get(1) + "");
 			Log.v("rectY", ypos.get(1) + "");**/
 			
-			for (int n = 0; n < shapelist.size(); n ++)
+/*			for (int n = 0; n < shapelist.size(); n ++)
 			{
 				if (xloc < xpos.get(n) + lengths.get(n) && xloc > xpos.get(n) && yloc < ypos.get(n) + widths.get(n) && yloc > ypos.get(n))
 				{
@@ -215,5 +188,5 @@ public class BinPackingView extends View {
 		}
 		return false;
 	}
-	
-}
+	*/
+} 
