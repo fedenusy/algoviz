@@ -2,17 +2,22 @@ package edu.upenn.cis.cis350.algorithmvisualization;
 
 import java.util.ArrayList;
 
+import android.graphics.Color;
+
 /**
  * A Bin with a specified capacity. Objects can be inserted to or removed from the bin.
  */
-public class Bin {
+public class Bin extends ShapeObject {
 	
 	private double capacity;
 	private double weight;
 	private double value;
+	
 	private ArrayList<BinObject> contents;
 	
+	
 	Bin(double capacity) {
+		super(Color.GREEN, Color.YELLOW, 150, 150); //set the shape of the bin object
 		this.capacity = capacity;
 		this.contents = new ArrayList<BinObject>();
 		this.weight = 0;
