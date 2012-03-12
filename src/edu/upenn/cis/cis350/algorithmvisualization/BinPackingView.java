@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
-import java.awt.*;
+//import java.awt.*;
 
 /**
  * View where user packs objects into bins.
@@ -26,6 +26,7 @@ public class BinPackingView extends View {
 	//list of bins
 	private static ArrayList<Bin> bins = new ArrayList<Bin>();
 	
+	//temporary old code
 	private static ArrayList<ShapeObject> shapelist = new ArrayList<ShapeObject>();
 	
 	//base colors
@@ -65,8 +66,7 @@ public class BinPackingView extends View {
 	//flag = 2 => rect
 
 	
-	// you must implement these constructors!!
-	//2/24/12: context and or attribute set should pass in an arraylist of shapeobjects to draw
+
 	public BinPackingView(Context c) {
 		super(c);
 	}
@@ -77,43 +77,58 @@ public class BinPackingView extends View {
 		ShapeObject rect = new ShapeObject(Color.CYAN, Color.GRAY, 80, 100, "test2");
 		Bin bin1 = new Bin(100);
 		BinObject obj1 = new BinObject(10, 20, "type unknown");
-		shapelist.add(square);
-		shapelist.add(rect);
+		Bin bin2 = new Bin(50);
+		BinObject obj2 = new BinObject(20,30, "type unknown");
+		Bin bin3 = new Bin(20);
 		shapelist.add(bin1);
 		shapelist.add(obj1);
-		for(int x = 0; x < shapelist.size(); x++)
+		shapelist.add(bin2);
+		shapelist.add(obj2);
+		shapelist.add(bin3);
+		bins.add(bin1);
+		bins.add(bin2);
+		bins.add(bin3);
+		objects.add(obj1);
+		objects.add(obj2);
+		for(int x = 0; x < bins.size(); x++)
 		{
-			widths.add(shapelist.get(x).getWidth());
-			lengths.add(shapelist.get(x).getLength());
-			bases.add(shapelist.get(x).getBase());
-			sels.add(shapelist.get(x).getSel());
-			texts.add(shapelist.get(x).getText());
-			
-			
-			colors.add(shapelist.get(x).getBase());
-			xpos.add(5);
-			ypos.add(x*(MAX_WIDTH+1));
+			widths.add(bins.get(x).getWidth());
+			lengths.add(bins.get(x).getLength());
+			bases.add(bins.get(x).getBase());
+			sels.add(bins.get(x).getSel());
+			texts.add(bins.get(x).getText());
+						
+			colors.add(bins.get(x).getBase());
+			xpos.add(x*(MAX_LENGTH+1));
+			ypos.add(350);
 			xdiff.add((float)0.0);
 			ydiff.add((float)0.0);			
-			xposold.add(5);
-			yposold.add(x*(MAX_WIDTH+1));
-			
+			xposold.add(x*(MAX_LENGTH+1));
+			yposold.add(350);			
+		}
+		
+		for(int x = 0; x < objects.size(); x++)
+		{
+			widths.add(objects.get(x).getWidth());
+			lengths.add(objects.get(x).getLength());
+			bases.add(objects.get(x).getBase());
+			sels.add(objects.get(x).getSel());
+			texts.add(objects.get(x).getText());
+						
+			colors.add(objects.get(x).getBase());
+			xpos.add(x*(MAX_LENGTH+1));
+			ypos.add(10);
+			xdiff.add((float)0.0);
+			ydiff.add((float)0.0);			
+			xposold.add(x*(MAX_LENGTH+1));
+			yposold.add(10);		
 		}
 //		this.factory = new BinPackingProblemFactory(c);
 //		this.bins = (ArrayList)factory.getBins("easy");
 //		this.objects = (ArrayList)factory.getBinObjects("easy");
-		this.bins.add(new Bin(10));
+
 	}
 	
-//	public BinPackingView(Context c, AttributeSet a) {
-//		super(c, a);
-//		this.factory = new BinPackingProblemFactory(c);
-//		this.bins = (ArrayList)factory.getBins("easy");
-//		this.objects = (ArrayList)factory.getBinObjects("easy");
-//		this.bins.add(new Bin(10));
-//	}
-
-	//Should add functionality to generalize with passed arraylist.  See shapeobject class for parameters.
 	
 	/**protected void onDraw(Canvas canvas) {
 		Paint paint = new Paint();
@@ -121,7 +136,7 @@ public class BinPackingView extends View {
 		int binHeight = bins.get(0).getLength();
 		paint.setColor(bins.get(0).getBase());
 		if (bins.size() < 1 || bins.size() > 3) {
-			System.out.println("Number of bins must be 1, 2, or 3!");
+			Log.v("Bin file loading error", "Number of bins must be 1, 2, or 3!");
 		}
 		switch (bins.size()) {
 			case 1:	canvas.drawRect(this.getWidth()/2 - binWidth/2, binHeight,
@@ -138,6 +153,8 @@ public class BinPackingView extends View {
 							this.getWidth()/2 + binWidth/2 + binWidth + 10, 0, paint);
 		}
 		
+		
+		
 	}**/
 	
 	protected void onDraw(Canvas canvas) 
@@ -145,11 +162,14 @@ public class BinPackingView extends View {
 	
 		// this is the "paintbrush"
 		Paint paint = new Paint();		
-		// draw objects
-		for(int x = 0; x < shapelist.size(); x++)
+		if (bins.size() < 1 || bins.size() > 3) 
+		{
+			Log.v("Bin file loading error", "Number of bins must be 1, 2, or 3!");
+		}
+			
+		for(int x = 0; x < bins.size() + objects.size(); x++)
 		{
 			paint.setColor(colors.get(x));
-			//105 multiplier is outside maximum bounds on a shape objects width or length
 			canvas.drawRect(xpos.get(x), ypos.get(x), xpos.get(x) + lengths.get(x), ypos.get(x) + widths.get(x), paint);
 			paint.setColor(Color.WHITE);
 			canvas.drawText(texts.get(x), xpos.get(x)+TEXT_X_OFFSET, ypos.get(x)+widths.get(x)/2, paint);
