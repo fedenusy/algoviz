@@ -1,5 +1,6 @@
 package edu.upenn.cis.cis350.algorithmvisualization;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -75,13 +76,14 @@ public class BinPackingProblemFactory {
 		
 		//Parse problems.xml
 		XmlResourceParser parser;
-		parser = context.getResources().getXml(R.id.bin_packing);
+		parser = context.getResources().getXml(R.xml.problems);
 		try {
 			int event = parser.next();
+			String difficulty = "";
 			while (!(event == XmlPullParser.END_TAG && parser.getName().equalsIgnoreCase("item"))) {
-				String difficulty = "";
 				if (event == XmlPullParser.START_TAG) {
 					String element = parser.getName();
+					System.out.println("name: " + element);
 					if ("problem".equals(element)) { //Parse problem difficulty
 						difficulty = parser.getAttributeValue(null, "difficulty");
 						if (!"easy".equalsIgnoreCase(difficulty) && !"medium".equalsIgnoreCase(difficulty)
@@ -108,7 +110,7 @@ public class BinPackingProblemFactory {
 				event = parser.next();
 			}
 		} catch (Exception e) { //Invalidly formatted XML file
-			System.err.println("Problem parsing res/values/problems.xml - please check file format");
+			System.err.println("Problem parsing res/xml/problems.xml - please check file format");
 			System.exit(-1);
 		} finally {
 			parser.close();

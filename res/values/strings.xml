@@ -3,5 +3,9 @@
     <string name="app_name">AlgorithmVisualization</string>
     <string name="bin_packing">Bin Packing</string>
     <string name="max_flow">Max Flow</string>
+    <string name="difficulty">Please select a difficulty level:</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
 
 </resources>
