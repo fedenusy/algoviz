@@ -159,6 +159,7 @@ public class BinPackingView extends View {
 			}
 			objToMove.oldx = objToMove.locx;
 			objToMove.oldy = objToMove.locy;
+			objToMove.setColor(Color.BLUE);
 			invalidate();
 			return true;
 		}
