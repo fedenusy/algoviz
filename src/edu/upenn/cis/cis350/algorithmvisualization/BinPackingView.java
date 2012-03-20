@@ -92,9 +92,15 @@ public class BinPackingView extends View {
 		
 		// If drawing for the first time, get bins and objects from factory
 		// and set their locations using initialize()
-		if (this.bins.isEmpty()) {
+		/**if (this.bins.isEmpty()) {
 			this.bins = (ArrayList)factory.getBins(((BinPackingActivity) this.getContext()).getDifficulty());
 			this.objects = (ArrayList)factory.getBinObjects(((BinPackingActivity) this.getContext()).getDifficulty());
+			initialize();
+		}**/
+		
+		if (this.bins.isEmpty()) {
+			bins.addAll(factory.getBins(((BinPackingActivity) this.getContext()).getDifficulty()));
+			objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getDifficulty()));
 			initialize();
 		}
 		
@@ -133,6 +139,45 @@ public class BinPackingView extends View {
 					return true;
 				}
 			}
+			//deals with removal
+			for (int i = 0; i < bins.size(); i++)
+			{
+				Bin bin = bins.get(i);
+				if (xloc < bin.getX() + bin.getWidth() && xloc > bin.getX() && 
+						yloc < bin.getY() + bin.getHeight() && yloc > bin.getY()) 
+				{
+					ArrayList<BinObject> contents = new ArrayList<BinObject>(bin.getContents());
+					for (int a = 0; a < contents.size(); a++)
+						objects.add(contents.get(a));
+					//this.objects.addAll(contents);
+					int xoffset = 0;
+					int yoffset = 0;
+					for (BinObject obj: contents)
+					{
+						bin.remove(obj);
+						obj.setX((obj.getWidth()+5)*xoffset);
+						obj.setY((obj.getHeight()+5)*yoffset);
+
+						//collision detection 
+						for (BinObject col_obj: objects)
+						{
+							while (col_obj.collidesWith(obj) && !col_obj.equals(obj))
+							{
+								if (xoffset != 5)
+									xoffset++;
+								else
+								{
+									yoffset++;
+									xoffset = 0;
+								}
+								obj.setX((obj.getWidth()+5)*xoffset);
+								obj.setY((obj.getHeight()+5)*yoffset);
+							}
+						}
+						invalidate();
+					}
+				}
+			}
 		}
 		
 		// Upon ACTION_MOVE event
@@ -146,19 +191,26 @@ public class BinPackingView extends View {
 		// Upon ACTION_UP event
 		else if (action == MotionEvent.ACTION_UP) {
 			for (Bin bin : bins) {
-				if (objToMove.collidesWith(bin)) {
-					bin.insert(objToMove);
-					objects.remove(objToMove);
+				if (objToMove.collidesWith(bin))
+				{
+					boolean inserted = bin.insert(objToMove);
+					if (inserted)
+						objects.remove(objToMove);
+					else
+					{
+						objToMove.setX(objToMove.oldx);
+						objToMove.setY(objToMove.oldy);
+					}
 				}
 			}
 			for (BinObject obj : objects) {
-				if (objToMove.collidesWith(obj)) {
+				if (objToMove.collidesWith(obj) && !objToMove.equals(obj)) {
 					objToMove.setX(objToMove.oldx);
 					objToMove.setY(objToMove.oldy);
 				}
 			}
-			objToMove.oldx = objToMove.locx;
-			objToMove.oldy = objToMove.locy;
+			objToMove.setOldX(objToMove.locx);
+			objToMove.setOldY(objToMove.locy);
 			objToMove.setColor(Color.BLUE);
 			invalidate();
 			return true;

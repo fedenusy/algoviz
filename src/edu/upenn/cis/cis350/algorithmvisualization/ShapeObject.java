@@ -52,13 +52,21 @@ public class ShapeObject {
 	}
 
 	public void setX(int x){
-		oldx = locx;
 		locx = x;
 	}
 	
+	public void setOldX(int x)
+	{
+		oldx = x;
+	}
+	
 	public void setY(int y){
-		oldy = locy;
 		locy = y;
+	}
+	
+	public void setOldY(int y)
+	{
+		oldy = y;
 	}
 	
 	public void setColor(int color) {
@@ -67,7 +75,7 @@ public class ShapeObject {
 
 	//check if two shapes collides
 	public boolean collidesWith(ShapeObject s2) {
-		if( ( (locx>=s2.locx && locx<=s2.locx+s2.height) || (locx+height>=s2.locx && locx+height<=s2.locx+s2.height) )
+		if( ( (locx>=s2.locx && locx<=s2.locx+s2.width) || (locx+width>=s2.locx && locx+width<=s2.locx+s2.width) )
 				&& ( (locy>=s2.locy && locy<=s2.locy+s2.height) || (locy+height>=s2.locy && locy+height<=s2.locy+s2.height) ))
 			return true;
 		return false;

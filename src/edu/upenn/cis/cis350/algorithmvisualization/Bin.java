@@ -32,6 +32,7 @@ public class Bin extends ShapeObject {
 	public double getCapacity() { return capacity; }
 	public double getWeight() { return weight; }
 	public double getValue() { return value; }
+	public ArrayList<BinObject> getContents() { return contents; }
 	
 	/**
 	 * Inserts an object into the bin.
