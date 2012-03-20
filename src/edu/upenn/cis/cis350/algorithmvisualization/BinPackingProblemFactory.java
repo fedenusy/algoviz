@@ -116,7 +116,88 @@ public class BinPackingProblemFactory {
 			parser.close();
 		}
 		
-		//TODO Calculate optimal solutions
+		easyOptSol = calculateSoltion(easyBins, easyObjects);
+		mediumOptSol = calculateSoltion(mediumBins, mediumObjects);
+		hardOptSol = calculateSoltion(hardBins, hardObjects);
+	}
+	
+	/**
+	 * Calculates the optimal solution for the given collections of Bins and BinObjects. Note that if
+	 * there's more than 1 Bin involved, the problem becomes NP-Hard. In this case the method only
+	 * returns an approximation to the optimal solution.
+	 * @param bins
+	 * @param objects
+	 * @return The value of the optimal solution to the Bin-Packing problem.
+	 */
+	private double calculateSoltion(Collection<Bin> bins, Collection<BinObject> objects) {
+		double sol = 0;
+		ArrayList<BinObject> objs = new ArrayList<BinObject>();
+		for (BinObject obj : objects) objs.add(obj);
+		
+		for (Bin bin : bins) {
+			boolean[] choices = knapsack(bin, objs);
+			for (int i=0; i<choices.length; i++) {
+				if (choices[i]) {
+					sol += objs.get(i).getValue();
+					objs.remove(objs.get(i));
+				}
+			}
+		}
+		
+		return sol;
+	}
+	
+	/**
+	 * Takes a bin and a collection of objects and calculates the optimal solution.
+	 * @param bin
+	 * @param objects
+	 * @return Which objects are included in the optimal solution.
+	 */
+	private boolean[] knapsack(Bin bin, Collection<BinObject> objects) {
+		BinObject[] objs = (BinObject[]) objects.toArray();
+		int numObjs = objs.length;
+		int capacity = (int) Math.floor(bin.getCapacity());
+
+		//Optimal solution for packing objects 0..n with capacity limit c
+		double[][] optSol = new double[numObjs][capacity+1];
+		//Whether the corresponding optimal solution includes item n
+		boolean[][] solChoice = new boolean[numObjs][capacity+1];
+
+		for (int n=0; n<numObjs; n++) {
+			//Object's weight and value
+			int weight = (int) Math.ceil(objs[n].getWeight());
+			double value = objs[n].getValue();
+
+			for (int c=0; c<capacity+1; c++) {
+				//Value from leaving the item
+				double leaveItem = optSol[n-1][c];
+
+				//Value from taking the item
+				double takeItem = 0;
+				if (weight <= c) takeItem = value + optSol[n-1][c-weight];
+
+				//Select optimal solution
+				if (takeItem > leaveItem) {
+					optSol[n][c] = takeItem;
+					solChoice[n][c] = true;
+				} else {
+					optSol[n][c] = leaveItem;
+					solChoice[n][c] = false;
+				}
+			}
+
+		}
+		
+		//Calculate which items were chosen
+		boolean[] choices = new boolean[numObjs];
+		for (int n=numObjs, c=capacity; n>=0; n--) {
+			if (solChoice[n][c]) {
+				choices[n] = true;
+				c = c - (int) Math.ceil(objs[n].getWeight());
+			} else choices[n] = false;
+		}
+		
+		return choices;
 	}
 	
 }
