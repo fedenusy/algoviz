@@ -155,18 +155,21 @@ public class BinPackingProblemFactory {
 	 */
 	private boolean[] knapsack(Bin bin, Collection<BinObject> objects) {
 		BinObject[] objs = (BinObject[]) objects.toArray();
-		int numObjs = objs.length;
+		int numObjs = objs.length+1;
 		int capacity = (int) Math.floor(bin.getCapacity());
 
-		//Optimal solution for packing objects 0..n with capacity limit c
+		//Optimal solution for packing objects 0..n+1 with capacity limit c
 		double[][] optSol = new double[numObjs][capacity+1];
+		for (int c=0; c<capacity+1; c++) optSol[0][c] = 0; //Packing 0 items has 0 value
+		
 		//Whether the corresponding optimal solution includes item n
 		boolean[][] solChoice = new boolean[numObjs][capacity+1];
+		for (int c=0; c<capacity+1; c++) solChoice[0][c] = false; //Packing no items if you pick 0 of them
 
-		for (int n=0; n<numObjs; n++) {
+		for (int n=1; n<numObjs; n++) {
 			//Object's weight and value
-			int weight = (int) Math.ceil(objs[n].getWeight());
-			double value = objs[n].getValue();
+			int weight = (int) Math.ceil(objs[n-1].getWeight());
+			double value = objs[n-1].getValue();
 
 			for (int c=0; c<capacity+1; c++) {
 				//Value from leaving the item
@@ -189,12 +192,12 @@ public class BinPackingProblemFactory {
 		}
 		
 		//Calculate which items were chosen
-		boolean[] choices = new boolean[numObjs];
-		for (int n=numObjs, c=capacity; n>=0; n--) {
+		boolean[] choices = new boolean[numObjs-1];
+		for (int n=numObjs, c=capacity+1; n>0; n--) {
 			if (solChoice[n][c]) {
-				choices[n] = true;
-				c = c - (int) Math.ceil(objs[n].getWeight());
-			} else choices[n] = false;
+				choices[n-1] = true;
+				c = c - (int) Math.ceil(objs[n-1].getWeight());
+			} else choices[n-1] = false;
 		}
 		
 		return choices;
