@@ -1,6 +1,5 @@
 package edu.upenn.cis.cis350.algorithmvisualization;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -8,8 +7,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
-import android.content.res.Resources.NotFoundException;
 import android.content.res.XmlResourceParser;
+import android.util.Log;
 
 /**
  * Generates the Bins and BinObjects for each Bin Packing problem difficulty, 
@@ -115,7 +114,7 @@ public class BinPackingProblemFactory {
 		} finally {
 			parser.close();
 		}
-		
+
 		easyOptSol = calculateSoltion(easyBins, easyObjects);
 		mediumOptSol = calculateSoltion(mediumBins, mediumObjects);
 		hardOptSol = calculateSoltion(hardBins, hardObjects);
@@ -136,11 +135,15 @@ public class BinPackingProblemFactory {
 		
 		for (Bin bin : bins) {
 			boolean[] choices = knapsack(bin, objs);
+			ArrayList<BinObject> chosen = new ArrayList<BinObject>();
 			for (int i=0; i<choices.length; i++) {
 				if (choices[i]) {
-					sol += objs.get(i).getValue();
-					objs.remove(objs.get(i));
+					chosen.add(objs.get(i));
 				}
+			}
+			for (BinObject obj : chosen) {
+				sol += obj.getValue();
+				objs.remove(obj);
 			}
 		}
 		
@@ -154,22 +157,22 @@ public class BinPackingProblemFactory {
 	 * @return Which objects are included in the optimal solution.
 	 */
 	private boolean[] knapsack(Bin bin, Collection<BinObject> objects) {
-		BinObject[] objs = (BinObject[]) objects.toArray();
-		int numObjs = objs.length+1;
+		Object[] objs = objects.toArray();
+		int numObjs = objs.length;
 		int capacity = (int) Math.floor(bin.getCapacity());
 
 		//Optimal solution for packing objects 0..n+1 with capacity limit c
-		double[][] optSol = new double[numObjs][capacity+1];
+		double[][] optSol = new double[numObjs+1][capacity+1];
 		for (int c=0; c<capacity+1; c++) optSol[0][c] = 0; //Packing 0 items has 0 value
 		
 		//Whether the corresponding optimal solution includes item n
-		boolean[][] solChoice = new boolean[numObjs][capacity+1];
+		boolean[][] solChoice = new boolean[numObjs+1][capacity+1];
 		for (int c=0; c<capacity+1; c++) solChoice[0][c] = false; //Packing no items if you pick 0 of them
 
-		for (int n=1; n<numObjs; n++) {
+		for (int n=1; n<numObjs+1; n++) {
 			//Object's weight and value
-			int weight = (int) Math.ceil(objs[n-1].getWeight());
-			double value = objs[n-1].getValue();
+			int weight = (int) Math.ceil(((BinObject)objs[n-1]).getWeight());
+			double value = ((BinObject)objs[n-1]).getValue();
 
 			for (int c=0; c<capacity+1; c++) {
 				//Value from leaving the item
@@ -192,11 +195,11 @@ public class BinPackingProblemFactory {
 		}
 		
 		//Calculate which items were chosen
-		boolean[] choices = new boolean[numObjs-1];
-		for (int n=numObjs, c=capacity+1; n>0; n--) {
+		boolean[] choices = new boolean[numObjs];
+		for (int n=numObjs, c=capacity; n>0; n--) {
 			if (solChoice[n][c]) {
 				choices[n-1] = true;
-				c = c - (int) Math.ceil(objs[n-1].getWeight());
+				c = c - (int) Math.ceil(((BinObject)objs[n-1]).getWeight());
 			} else choices[n-1] = false;
 		}
 		
