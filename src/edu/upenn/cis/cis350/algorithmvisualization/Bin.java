@@ -21,7 +21,7 @@ public class Bin extends ShapeObject {
 	
 	Bin(double capacity) {
 
-		super(Color.RED, 100, 60, 0, 0, "0, 0, Cap:" + capacity);
+		super(Color.RED, 80, 60, 0, 0, "0, 0, Cap:" + capacity);
 
 		this.capacity = capacity;
 		this.contents = new ArrayList<BinObject>();

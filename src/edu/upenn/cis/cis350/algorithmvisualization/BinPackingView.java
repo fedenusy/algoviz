@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,56 +20,63 @@ import java.util.Iterator;
  */
 public class BinPackingView extends View {
 	
+	//factory generate the problems from xml file
 	private static BinPackingProblemFactory factory;
 	private static ArrayList<BinObject> objects = new ArrayList<BinObject>();
 	private static ArrayList<Bin> bins = new ArrayList<Bin>();
 	private static BinObject objToMove = null;
-	private static final int TEXT_X_OFFSET = 5;
-	private static final int TEXT_Y_OFFSET = 13;
+
+	private static final int TEXT_X_OFFSET = 10;
+	private static final int TEXT_Y_OFFSET = 25;
+	
+	private boolean reset;
 	
 	private int current_value;
 	private Toast toast_rightSolution;
-	
-	//private static final int SCREEN_WIDTH = 300;
-	//private static final int SCREEN_HEIGHT = 420;
+	private Toast toast_wrongSolution;
 
-	@SuppressWarnings("static-access")
 	public BinPackingView(Context c) {
 		super(c);
 		this.factory = new BinPackingProblemFactory(c);
+		reset=true;
 	}
 	
-	@SuppressWarnings("static-access")
 	public BinPackingView(Context c, AttributeSet a) {
 		super(c,a);
 		this.factory = new BinPackingProblemFactory(c);
+		reset=true;
 	}
 	
-	@SuppressWarnings("static-access")
 	public void initialize() {
+		
+		objects = new ArrayList<BinObject>();
+		bins = new ArrayList<Bin>();
+		
+		bins.addAll(factory.getBins(((BinPackingActivity) this.getContext()).getDifficulty()));
+		objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getDifficulty()));		
 		
 		// Location of center of View
 		int mid = this.getWidth() / 2;
-		
+				
 		// Checks if number of BinObjects is greater than 16
 		if (this.objects.size() > 16) {
 			Log.v("Object number error", "Number of objects must be 16 or less!");
 			return;
 		}
-		
+				
 		// Set locations for all BinObjects
 		Iterator<BinObject> objIt = this.objects.iterator();
 		for (int row = 0; row < 4; row++) {
 			for (int col = 0; col < 4; col++) {
-				if (objIt.hasNext()) {
-					BinObject currObj = objIt.next();
-					currObj.setX((mid - (2 * currObj.getWidth()) - 30) + col * (currObj.getWidth() + 20));
-					currObj.setY(20 + (row * 70));
-				}
-			}
+						if (objIt.hasNext()) {
+							BinObject currObj = objIt.next();
+							currObj.setX((mid - (2 * currObj.getWidth()) - 30) + col * (currObj.getWidth() + 20));
+							currObj.setY(20 + (row * 70));
+						}
+					}
 		}
-		
-		// Set locations for all Bins
+				
+				// Set locations for all Bins
 		Bin b1, b2, b3;
 		switch (this.bins.size()) {
 		case 1:
@@ -94,41 +102,46 @@ public class BinPackingView extends View {
 			b2.setY(this.getHeight() - b2.getHeight());
 			b3.setX(mid + b2.getWidth() / 2 + 20);
 			b3.setY(this.getHeight() - b3.getHeight());
-			break;
+				break;
 		default:
 			Log.v("Bin number error", "Number of bins must be 1, 2, or 3!");
 			break;
 		} 
-		
+				
 		//init the value
 		current_value=0;
-				
+						
 		//init the toast
 		CharSequence text = "Great Job!!!";
+		CharSequence text2 = "Try Again!!!";
 		int duration = Toast.LENGTH_SHORT;
 
 		toast_rightSolution = Toast.makeText(this.getContext(), text, duration);
-		toast_rightSolution.setGravity(Gravity.TOP|Gravity.LEFT, 0, 0);
+		toast_rightSolution.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		
+		toast_wrongSolution = Toast.makeText(this.getContext(),text2, duration);
+		toast_wrongSolution.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 				
 	}
 	
-	@SuppressWarnings("static-access")
-	protected void onDraw(Canvas canvas) {
+	protected void onDraw(Canvas c) {
 		
 		// If drawing for the first time, get bins and objects from factory
-		// and set their locations using initialize()
-		/**if (this.bins.isEmpty()) {
-			this.bins = (ArrayList)factory.getBins(((BinPackingActivity) this.getContext()).getDifficulty());
-			this.objects = (ArrayList)factory.getBinObjects(((BinPackingActivity) this.getContext()).getDifficulty());
+		// and set their locations using initialize()		
+		if (reset==true) {
 			initialize();
-		}**/
-		
-		if (this.bins.isEmpty()) {
-			bins.addAll(factory.getBins(((BinPackingActivity) this.getContext()).getDifficulty()));
-			objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getDifficulty()));
-			initialize();
+			reset=false;
 		}
 		
+		
+		this.drawLevel(c);
+		
+		
+	}
+	
+	
+	//draw the bin and objects of the current level
+	protected void drawLevel(Canvas canvas){
 		Paint paint = new Paint();
 		
 		for (Bin bin : bins) {
@@ -154,9 +167,17 @@ public class BinPackingView extends View {
 			canvas.drawText(text1, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2, paint);
 			canvas.drawText(text2, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2 + TEXT_Y_OFFSET, paint);
 		}
+		
 	}
 	
-	@SuppressWarnings("static-access")
+	
+	
+	public void reset(){
+		reset=true;
+		invalidate();
+	}
+	
+
 	public boolean onTouchEvent(MotionEvent event) {
 		
 		int action = event.getAction();
@@ -243,24 +264,20 @@ public class BinPackingView extends View {
 			//check if the solution is right
 			
 			
-			//calculate the current value
-			current_value=0;
-			for (Bin bin : bins) 
-				current_value += bin.getValue(); 	
-					
-			if (this.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getDifficulty())==current_value){
-				toast_rightSolution.show();
-			}
-			else{
-				//supposedly if the user get a close answer, should show a toast
-				
-			}
-
+			
 			invalidate();
 			return true;
 		}
 		return false;
 	}
+	
+	//To-Do: fix this part
+	public void updateValue(int value){
+    	TextView count_text=(TextView)this.findViewById(R.id.textView4);
+    	if (count_text!=null)//now it's returning null
+    		count_text.setText(Integer.toString(value));
+    }
+	
 	
 	private void resolveCollision(int xoffset, int yoffset, boolean col_detected)
 	{
@@ -285,4 +302,26 @@ public class BinPackingView extends View {
 		}
 		resolveCollision(xoffset, yoffset, col_detected);
 	}
+	
+	
+	//when the user press "done" button
+	public void submit(){
+		//calculate the current value
+		current_value=0;
+		for (Bin bin : bins) 
+			current_value += bin.getValue(); 	
+		
+		this.updateValue(current_value);
+				
+		
+		if (this.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getDifficulty())==current_value){
+			toast_rightSolution.show();
+		}
+		else{
+			//supposedly if the user get a close answer, should show a toast
+			toast_wrongSolution.show();
+		}
+		
+	}
+		
 } 

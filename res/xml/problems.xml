@@ -2,7 +2,48 @@
 <resources>
     
     <item type="id" name="bin_packing">
-        <problem difficulty="easy">
+        <problem difficulty="1">
+            <bin capacity="25" />
+            <object weight="5" value="10" type="default" />
+            <object weight="10" value="20" type="default" />
+            <object weight="17" value="32" type="default" />
+            <object weight="3" value="11" type="default" />
+            <object weight="8" value="20" type="default" />
+        </problem>
+        
+         <problem difficulty="2">
+            <bin capacity="25" />
+            <object weight="5" value="10" type="default" />
+            <object weight="10" value="20" type="default" />
+            <object weight="18" value="32" type="default" />
+            <object weight="3" value="11" type="default" />
+            <object weight="8" value="20" type="default" />
+        </problem>
+        
+        <problem difficulty="3">
+            <bin capacity="30" />
+            <object weight="5" value="10" type="default" />
+            <object weight="10" value="20" type="default" />
+            <object weight="17.5" value="32" type="default" />
+            <object weight="3" value="11" type="default" />
+            <object weight="8" value="20" type="default" />
+            <object weight="10" value="20" type="default" />
+            <object weight="17.5" value="32" type="default" />
+            <object weight="3" value="11" type="default" />
+        </problem>
+        
+        <problem difficulty="4">
+            <bin capacity="25" />
+            <object weight="5" value="10" type="default" />
+            <object weight="10" value="20" type="default" />
+            <object weight="17.5" value="32" type="default" />
+            <object weight="3" value="11" type="default" />
+            <object weight="8" value="20" type="default" />
+                <object weight="10" value="20" type="default" />
+            <object weight="17.5" value="32" type="default" />
+        </problem>
+        
+        <problem difficulty="5">
             <bin capacity="25" />
             <object weight="5" value="10" type="default" />
             <object weight="10" value="20" type="default" />
@@ -11,7 +52,7 @@
             <object weight="8" value="20" type="default" />
         </problem>
         
-        <problem difficulty="medium">
+        <problem difficulty="6">
             <bin capacity="25" />
             <bin capacity="25" />
             <object weight="5" value="10" type="default" />
@@ -28,7 +69,7 @@
             <object weight="16.2" value="28" type="default" />
         </problem>
         
-        <problem difficulty="hard">
+        <problem difficulty="7">
             <bin capacity="25" />
             <bin capacity="35" />
             <bin capacity="60" />

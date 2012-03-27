@@ -3,40 +3,42 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
-        <Space
+
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="Bin Packing" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onStartClick"
+            android:text="Start" />
+ 
 
         <Button
-            android:id="@+id/bin_packing_button"
-            android:layout_width="wrap_content"
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onBinPackingButtonClick"
-            android:text="@string/bin_packing"
-            />
-        <Button 
-            android:id="@+id/max_flow_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onMaxFlowButtonClick"
-            android:text="@string/max_flow"
-            />
-        
-    </LinearLayout>
+             android:onClick="onLevel1Click"
+            android:text="High Scores" />
 
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:onClick="onLevel1Click"
+            android:text="Quit" />
+    </LinearLayout>
+   
 </LinearLayout>

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AlgorithmVisualization</string>
-    <string name="bin_packing">Bin Packing</string>
-    <string name="max_flow">Max Flow</string>
-    <string name="difficulty">Please select a difficulty level:</string>
-    <string name="easy">Easy</string>
-    <string name="medium">Medium</string>
-    <string name="hard">Hard</string>
+    <string name="app_name">Bin Packing</string>
+    <string name="level">Level: </string>
+    <string name="level_num">1</string>
+    <string name="value">Value: </string>
+    <string name="value_num">0</string>
+
 
 </resources>
