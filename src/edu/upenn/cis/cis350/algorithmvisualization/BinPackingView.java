@@ -23,21 +23,28 @@ public class BinPackingView extends View {
 	private static ArrayList<BinObject> objects = new ArrayList<BinObject>();
 	private static ArrayList<Bin> bins = new ArrayList<Bin>();
 	private static BinObject objToMove = null;
-	private static final int TEXT_X_OFFSET = 10;
+	private static final int TEXT_X_OFFSET = 5;
+	private static final int TEXT_Y_OFFSET = 13;
 	
 	private int current_value;
 	private Toast toast_rightSolution;
+	
+	//private static final int SCREEN_WIDTH = 300;
+	//private static final int SCREEN_HEIGHT = 420;
 
+	@SuppressWarnings("static-access")
 	public BinPackingView(Context c) {
 		super(c);
 		this.factory = new BinPackingProblemFactory(c);
 	}
 	
+	@SuppressWarnings("static-access")
 	public BinPackingView(Context c, AttributeSet a) {
 		super(c,a);
 		this.factory = new BinPackingProblemFactory(c);
 	}
 	
+	@SuppressWarnings("static-access")
 	public void initialize() {
 		
 		// Location of center of View
@@ -105,6 +112,7 @@ public class BinPackingView extends View {
 				
 	}
 	
+	@SuppressWarnings("static-access")
 	protected void onDraw(Canvas canvas) {
 		
 		// If drawing for the first time, get bins and objects from factory
@@ -127,27 +135,42 @@ public class BinPackingView extends View {
 			paint.setColor(bin.getColor());
 			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + bin.getWidth(), bin.getY() + bin.getHeight(), paint);
 			paint.setColor(Color.WHITE);
-			canvas.drawText(bin.getText(), bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight(), paint);
+			if (bin.getText().indexOf('C') == -1)
+				throw new UnsupportedOperationException("Unexpected Bin Text");
+			String text1 = bin.getText().substring(0,bin.getText().indexOf('C'));
+			String text2 = bin.getText().substring(bin.getText().indexOf('C'));
+			canvas.drawText(text1, bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight()/2, paint);
+			canvas.drawText(text2, bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight()/2 + TEXT_Y_OFFSET, paint);
 		}
 		
 		for (BinObject obj : objects) {
 			paint.setColor(obj.getColor());
 			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + obj.getWidth(), obj.getY() + obj.getHeight(), paint);
 			paint.setColor(Color.WHITE);
-			canvas.drawText(obj.getText(), obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight(), paint);
+			if (obj.getText().indexOf('$') == -1)
+				throw new UnsupportedOperationException("Unexpected Object Text");
+			String text1 = obj.getText().substring(0,obj.getText().indexOf('$'));
+			String text2 = obj.getText().substring(obj.getText().indexOf('$'));
+			canvas.drawText(text1, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2, paint);
+			canvas.drawText(text2, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2 + TEXT_Y_OFFSET, paint);
 		}
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean onTouchEvent(MotionEvent event) {
 		
 		int action = event.getAction();
 		float xloc = event.getX();
 		float yloc = event.getY();
 		
-		if (action == MotionEvent.ACTION_DOWN) {
-			for (BinObject obj : objects) {
+		if (action == MotionEvent.ACTION_DOWN) 
+		{
+			for (BinObject obj : objects) 
+			{
 				if (xloc < obj.getX() + obj.getWidth() && xloc > obj.getX() && 
-						yloc < obj.getY() + obj.getHeight() && yloc > obj.getY()) {
+						yloc < obj.getY() + obj.getHeight() && yloc > obj.getY()) 
+				
+				{
 					obj.setXDiff(xloc - obj.getX());
 					obj.setYDiff(yloc - obj.getY());
 					obj.setColor(Color.YELLOW);
@@ -164,37 +187,18 @@ public class BinPackingView extends View {
 						yloc < bin.getY() + bin.getHeight() && yloc > bin.getY()) 
 				{
 					ArrayList<BinObject> contents = new ArrayList<BinObject>(bin.getContents());
-					for (int a = 0; a < contents.size(); a++)
-						objects.add(contents.get(a));
-					//this.objects.addAll(contents);
-					int xoffset = 0;
-					int yoffset = 0;
 					for (BinObject obj: contents)
 					{
-						bin.remove(obj);
-						obj.setX((obj.getWidth()+5)*xoffset);
-						obj.setY((obj.getHeight()+5)*yoffset);
-
-						//collision detection 
-						for (BinObject col_obj: objects)
-						{
-							while (col_obj.collidesWith(obj) && !col_obj.equals(obj))
-							{
-								if (xoffset != 5)
-									xoffset++;
-								else
-								{
-									yoffset++;
-									xoffset = 0;
-								}
-								obj.setX((obj.getWidth()+5)*xoffset);
-								obj.setY((obj.getHeight()+5)*yoffset);
-							}
-						}
+						objToMove = obj;
+						objects.add(objToMove);
+						bin.remove(objToMove);
+						objToMove.setX(0);
+						objToMove.setY(0);
+						resolveCollision(0, 0, true);
 						invalidate();
 					}
 				}
-			}
+			}			
 		}
 		
 		// Upon ACTION_MOVE event
@@ -206,28 +210,34 @@ public class BinPackingView extends View {
 		}
 		
 		// Upon ACTION_UP event
-		else if (action == MotionEvent.ACTION_UP) {
-			for (Bin bin : bins) {
+		else if (action == MotionEvent.ACTION_UP) 
+		{
+			//check if object is on a bin
+			for (Bin bin : bins) 
+			{
 				if (objToMove.collidesWith(bin))
 				{
 					boolean inserted = bin.insert(objToMove);
 					if (inserted)
+					{
 						objects.remove(objToMove);
+						break;
+					}
 					else
 					{
 						objToMove.setX(objToMove.oldx);
 						objToMove.setY(objToMove.oldy);
+						resolveCollision(0, 0, true);
 					}
 				}
 			}
-			for (BinObject obj : objects) {
-				if (objToMove.collidesWith(obj) && !objToMove.equals(obj)) {
-					objToMove.setX(objToMove.oldx);
-					objToMove.setY(objToMove.oldy);
-				}
-			}
+			//check if object is on another object
+			resolveCollision(0, 0, true);
+			
+
 			objToMove.setOldX(objToMove.locx);
 			objToMove.setOldY(objToMove.locy);
+			
 			objToMove.setColor(Color.BLUE);
 			
 			//check if the solution is right
@@ -245,12 +255,34 @@ public class BinPackingView extends View {
 				//supposedly if the user get a close answer, should show a toast
 				
 			}
-			
-			
-			
+
 			invalidate();
 			return true;
 		}
 		return false;
+	}
+	
+	private void resolveCollision(int xoffset, int yoffset, boolean col_detected)
+	{
+		if (objects == null || objects.isEmpty() || !col_detected)
+			return;
+		col_detected = false;
+		for(BinObject obj: objects)
+		{
+			while (objToMove.collidesWith(obj) && !objToMove.equals(obj))
+			{
+				col_detected = true;
+				if (xoffset != 4)
+					xoffset++;
+				else
+				{
+					yoffset++;
+					xoffset = 0;
+				}
+				objToMove.setX((objToMove.getWidth()+5)*xoffset);
+				objToMove.setY((objToMove.getHeight()+5)*yoffset);
+			}
+		}
+		resolveCollision(xoffset, yoffset, col_detected);
 	}
 } 
