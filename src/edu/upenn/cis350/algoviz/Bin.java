@@ -1,4 +1,4 @@
-package edu.upenn.cis.cis350.algorithmvisualization;
+package edu.upenn.cis350.algoviz;
 
 import java.util.ArrayList;
 

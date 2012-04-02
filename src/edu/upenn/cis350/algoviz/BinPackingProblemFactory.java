@@ -1,4 +1,4 @@
-package edu.upenn.cis.cis350.algorithmvisualization;
+package edu.upenn.cis350.algoviz;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.Collection;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
+import edu.upenn.cis350.algoviz.R;
 
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;

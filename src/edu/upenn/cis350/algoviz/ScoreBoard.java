@@ -1,13 +1,13 @@
-package edu.upenn.cis.cis350.algorithmvisualization;
+package edu.upenn.cis350.algoviz;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class scoreboard {
+public class ScoreBoard {
 	HashMap<Integer,Integer> highscores;
 	
-	public scoreboard(){
+	public ScoreBoard(){
 		highscores=new HashMap<Integer,Integer>();
 	}
 	

@@ -25,7 +25,7 @@
              
         </activity>
         
-         <activity android:name="BinPackingActivity" />
+         <activity android:name="edu.upenn.cis350.algoviz.BinPackingActivity" />
 
         
         

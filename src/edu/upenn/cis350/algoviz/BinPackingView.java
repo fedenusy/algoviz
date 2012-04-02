@@ -1,4 +1,4 @@
-package edu.upenn.cis.cis350.algorithmvisualization;
+package edu.upenn.cis350.algoviz;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import edu.upenn.cis350.algoviz.R;
 
 /**
  * View where user packs objects into bins.

@@ -1,13 +1,14 @@
-package edu.upenn.cis.cis350.algorithmvisualization;
+package edu.upenn.cis350.algoviz;
 
+import edu.upenn.cis350.algoviz.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class AlgorithmvisualizationActivity extends Activity {
+public class AlgovizActivity extends Activity {
     /** Called when the activity is first created. */
-	scoreboard board;
+	ScoreBoard board;
 	int level;
 	public static final int ACTIVITY_BinPackingActivity = 1;
 
@@ -16,7 +17,7 @@ public class AlgorithmvisualizationActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        scoreboard board=new scoreboard();
+        ScoreBoard board = new ScoreBoard();
         level=0;
     }
     
@@ -29,7 +30,7 @@ public class AlgorithmvisualizationActivity extends Activity {
     public void showLevel(int level){
     	Intent i = new Intent(this, BinPackingActivity.class);
     	startActivityForResult(i,
-    			AlgorithmvisualizationActivity.ACTIVITY_BinPackingActivity);
+    			AlgovizActivity.ACTIVITY_BinPackingActivity);
     }
   
     

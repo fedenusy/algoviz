@@ -1,6 +1,6 @@
-package edu.upenn.cis.cis350.algorithmvisualization;
+package edu.upenn.cis350.algoviz;
 
-import edu.upenn.cis.cis350.algorithmvisualization.R;
+import edu.upenn.cis350.algoviz.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
