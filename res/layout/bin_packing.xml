@@ -45,7 +45,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="380dp" >
-    <edu.upenn.cis.cis350.algorithmvisualization.BinPackingView
+    <edu.upenn.cis350.algoviz.BinPackingView
         android:id="@+id/binview"
         android:layout_width="match_parent"
         android:layout_height="380dp" />
