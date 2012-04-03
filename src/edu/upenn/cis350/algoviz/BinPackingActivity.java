@@ -13,30 +13,34 @@ import android.widget.Toast;
 
 public class BinPackingActivity extends Activity {
 	
-	int level;
-	int[] finished;
+	String _problemName;
+	int[] _finished;
+	BinPackingProblemFactory _factory;
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
    		super.onCreate(savedInstanceState);
    		setContentView(R.layout.bin_packing);
-   		level=1;
-   		finished=new int[6];
+   		_problemName = "Baby Packer";
+   		_finished = new int[6];
     }
     
-    public int getDifficulty() {
-    	return this.level;
+    public String getProblemName() {
+    	return _problemName;
     }
     
     public void onNextLevelClick(View v){
-    	if (level<=6){
-    		level++;
-    	
-    		((BinPackingView) this.findViewById(R.id.binview)).reset();
+    	if (!"Pack Master".equalsIgnoreCase(_problemName)){ //There's a next level to be played
+    		BinPackingView view = ((BinPackingView) this.findViewById(R.id.binview));
+    		_factory = view.getFactory();
+    		
+    		_problemName = nextProblem(_problemName);
+    		
+    		view.reset();
     	
     		TextView count_text=(TextView)findViewById(R.id.textView2);
-    		count_text.setText(Integer.toString(level));
+    		count_text.setText(Integer.toString(getLevelCount()));
     		
     		((BinPackingView) this.findViewById(R.id.binview)).updateValue(0);
     	}
@@ -66,13 +70,14 @@ public class BinPackingActivity extends Activity {
     }
     
     public void onBackClick(View v){
-    	if (level>1){
-    		level--;
+    	String previousProblem = previousProblem(_problemName);
+    	if (previousProblem != null){
+    		_problemName = previousProblem;
         	
     		((BinPackingView) this.findViewById(R.id.binview)).reset();
     	
     		TextView count_text=(TextView)findViewById(R.id.textView2);
-    		count_text.setText(Integer.toString(level));
+    		count_text.setText(Integer.toString(getLevelCount()));
     		
     		((BinPackingView) this.findViewById(R.id.binview)).updateValue(0);
     		
@@ -81,7 +86,31 @@ public class BinPackingActivity extends Activity {
     }
     
     
+    private String nextProblem(String problemName) {
+    	boolean sawProblem = false;
+		for (String prob : _factory.getProblemNames()) {
+			if (sawProblem) return prob;
+			if (prob.equalsIgnoreCase(problemName)) sawProblem = true;
+		}
+		return null;
+    }
     
+    private String previousProblem(String problemName) {
+    	String prevProblem = null;
+		for (String prob : _factory.getProblemNames()) {
+			if (prob.equalsIgnoreCase(problemName)) break;
+			prevProblem = prob;
+		}
+		return prevProblem;
+    }
     
+    private int getLevelCount() {
+    	int count = 0;
+    	for (String prob : _factory.getProblemNames()) {
+    		count++;
+    		if (_problemName.equalsIgnoreCase(prob)) break;
+    	}
+    	return count;
+    }
 
 }

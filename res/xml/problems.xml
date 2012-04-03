@@ -1,109 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <item type="id" name="bin_packing">
-        <problem difficulty="1">
-            <bin capacity="25" />
-            <object weight="5" value="10" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="17" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-            <object weight="8" value="20" type="default" />
-        </problem>
-        
-         <problem difficulty="2">
-            <bin capacity="25" />
-            <object weight="5" value="10" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="18" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-            <object weight="8" value="20" type="default" />
-        </problem>
-        
-        <problem difficulty="3">
-            <bin capacity="30" />
-            <object weight="5" value="10" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="17.5" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-            <object weight="8" value="20" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="17.5" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-        </problem>
-        
-        <problem difficulty="4">
-            <bin capacity="25" />
-            <object weight="5" value="10" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="17.5" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-            <object weight="8" value="20" type="default" />
-                <object weight="10" value="20" type="default" />
-            <object weight="17.5" value="32" type="default" />
-        </problem>
-        
-        <problem difficulty="5">
-            <bin capacity="25" />
-            <object weight="5" value="10" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="17.5" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-            <object weight="8" value="20" type="default" />
-        </problem>
-        
-        <problem difficulty="6">
-            <bin capacity="25" />
-            <bin capacity="25" />
-            <object weight="5" value="10" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="17.5" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-            <object weight="8" value="20" type="default" />
-            <object weight="22" value="39" type="default" />
-            <object weight="19" value="40" type="default" />
-            <object weight="2.5" value="7" type="default" />
-            <object weight="4" value="18" type="default" />
-            <object weight="9.5" value="22" type="default" />
-            <object weight="13" value="12" type="default" />
-            <object weight="16.2" value="28" type="default" />
-        </problem>
-        
-        <problem difficulty="7">
-            <bin capacity="25" />
-            <bin capacity="35" />
-            <bin capacity="60" />
-            <object weight="5" value="10" type="default" />
-            <object weight="10" value="20" type="default" />
-            <object weight="17.5" value="32" type="default" />
-            <object weight="3" value="11" type="default" />
-            <object weight="8" value="20" type="default" />
-            <object weight="22" value="39" type="default" />
-            <object weight="19" value="40" type="default" />
-            <object weight="2.5" value="7" type="default" />
-            <object weight="4" value="18" type="default" />
-            <object weight="9.5" value="22" type="default" />
-            <object weight="13" value="12" type="default" />
-            <object weight="16.2" value="28" type="default" />
-            <object weight="30" value="56.5" type="default" />
-            <object weight="32" value="60.3" type="default" />
-            <object weight="3.8" value="15" type="default" />
-            <object weight="21.9" value="42.3" type="default" />
-        </problem>
-    </item>
 
-    <item type="id" name="max_flow">
-        <problem difficulty="easy">
-            
-        </problem>
-        
-        <problem difficulty="medium">
-            
-        </problem>
-        
-        <problem difficulty="hard">
-            
-        </problem>
-    </item>
-     
+	<item type="id" name="bin_packing">
+		<problem name="Baby Packer">
+			<bin capacity="25" />
+			<object weight="5" value="10" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="17" value="32" type="default" />
+			<object weight="3" value="11" type="default" />
+			<object weight="8" value="20" type="default" />
+		</problem>
+
+		<problem name="Pack Rat">
+			<bin capacity="25" />
+			<object weight="6" value="10" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="18" value="32" type="default" />
+			<object weight="4" value="9" type="default" />
+			<object weight="8" value="20" type="default" />
+			<object weight="3" value="4" type="default" />
+			<object weight="5" value="7.5" type="default" />
+			<object weight="2" value="4" type="default" />
+		</problem>
+
+		<problem name="Experienced Packer">
+			<bin capacity="30" />
+			<object weight="5" value="10" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="17.5" value="32" type="default" />
+			<object weight="3" value="11" type="default" />
+			<object weight="8" value="20" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="17.5" value="32" type="default" />
+			<object weight="3" value="11" type="default" />
+			<object weight="4" value="9" type="default" />
+			<object weight="8" value="20" type="default" />
+			<object weight="3" value="4" type="default" />
+			<object weight="5" value="7.5" type="default" />
+			<object weight="2" value="4" type="default" />
+		</problem>
+
+		<problem name="Packing Connoisseur">
+			<bin capacity="25" />
+			<bin capacity="25" />
+			<object weight="5" value="10" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="17.5" value="32" type="default" />
+			<object weight="3" value="11" type="default" />
+			<object weight="8" value="20" type="default" />
+			<object weight="22" value="39" type="default" />
+			<object weight="19" value="40" type="default" />
+			<object weight="2.5" value="7" type="default" />
+			<object weight="4" value="18" type="default" />
+			<object weight="9.5" value="22" type="default" />
+			<object weight="13" value="12" type="default" />
+			<object weight="16.2" value="28" type="default" />
+			<object weight="6" value="10" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="18" value="32" type="default" />
+			<object weight="4" value="9" type="default" />
+			<object weight="8" value="20" type="default" />
+			<object weight="3" value="4" type="default" />
+			<object weight="5" value="7.5" type="default" />
+			<object weight="2" value="4" type="default" />
+		</problem>
+
+		<problem name="Pack Master">
+			<bin capacity="25" />
+			<bin capacity="35" />
+			<bin capacity="60" />
+			<object weight="5" value="10" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="17.5" value="32" type="default" />
+			<object weight="3" value="11" type="default" />
+			<object weight="8" value="20" type="default" />
+			<object weight="22" value="39" type="default" />
+			<object weight="19" value="40" type="default" />
+			<object weight="2.5" value="7" type="default" />
+			<object weight="4" value="18" type="default" />
+			<object weight="9.5" value="22" type="default" />
+			<object weight="13" value="12" type="default" />
+			<object weight="16.2" value="28" type="default" />
+			<object weight="30" value="56.5" type="default" />
+			<object weight="32" value="60.3" type="default" />
+			<object weight="3.8" value="15" type="default" />
+			<object weight="21.9" value="42.3" type="default" />
+			<object weight="6" value="10" type="default" />
+			<object weight="10" value="20" type="default" />
+			<object weight="18" value="32" type="default" />
+			<object weight="4" value="9" type="default" />
+			<object weight="8" value="20" type="default" />
+			<object weight="3" value="4" type="default" />
+			<object weight="5" value="7.5" type="default" />
+			<object weight="2" value="4" type="default" />
+		</problem>
+	</item>
+
+	<item type="id" name="max_flow">
+		<problem name="easy">
+
+		</problem>
+
+		<problem name="medium">
+
+		</problem>
+
+		<problem name="hard">
+
+		</problem>
+	</item>
+
 </resources>

@@ -1,16 +1,14 @@
 package edu.upenn.cis350.algoviz;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 import edu.upenn.cis350.algoviz.R;
 
 import android.content.Context;
-import android.content.res.Resources.NotFoundException;
 import android.content.res.XmlResourceParser;
 
 /**
@@ -19,129 +17,136 @@ import android.content.res.XmlResourceParser;
  */
 public class BinPackingProblemFactory {
 	
-	XmlResourceParser parser;
-	Context c;
+	///// Instance variables /////
+	private ArrayList<String> _problems;
+	private HashMap<String, Collection<Bin>> _bins;
+	private HashMap<String, Collection<BinObject>> _objects;
+	private HashMap<String, Double> _optimalSolutions;
+	private XmlResourceParser _parser; //TODO ugly instance variable - find a way to remove
 	
-	/*
-	private Collection<BinObject> easyObjects, mediumObjects, hardObjects;
-	private Collection<Bin> easyBins, mediumBins, hardBins;
-	private double easyOptSol, mediumOptSol, hardOptSol;*/
 	
-	//Initialize the parser
+	///// Constructor /////
 	public BinPackingProblemFactory(Context context) {
-		c=context;
+		_parser = context.getResources().getXml(R.xml.problems);
+		
+		_problems = new ArrayList<String>();
+		_bins = new HashMap<String, Collection<Bin>>();
+		_objects = new HashMap<String, Collection<BinObject>>();
+		parseProblemsFile();
+		
+		_optimalSolutions = new HashMap<String, Double>();
+		calculateOptimalSolutions();
 	}
 	
 	
+	///// Public methods /////
+	/**
+	 * @return A Collection of all the problem names specified in problems.xml.
+	 */
+	public Collection<String> getProblemNames() {
+		return _problems;
+	}
 	
 	/**
-	 * @param level The difficulty of the problem as specified in problems.xml.
-	 * @return a Collection of all BinObjects for the specified difficulty, or null if the
-	 * difficulty is unspecified in problems.xml.
+	 * @param problemName The name of the problem as specified in problems.xml.
+	 * @return a Collection of all BinObjects for the specified problem, or null if the
+	 * problem is unspecified in problems.xml.
 	 */
-	public Collection<BinObject> getBinObjects(int level) {
-		
-		int level_count=0;
-		Collection<BinObject> binObjects=new ArrayList<BinObject>();
-		
-		parser = this.c.getResources().getXml(R.xml.problems);
-
+	public Collection<BinObject> getBinObjects(String problemName) {
+		return _objects.get(problemName);
+	}
+	
+	/**
+	 * @param problemName The name of the problem as specified in problems.xml.
+	 * @return a Collection of all Bins for the specified problem, or null if the
+	 * problem is unspecified in problems.xml.
+	 */
+	public Collection<Bin> getBins(String problemName) {
+		return _bins.get(problemName);
+	}
+	
+	/**
+	 * @param problemName The name of the problem as specified in problems.xml.
+	 * @return the value of the optimal solution for the specified problem, or null if the
+	 * problem is unspecified in problems.xml.
+	 */
+	public Double getOptimalSolution(String problemName) {
+		return _optimalSolutions.get(problemName);
+	}
+	
+	
+	///// Private methods /////
+	private void parseProblemsFile() {
 		try {
-			int event = parser.next();
-			String difficulty = "";
-			while (!(event == XmlPullParser.END_TAG && parser.getName().equalsIgnoreCase("item"))) {
-				if (event == XmlPullParser.START_TAG) {
-					String element = parser.getName();
-					System.out.println("name: " + element);
-					if ("problem".equals(element)) { //Parse problem difficulty
-						difficulty = parser.getAttributeValue(null, "difficulty");
-						level_count++;
-					} 
-					else if ("bin".equals(element)) { //Parse Bin element
-						
-					} 					
-					else if ("object".equals(element)) { //Parse BinObject element
-						if (level_count==level){
-						double weight = new Double(parser.getAttributeValue(null,"weight"));
-						double value = new Double(parser.getAttributeValue(null,"value"));
-						String type = parser.getAttributeValue(null,"type");
-						BinObject obj = new BinObject(weight, value, type);
-						binObjects.add(obj);}
-					}
-				}
-				event = parser.next();
+			int event = _parser.next();
+			while (!doneParsingBinPacking(event)) {
+				if (isStartTag(event)) parseTag();
+				event = _parser.next();
 			}
-		} catch (Exception e) { //Invalidly formatted XML file
+		} catch (Exception e) {
 			System.err.println("Problem parsing res/xml/problems.xml - please check file format");
 			System.exit(-1);
 		} finally {
-			parser.close();
+			_parser.close();
 		}
-		
-		return binObjects;
 	}
 	
-	/**
-	 * @param difficulty The difficulty of the problem as specified in problems.xml.
-	 * @return a Collection of all Bins for the specified difficulty, or null if the
-	 * difficulty is unspecified in problems.xml.
-	 */
-	public Collection<Bin> getBins(int level) {
+	private boolean doneParsingBinPacking(int event) {
+		return "item".equalsIgnoreCase(_parser.getName()) && event == XmlPullParser.END_TAG;
+	}
+	
+	private boolean isStartTag(int event) {
+		return event == XmlPullParser.START_TAG;
+	}
+	
+	private void parseTag() {
+		String element = _parser.getName();
+		if ("problem".equalsIgnoreCase(element)) instantiateNewProblem();
+		else if ("bin".equalsIgnoreCase(element)) parseBin();				
+		else if ("object".equalsIgnoreCase(element)) parseObject();
+	}
+	
+	private void instantiateNewProblem() {
+		String problemName = _parser.getAttributeValue(null, "name");
+		_problems.add(problemName);
+		_bins.put(problemName, new ArrayList<Bin>());
+		_objects.put(problemName, new ArrayList<BinObject>());
+	}
+	
+	private String lastProblem() {
+		return _problems.get(_problems.size()-1);
+	}
+	
+	private void parseBin() {
+		Double capacity = new Double(_parser.getAttributeValue(null, "capacity"));
+		Bin bin = new Bin(capacity);
 		
-		Collection<Bin> Bins = new ArrayList<Bin>();
-
+		Collection<Bin> bins = _bins.get(lastProblem());
+		bins.add(bin);
 		
-		int level_count=0;
+		_bins.put(lastProblem(), bins);
+	}
+	
+	private void parseObject() {
+		Double weight = new Double(_parser.getAttributeValue(null, "weight"));
+		Double value = new Double(_parser.getAttributeValue(null, "value"));
+		String type = _parser.getAttributeValue(null, "type");
+		BinObject object = new BinObject(weight, value, type);
 		
-		parser = this.c.getResources().getXml(R.xml.problems);
+		Collection<BinObject> objects = _objects.get(lastProblem());
+		objects.add(object);
 		
-		try {
-			int event = parser.next();
-			String difficulty = "";
-			
-			while (!(event == XmlPullParser.END_TAG && parser.getName().equalsIgnoreCase("item"))) {
-				
-				if (event == XmlPullParser.START_TAG) {
-					
-					String element = parser.getName();
-					System.out.println("name: " + element);
-					
-					if ("problem".equals(element)) { //Parse problem difficulty
-						difficulty = parser.getAttributeValue(null, "difficulty");
-						level_count++;
-					} 
-					else if ("bin".equals(element)) { //Parse Bin element
-						if (level_count==level){
-							double capacity = new Double(parser.getAttributeValue(null,"capacity"));
-							Bin bin = new Bin(capacity);
-							Bins.add(bin);}
-					
-						
-					} 
-				}
-				event = parser.next();
-			}
-		} catch (Exception e) { //Invalidly formatted XML file
-			System.err.println("Problem parsing res/xml/problems.xml - please check file format");
-			System.exit(-1);
-		} finally {
-			parser.close();
+		_objects.put(lastProblem(), objects);
+	}
+	
+	private void calculateOptimalSolutions() {
+		for (String problemName : getProblemNames()) {
+			Collection<Bin> bins = getBins(problemName);
+			Collection<BinObject> objects = getBinObjects(problemName);
+			Double optimalSolution = calculateSolution(bins, objects);
+			_optimalSolutions.put(problemName, optimalSolution);
 		}
-	
-		return Bins;
 	}
-	
-	/**
-	 * @param difficulty The difficulty of the problem as specified in problems.xml.
-	 * @return the value of the optimal solution for the specified difficulty, or -1 if the
-	 * difficulty is unspecified in problems.xml.
-	 */
-	public double getOptimalSolution(int level) {
-		double solution=calculateSoltion(getBins(level), getBinObjects(level));
-		return solution;
-	}
-	
-	
 	
 	/**
 	 * Calculates the optimal solution for the given collections of Bins and BinObjects. Note that if
@@ -151,10 +156,11 @@ public class BinPackingProblemFactory {
 	 * @param objects
 	 * @return The value of the optimal solution to the Bin-Packing problem.
 	 */
-	private double calculateSoltion(Collection<Bin> bins, Collection<BinObject> objects) {
+	private double calculateSolution(Collection<Bin> bins, Collection<BinObject> objects) {
 		double sol = 0;
+		
 		ArrayList<BinObject> objs = new ArrayList<BinObject>();
-		for (BinObject obj : objects) objs.add(obj);
+		objs.addAll(objects);
 		
 		for (Bin bin : bins) {
 			boolean[] choices = knapsack(bin, objs);

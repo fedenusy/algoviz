@@ -54,8 +54,8 @@ public class BinPackingView extends View {
 		objects = new ArrayList<BinObject>();
 		bins = new ArrayList<Bin>();
 		
-		bins.addAll(factory.getBins(((BinPackingActivity) this.getContext()).getDifficulty()));
-		objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getDifficulty()));		
+		bins.addAll(factory.getBins(((BinPackingActivity) this.getContext()).getProblemName()));
+		objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getProblemName()));		
 		
 		// Location of center of View
 		int mid = this.getWidth() / 2;
@@ -316,7 +316,7 @@ public class BinPackingView extends View {
 		this.updateValue(current_value);
 				
 		
-		if (this.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getDifficulty())==current_value){
+		if (this.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName())==current_value){
 			toast_rightSolution.show();
 		}
 		else{
@@ -324,6 +324,10 @@ public class BinPackingView extends View {
 			toast_wrongSolution.show();
 		}
 		
+	}
+	
+	public BinPackingProblemFactory getFactory() {
+		return factory;
 	}
 		
 } 
