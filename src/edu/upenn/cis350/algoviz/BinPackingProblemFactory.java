@@ -41,7 +41,7 @@ public class BinPackingProblemFactory {
 	
 	///// Public methods /////
 	/**
-	 * @return A Collection of all the problem names specified in problems.xml.
+	 * @return An ordered Collection of all the problem names specified in problems.xml.
 	 */
 	public Collection<String> getProblemNames() {
 		return _problems;
