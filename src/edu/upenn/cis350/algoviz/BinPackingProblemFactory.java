@@ -22,7 +22,8 @@ public class BinPackingProblemFactory {
 	private HashMap<String, Collection<Bin>> _bins;
 	private HashMap<String, Collection<BinObject>> _objects;
 	private HashMap<String, Double> _optimalSolutions;
-	private XmlResourceParser _parser; //TODO ugly instance variable - find a way to remove
+	//TODO make BinPackingProblem class that encompasses the above variables?
+	private XmlResourceParser _parser; //TODO ugly instance variable - find a way to remove?
 	
 	
 	///// Constructor /////
