@@ -150,30 +150,29 @@ public class BinPackingProblemFactory {
 	}
 	
 	/**
-	 * Calculates the optimal solution for the given collections of Bins and BinObjects. Note that if
-	 * there's more than 1 Bin involved, the problem becomes NP-Hard. In this case the method only
-	 * returns an approximation to the optimal solution.
-	 * @param bins
-	 * @param objects
+	 * Calculates the optimal solution to the problem of packing the highest value of BinObjects into
+	 * the given collection of Bins. Note that if there's more than 1 Bin in the bins collection, the 
+	 * problem of calculating an optimal solution becomes NP-Hard. In this case the method only returns 
+	 * an approximation to the optimal solution.
+	 * @param bins The collection of bins objects can be packed into.
+	 * @param objects The collection of objects to choose from.
 	 * @return The value of the optimal solution to the Bin-Packing problem.
 	 */
 	private double calculateSolution(Collection<Bin> bins, Collection<BinObject> objects) {
 		double sol = 0;
 		
-		ArrayList<BinObject> objs = new ArrayList<BinObject>();
-		objs.addAll(objects);
+		ArrayList<BinObject> tempObjects = new ArrayList<BinObject>();
+		tempObjects.addAll(objects);
 		
 		for (Bin bin : bins) {
-			boolean[] choices = knapsack(bin, objs);
-			ArrayList<BinObject> chosen = new ArrayList<BinObject>();
-			for (int i=0; i<choices.length; i++) {
-				if (choices[i]) {
-					chosen.add(objs.get(i));
-				}
+			boolean[] chosenObjectIndex = knapsack(bin, tempObjects);
+			ArrayList<BinObject> chosenObjects = new ArrayList<BinObject>();
+			for (int i=0; i<tempObjects.size(); i++) {
+				if (chosenObjectIndex[i]) chosenObjects.add(tempObjects.get(i));
 			}
-			for (BinObject obj : chosen) {
+			for (BinObject obj : chosenObjects) {
 				sol += obj.getValue();
-				objs.remove(obj);
+				tempObjects.remove(obj);
 			}
 		}
 		
@@ -181,51 +180,61 @@ public class BinPackingProblemFactory {
 	}
 	
 	/**
-	 * Takes a bin and a collection of objects and calculates the optimal solution.
-	 * @param bin
-	 * @param objects
-	 * @return Which objects are included in the optimal solution.
+	 * Takes a single Bin and a collection of BinObjects to calculate the optimal solution to the
+	 * Bin-Packing problem. The Bin-Packing problem consists of maximizing the sum of the value of
+	 * the objects in a bin, where the bin can only carry a limited weight-capacity, and each object
+	 * has a specified weight and value.
+	 * @param bin The bin to be packed.
+	 * @param objects The collection of objects the algorithm can choose from.
+	 * @return An array indicating which objects are to be included in the optimal solution. If the ith
+	 * element in the array is true, then the ith object in the objects collection was included in the
+	 * optimal solution. If the ith element of the array is false, then the ith object in the collection
+	 * was not included in the optimal solution.
 	 */
 	private boolean[] knapsack(Bin bin, Collection<BinObject> objects) {
 		Object[] objs = objects.toArray();
 		int numObjs = objs.length;
-		int capacity = (int) Math.floor(bin.getCapacity());
+		int capacity = (int) Math.floor(bin.getCapacity()); //Bins are allowed to hold decimal-value weight 
+		//capacities; however, for the sake of computing this algorithm in a reasonable amount of time, we 
+		//work with the rounded-down bin capacity.
 
-		//Optimal solution for packing objects 0..n+1 with capacity limit c
-		double[][] optSol = new double[numObjs+1][capacity+1];
-		for (int c=0; c<capacity+1; c++) optSol[0][c] = 0; //Packing 0 items has 0 value
+		double[][] optSol = new double[numObjs+1][capacity+1]; //This array contains the optimal solution value 
+		//for packing objects from the set of objs[0] to objs[n] into a bin with capacity from 0 to j
 		
-		//Whether the corresponding optimal solution includes item n
-		boolean[][] solChoice = new boolean[numObjs+1][capacity+1];
-		for (int c=0; c<capacity+1; c++) solChoice[0][c] = false; //Packing no items if you pick 0 of them
+		for (int c=0; c<capacity+1; c++) optSol[0][c] = 0; //Since packing from the choice set of 0 items has 
+		//0 value regardless of the bin's capacity
+		
+		boolean[][] solChoice = new boolean[numObjs+1][capacity+1]; //Array keeping track of whether the corresponding
+		//optSol[][] value includes item n
+		
+		for (int c=0; c<capacity+1; c++) solChoice[0][c] = false; //Since you are packing no items when you pick from the
+		//set of 0 objects
 
 		for (int n=1; n<numObjs+1; n++) {
-			//Object's weight and value
-			int weight = (int) Math.ceil(((BinObject)objs[n-1]).getWeight());
-			double value = ((BinObject)objs[n-1]).getValue();
+			//Get the object's weight and value, rounding weight to the corresponding integer once again
+			int itemWeight = (int) Math.ceil(((BinObject)objs[n-1]).getWeight());
+			double itemValue = ((BinObject)objs[n-1]).getValue();
 
 			for (int c=0; c<capacity+1; c++) {
-				//Value from leaving the item
-				double leaveItem = optSol[n-1][c];
+				double leaveItemSolVal = optSol[n-1][c]; //Solution value from if we were to leave item n
 
-				//Value from taking the item
-				double takeItem = 0;
-				if (weight <= c) takeItem = value + optSol[n-1][c-weight];
+				double takeItemSolVal = 0; //Solution value if we were to take item n
+				if (itemWeight <= c) takeItemSolVal = itemValue + optSol[n-1][c-itemWeight];
 
-				//Select optimal solution
-				if (takeItem > leaveItem) {
-					optSol[n][c] = takeItem;
-					solChoice[n][c] = true;
+				//Select optimal choice: take or leave the item
+				if (takeItemSolVal > leaveItemSolVal) {
+					optSol[n][c] = takeItemSolVal;
+					solChoice[n][c] = true; //Since we took the item
 				} else {
-					optSol[n][c] = leaveItem;
-					solChoice[n][c] = false;
+					optSol[n][c] = leaveItemSolVal;
+					solChoice[n][c] = false; //Since we left the item
 				}
 			}
 
 		}
 		
-		//Calculate which items were chosen
-		boolean[] choices = new boolean[numObjs];
+		//Now we calculate which items were chosen in the optimal solution
+		boolean[] choices = new boolean[numObjs]; //choices[i]=true indicates we took the ith item
 		for (int n=numObjs, c=capacity; n>0; n--) {
 			if (solChoice[n][c]) {
 				choices[n-1] = true;
