@@ -216,7 +216,7 @@ public class BinPackingProblemFactory {
 			double itemValue = ((BinObject)objs[n-1]).getValue();
 
 			for (int c=0; c<capacity+1; c++) {
-				double leaveItemSolVal = optSol[n-1][c]; //Solution value from if we were to leave item n
+				double leaveItemSolVal = optSol[n-1][c]; //Solution value if we were to leave item n
 
 				double takeItemSolVal = 0; //Solution value if we were to take item n
 				if (itemWeight <= c) takeItemSolVal = itemValue + optSol[n-1][c-itemWeight];
