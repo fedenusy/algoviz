@@ -163,9 +163,13 @@ public class BinPackingView extends View {
 		
 		paint.setColor(Color.WHITE);
 		String title = _currentPaginator.getTitle();
-		canvas.drawText(title, xPos + width/2 - title.length()/2 * 5, yPos, paint);
+		canvas.drawText(title, xPos + width/2 - title.length()/2 * 6, yPos, paint);
 		String currentPage = _currentPaginator.getText();
-		canvas.drawText(currentPage, xPos + width/2 - currentPage.length()/2 * 5, yPos+height-15, paint);
+		canvas.drawText(currentPage, xPos + width/2 - currentPage.length()/2 * 6, yPos+height-10, paint);
+		
+		canvas.drawText("Next Page >>", width/2 + 80, yPos+height-10, paint);
+		canvas.drawText("<< Previous Page", width/2 - 80 - 16*6, yPos+height-10, paint);
+		if (!_currentPaginator.equals(_unallocatedObjectsPaginator)) canvas.drawText("X", width-50, yPos, paint);
 	}
 	
 	private void drawObjects(Canvas canvas) {
@@ -219,7 +223,23 @@ public class BinPackingView extends View {
 			}
 		}
 		
-		//TODO handle paginator page switch
+		int xPos = _currentPaginator.getX(), yPos = _currentPaginator.getY(),
+				width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();
+		
+		ShapeObject prev = new ShapeObject(Color.BLACK, 12, 16*6, width/2 - 80 - 16*6, yPos+height-24, "");
+		ShapeObject next = new ShapeObject(Color.BLACK, 12, 12*6, width/2 + 80, yPos+height-24, "");
+		ShapeObject exit = new ShapeObject(Color.BLACK, 16, 12, width - 52, yPos-14, "");
+		
+		if (prev.containsPoint(x, y)) {
+			_currentPaginator.previousPage();
+			invalidate();
+		} else if (next.containsPoint(x, y)) {
+			_currentPaginator.nextPage();
+			invalidate();
+		} else if (exit.containsPoint(x,y)) {
+			_currentPaginator = _unallocatedObjectsPaginator;
+			invalidate();
+		}
 		
 		return false;
 	}
@@ -236,34 +256,30 @@ public class BinPackingView extends View {
 		if (objToMove == null) return true;
 		else objToMove.setColor(Color.BLUE);
 		
-		// If object collides with current paginator
-		if (objToMove.collidesWith(_currentPaginator)) { 
+		Bin currentBin = _currentPaginator.getBin();
+		
+		// If object collides with current paginator or current bin
+		if (objToMove.collidesWith(_currentPaginator) || objToMove.collidesWith(currentBin)) { 
 			objToMove.setX(objToMove.oldx);
 			objToMove.setY(objToMove.oldy);
 			invalidate();
 			return true;
 		}
 		
-		// If object collides with a bin
-		Bin currentBin = _currentPaginator.getBin();
+		// If object collides with a different bin
 		for (Bin bin : bins) {
 			if (objToMove.collidesWith(bin)) {
-				if (bin.equals(currentBin)) {
+				boolean inserted = bin.insert(objToMove);
+				if (inserted) {
+					if (currentBin != null) currentBin.remove(objToMove);
+					else _unallocatedObjectsPaginator.remove(objToMove);
+				} else {
 					objToMove.setX(objToMove.oldx);
 					objToMove.setY(objToMove.oldy);
-					invalidate();
-					return true;
 				}
-				else {
-					boolean inserted = bin.insert(objToMove);
-					if (inserted) {
-						if (currentBin != null) currentBin.remove(objToMove);
-						else _unallocatedObjectsPaginator.remove(objToMove);
-					}
-					invalidate();
-					//TODO check if the solution is right
-					return true;
-				}
+				invalidate();
+				//TODO check if the solution is right
+				return true;
 			}
 		}
 		

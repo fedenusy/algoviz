@@ -75,6 +75,7 @@ public class ShapeObject {
 
 	//check if two shapes collides
 	public boolean collidesWith(ShapeObject s2) {
+		if (s2 == null) return false;
 		if( ( (locx>=s2.locx && locx<=s2.locx+s2.width) || (locx+width>=s2.locx && locx+width<=s2.locx+s2.width) )
 				&& ( (locy>=s2.locy && locy<=s2.locy+s2.height) || (locy+height>=s2.locy && locy+height<=s2.locy+s2.height) ))
 			return true;

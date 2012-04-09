@@ -71,14 +71,14 @@ public class BinObjectPaginator extends ShapeObject {
 	
 	public void previousPage() {
 		_currentPage--;
-		if (_currentPage < _numPages) _currentPage = _numPages;
+		if (_currentPage < 1) _currentPage = _numPages;
 		updatePaginator();
 	}
 	
 	
 	///// Private methods /////
 	private void updatePaginator() {
-		int numObjects = _objects.size();
+		double numObjects = _objects.size();
 		_numPages = (int) Math.ceil(numObjects / 16);
 		if (_numPages == 0) _numPages = 1;
 		message = _currentPage + " / " + _numPages;
