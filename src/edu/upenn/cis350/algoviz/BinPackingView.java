@@ -209,6 +209,7 @@ public class BinPackingView extends View {
 				return true;
 			}
 		}
+		objToMove = null;
 		
 		for (Bin bin : bins) {
 			if (bin.containsPoint(x, y)) {
@@ -233,30 +234,44 @@ public class BinPackingView extends View {
 	
 	private boolean handleDrop(float x, float y) {
 		if (objToMove == null) return true;
+		else objToMove.setColor(Color.BLUE);
 		
+		// If object collides with current paginator
+		if (objToMove.collidesWith(_currentPaginator)) { 
+			objToMove.setX(objToMove.oldx);
+			objToMove.setY(objToMove.oldy);
+			invalidate();
+			return true;
+		}
+		
+		// If object collides with a bin
 		Bin currentBin = _currentPaginator.getBin();
-
 		for (Bin bin : bins) {
 			if (objToMove.collidesWith(bin)) {
-				if (currentBin==null || !bin.equals(currentBin)) {
+				if (bin.equals(currentBin)) {
+					objToMove.setX(objToMove.oldx);
+					objToMove.setY(objToMove.oldy);
+					invalidate();
+					return true;
+				}
+				else {
 					boolean inserted = bin.insert(objToMove);
 					if (inserted) {
 						if (currentBin != null) currentBin.remove(objToMove);
-						else _currentPaginator.remove(objToMove);
+						else _unallocatedObjectsPaginator.remove(objToMove);
 					}
+					invalidate();
+					//TODO check if the solution is right
+					return true;
 				}
 			}
 		}
-
-		if (objToMove.collidesWith(_currentPaginator)) {
-			objToMove.setOldX(objToMove.locx);
-			objToMove.setOldY(objToMove.locy);
-			objToMove.setColor(Color.BLUE);
-		} else {
-			_unallocatedObjectsPaginator.add(objToMove);
-		}
 		
-		//TODO check if the solution is right
+		// If object was dropped outside current paginator and did not collide with a bin, remove it and
+		// add to unallocatedObjectsPaginator
+		if (currentBin != null) currentBin.remove(objToMove);
+		else _unallocatedObjectsPaginator.remove(objToMove);
+		_unallocatedObjectsPaginator.add(objToMove);
 		invalidate();
 		return true;
 	}
