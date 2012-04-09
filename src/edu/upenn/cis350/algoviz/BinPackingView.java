@@ -22,30 +22,30 @@ import edu.upenn.cis350.algoviz.R;
  */
 public class BinPackingView extends View {
 	
-	//factory generate the problems from xml file
+	///// Static variables /////
 	private static BinPackingProblemFactory factory;
 	private static ArrayList<BinObject> objects = new ArrayList<BinObject>();
 	private static ArrayList<Bin> bins = new ArrayList<Bin>();
 	private static BinObject objToMove = null;
-
 	private static final int TEXT_X_OFFSET = 10;
 	private static final int TEXT_Y_OFFSET = 25;
 	
+	///// Instance variables /////
 	private boolean reset;
-	
 	private int current_value;
 	private Toast toast_rightSolution;
 	private Toast toast_wrongSolution;
+	private BinObjectPaginator _currentPaginator, _unallocatedObjectsPaginator;
 
 	public BinPackingView(Context c) {
 		super(c);
-		this.factory = new BinPackingProblemFactory(c);
+		BinPackingView.factory = new BinPackingProblemFactory(c);
 		reset=true;
 	}
 	
 	public BinPackingView(Context c, AttributeSet a) {
 		super(c,a);
-		this.factory = new BinPackingProblemFactory(c);
+		BinPackingView.factory = new BinPackingProblemFactory(c);
 		reset=true;
 	}
 	
@@ -55,49 +55,42 @@ public class BinPackingView extends View {
 		bins = new ArrayList<Bin>();
 		
 		bins.addAll(factory.getBins(((BinPackingActivity) this.getContext()).getProblemName()));
-		objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getProblemName()));		
+		objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getProblemName()));
 		
 		// Location of center of View
 		int mid = this.getWidth() / 2;
+		
+		_unallocatedObjectsPaginator = new BinObjectPaginator(mid, "Unallocated Objects");
+		_unallocatedObjectsPaginator.addAll(objects);
+		
+		_currentPaginator = _unallocatedObjectsPaginator;
 				
-		// Checks if number of BinObjects is greater than 16
-		if (this.objects.size() > 16) {
-			Log.v("Object number error", "Number of objects must be 16 or less!");
-			return;
-		}
-				
-		// Set locations for all BinObjects
-		Iterator<BinObject> objIt = this.objects.iterator();
-		for (int row = 0; row < 4; row++) {
-			for (int col = 0; col < 4; col++) {
-						if (objIt.hasNext()) {
-							BinObject currObj = objIt.next();
-							currObj.setX((mid - (2 * currObj.getWidth()) - 30) + col * (currObj.getWidth() + 20));
-							currObj.setY(20 + (row * 70));
-						}
-					}
-		}
-				
-				// Set locations for all Bins
+		// Set locations for all Bins
 		Bin b1, b2, b3;
-		switch (this.bins.size()) {
+		switch (BinPackingView.bins.size()) {
 		case 1:
-			b1 = this.bins.get(0);
+			b1 = BinPackingView.bins.get(0);
+			b1.instantiatePaginator(mid, "Middle Bin");
 			b1.setX(mid - (b1.getWidth() / 2));
 			b1.setY(this.getHeight() - b1.getHeight());
 			break;
 		case 2:
-			b1 = this.bins.get(0);
-			b2 = this.bins.get(1);
+			b1 = BinPackingView.bins.get(0);
+			b1.instantiatePaginator(mid, "Left Bin");
+			b2 = BinPackingView.bins.get(1);
+			b2.instantiatePaginator(mid, "Right Bin");
 			b1.setX(mid - b1.getWidth() - 10);
 			b1.setY(this.getHeight() - b1.getHeight());
 			b2.setX(mid + 10);
 			b2.setY(this.getHeight() - b2.getHeight());
 			break;
 		case 3:
-			b1 = this.bins.get(0);
-			b2 = this.bins.get(1);
-			b3 = this.bins.get(2);
+			b1 = BinPackingView.bins.get(0);
+			b1.instantiatePaginator(mid, "Left Bin");
+			b2 = BinPackingView.bins.get(1);
+			b2.instantiatePaginator(mid, "Middle Bin");
+			b3 = BinPackingView.bins.get(2);
+			b3.instantiatePaginator(mid, "Right Bin");
 			b1.setX(mid - b2.getWidth() / 2 - b1.getWidth() - 20);
 			b1.setY(this.getHeight() - b1.getHeight());
 			b2.setX(mid - b2.getWidth() / 2);
@@ -158,7 +151,10 @@ public class BinPackingView extends View {
 			canvas.drawText(text2, bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight()/2 + TEXT_Y_OFFSET, paint);
 		}
 		
-		for (BinObject obj : objects) {
+		drawPaginator(canvas);
+		
+		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
+			System.out.println(obj.getX() + ", " + obj.getY());
 			paint.setColor(obj.getColor());
 			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + obj.getWidth(), obj.getY() + obj.getHeight(), paint);
 			paint.setColor(Color.WHITE);
@@ -170,6 +166,20 @@ public class BinPackingView extends View {
 			canvas.drawText(text2, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2 + TEXT_Y_OFFSET, paint);
 		}
 		
+	}
+	
+	private void drawPaginator(Canvas canvas) {
+		Paint paint = new Paint();
+		paint.setColor(_currentPaginator.getColor());	
+		int xPos = _currentPaginator.getX(), yPos = _currentPaginator.getY(),
+				width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();		
+		canvas.drawRect(xPos, yPos, xPos + width, yPos + height, paint);
+		
+		paint.setColor(Color.WHITE);
+		String title = _currentPaginator.getTitle();
+		canvas.drawText(title, xPos + width/2 - title.length()/2 * 5, yPos, paint);
+		String currentPage = _currentPaginator.getText();
+		canvas.drawText(currentPage, xPos + width/2 - currentPage.length()/2 * 5, yPos+height-15, paint);
 	}
 	
 	
@@ -316,7 +326,7 @@ public class BinPackingView extends View {
 		this.updateValue(current_value);
 				
 		
-		if (this.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName())==current_value){
+		if (BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName())==current_value){
 			toast_rightSolution.show();
 		}
 		else{
