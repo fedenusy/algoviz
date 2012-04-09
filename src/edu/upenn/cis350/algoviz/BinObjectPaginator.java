@@ -13,6 +13,7 @@ public class BinObjectPaginator extends ShapeObject {
 	private int _currentPage;
 	private int _mid;
 	private String _title;
+	private Bin _bin;
 	
 	
 	///// Constructors /////
@@ -26,8 +27,13 @@ public class BinObjectPaginator extends ShapeObject {
 	}
 	
 	
+	///// Setter methods /////
+	public void setBin(Bin bin) { _bin = bin; }
+	
+	
 	///// Getter methods /////
 	public String getTitle() { return _title; }
+	public Bin getBin() { return _bin; }
 	
 	public Collection<BinObject> getCurrentPageObjects() {
 		ArrayList<BinObject> result = new ArrayList<BinObject>();

@@ -34,6 +34,7 @@ public class Bin extends ShapeObject {
 	public double getWeight() { return _weight; }
 	public double getValue() { return _value; }
 	public ArrayList<BinObject> getContents() { return _contents; }
+	public BinObjectPaginator getPaginator() { return _paginator; }
 	
 	
 	///// Public methods /////
@@ -72,6 +73,7 @@ public class Bin extends ShapeObject {
 	
 	public void instantiatePaginator(int mid, String title) {
 		_paginator = new BinObjectPaginator(mid, title);
+		_paginator.setBin(this);
 	}
 	
 }

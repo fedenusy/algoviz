@@ -37,6 +37,8 @@ public class BinPackingView extends View {
 	private Toast toast_wrongSolution;
 	private BinObjectPaginator _currentPaginator, _unallocatedObjectsPaginator;
 
+	
+	///// Constructors /////
 	public BinPackingView(Context c) {
 		super(c);
 		BinPackingView.factory = new BinPackingProblemFactory(c);
@@ -49,6 +51,8 @@ public class BinPackingView extends View {
 		reset=true;
 	}
 	
+	
+	///// Public methods /////
 	public void initialize() {
 		
 		objects = new ArrayList<BinObject>();
@@ -120,25 +124,23 @@ public class BinPackingView extends View {
 	}
 	
 	protected void onDraw(Canvas c) {
-		
 		// If drawing for the first time, get bins and objects from factory
 		// and set their locations using initialize()		
 		if (reset==true) {
 			initialize();
 			reset=false;
 		}
-		
-		
-		this.drawLevel(c);
-		
-		
+		drawLevel(c);
 	}
 	
-	
-	//draw the bin and objects of the current level
 	protected void drawLevel(Canvas canvas){
+		drawBins(canvas);
+		drawPaginator(canvas);
+		drawObjects(canvas);
+	}
+	
+	private void drawBins(Canvas canvas) {
 		Paint paint = new Paint();
-		
 		for (Bin bin : bins) {
 			paint.setColor(bin.getColor());
 			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + bin.getWidth(), bin.getY() + bin.getHeight(), paint);
@@ -150,22 +152,6 @@ public class BinPackingView extends View {
 			canvas.drawText(text1, bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight()/2, paint);
 			canvas.drawText(text2, bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight()/2 + TEXT_Y_OFFSET, paint);
 		}
-		
-		drawPaginator(canvas);
-		
-		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
-			System.out.println(obj.getX() + ", " + obj.getY());
-			paint.setColor(obj.getColor());
-			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + obj.getWidth(), obj.getY() + obj.getHeight(), paint);
-			paint.setColor(Color.WHITE);
-			if (obj.getText().indexOf('$') == -1)
-				throw new UnsupportedOperationException("Unexpected Object Text");
-			String text1 = obj.getText().substring(0,obj.getText().indexOf('$'));
-			String text2 = obj.getText().substring(obj.getText().indexOf('$'));
-			canvas.drawText(text1, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2, paint);
-			canvas.drawText(text2, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2 + TEXT_Y_OFFSET, paint);
-		}
-		
 	}
 	
 	private void drawPaginator(Canvas canvas) {
@@ -182,138 +168,107 @@ public class BinPackingView extends View {
 		canvas.drawText(currentPage, xPos + width/2 - currentPage.length()/2 * 5, yPos+height-15, paint);
 	}
 	
-	
+	private void drawObjects(Canvas canvas) {
+		Paint paint = new Paint();
+		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
+			paint.setColor(obj.getColor());
+			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + obj.getWidth(), obj.getY() + obj.getHeight(), paint);
+			paint.setColor(Color.WHITE);
+			if (obj.getText().indexOf('$') == -1)
+				throw new UnsupportedOperationException("Unexpected Object Text");
+			String text1 = obj.getText().substring(0,obj.getText().indexOf('$'));
+			String text2 = obj.getText().substring(obj.getText().indexOf('$'));
+			canvas.drawText(text1, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2, paint);
+			canvas.drawText(text2, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2 + TEXT_Y_OFFSET, paint);
+		}
+	}
 	
 	public void reset(){
 		reset=true;
 		invalidate();
 	}
 	
-
 	public boolean onTouchEvent(MotionEvent event) {
-		
+		float x = event.getX(), y = event.getY();
 		int action = event.getAction();
-		float xloc = event.getX();
-		float yloc = event.getY();
 		
-		if (action == MotionEvent.ACTION_DOWN) 
-		{
-			for (BinObject obj : objects) 
-			{
-				if (xloc < obj.getX() + obj.getWidth() && xloc > obj.getX() && 
-						yloc < obj.getY() + obj.getHeight() && yloc > obj.getY()) 
-				
-				{
-					obj.setXDiff(xloc - obj.getX());
-					obj.setYDiff(yloc - obj.getY());
-					obj.setColor(Color.YELLOW);
-					objToMove = obj;
-					invalidate();
-					return true;
-				}
+		if (action == MotionEvent.ACTION_DOWN) return handleClick(x, y);
+		else if (action == MotionEvent.ACTION_MOVE) return handleDrag(x, y);
+		else if (action == MotionEvent.ACTION_UP) return handleDrop(x, y);
+		else return false;	
+	}
+	
+	private boolean handleClick(float x, float y) {
+		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
+			if (obj.containsPoint(x, y)) {
+				obj.setXDiff(x - obj.getX());
+				obj.setYDiff(y - obj.getY());
+				obj.setColor(Color.YELLOW);
+				objToMove = obj;
+				invalidate();
+				return true;
 			}
-			//deals with removal
-			for (int i = 0; i < bins.size(); i++)
-			{
-				Bin bin = bins.get(i);
-				if (xloc < bin.getX() + bin.getWidth() && xloc > bin.getX() && 
-						yloc < bin.getY() + bin.getHeight() && yloc > bin.getY()) 
-				{
-					ArrayList<BinObject> contents = new ArrayList<BinObject>(bin.getContents());
-					for (BinObject obj: contents)
-					{
-						objToMove = obj;
-						objects.add(objToMove);
-						bin.remove(objToMove);
-						objToMove.setX(0);
-						objToMove.setY(0);
-						resolveCollision(0, 0, true);
-						invalidate();
-					}
-				}
-			}			
 		}
 		
-		// Upon ACTION_MOVE event
-		else if (action == MotionEvent.ACTION_MOVE) {
-			objToMove.setX((int)(xloc - objToMove.getXDiff()));
-			objToMove.setY((int)(yloc - objToMove.getYDiff()));
-			invalidate();
-			return true;
-		}
-		
-		// Upon ACTION_UP event
-		else if (action == MotionEvent.ACTION_UP) 
-		{
-			//check if object is on a bin
-			for (Bin bin : bins) 
-			{
-				if (objToMove.collidesWith(bin))
-				{
-					boolean inserted = bin.insert(objToMove);
-					if (inserted)
-					{
-						objects.remove(objToMove);
-						break;
-					}
-					else
-					{
-						objToMove.setX(objToMove.oldx);
-						objToMove.setY(objToMove.oldy);
-						resolveCollision(0, 0, true);
-					}
-				}
+		for (Bin bin : bins) {
+			if (bin.containsPoint(x, y)) {
+				_currentPaginator = bin.getPaginator();
+				invalidate();
+				return true;
 			}
-			//check if object is on another object
-			resolveCollision(0, 0, true);
-			
-
-			objToMove.setOldX(objToMove.locx);
-			objToMove.setOldY(objToMove.locy);
-			
-			objToMove.setColor(Color.BLUE);
-			
-			//check if the solution is right
-			
-			
-			
-			invalidate();
-			return true;
 		}
+		
+		//TODO handle paginator page switch
+		
 		return false;
 	}
 	
-	//To-Do: fix this part
+	private boolean handleDrag(float x, float y) {
+		if (objToMove == null) return true;
+		objToMove.setX((int)(x - objToMove.getXDiff()));
+		objToMove.setY((int)(y - objToMove.getYDiff()));
+		invalidate();
+		return true;
+	}
+	
+	private boolean handleDrop(float x, float y) {
+		if (objToMove == null) return true;
+		
+		Bin currentBin = _currentPaginator.getBin();
+
+		for (Bin bin : bins) {
+			if (objToMove.collidesWith(bin)) {
+				if (currentBin==null || !bin.equals(currentBin)) {
+					boolean inserted = bin.insert(objToMove);
+					if (inserted) {
+						if (currentBin != null) currentBin.remove(objToMove);
+						else _currentPaginator.remove(objToMove);
+					}
+				}
+			}
+		}
+
+		if (objToMove.collidesWith(_currentPaginator)) {
+			objToMove.setOldX(objToMove.locx);
+			objToMove.setOldY(objToMove.locy);
+			objToMove.setColor(Color.BLUE);
+		} else {
+			_unallocatedObjectsPaginator.add(objToMove);
+		}
+		
+		//TODO check if the solution is right
+		invalidate();
+		return true;
+	}
+
+	
+	
+	//TODO: fix this part
 	public void updateValue(int value){
     	TextView count_text=(TextView)this.findViewById(R.id.textView4);
     	if (count_text!=null)//now it's returning null
     		count_text.setText(Integer.toString(value));
     }
-	
-	
-	private void resolveCollision(int xoffset, int yoffset, boolean col_detected)
-	{
-		if (objects == null || objects.isEmpty() || !col_detected)
-			return;
-		col_detected = false;
-		for(BinObject obj: objects)
-		{
-			while (objToMove.collidesWith(obj) && !objToMove.equals(obj))
-			{
-				col_detected = true;
-				if (xoffset != 4)
-					xoffset++;
-				else
-				{
-					yoffset++;
-					xoffset = 0;
-				}
-				objToMove.setX((objToMove.getWidth()+5)*xoffset);
-				objToMove.setY((objToMove.getHeight()+5)*yoffset);
-			}
-		}
-		resolveCollision(xoffset, yoffset, col_detected);
-	}
 	
 	
 	//when the user press "done" button
