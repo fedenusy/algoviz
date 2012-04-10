@@ -5,6 +5,14 @@
     <string name="level_num">1</string>
     <string name="value">Value: </string>
     <string name="value_num">0</string>
+    <string name="reset">Reset</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="bin_packing">Bin Packing</string>
+    <string name="start">Start</string>
+    <string name="high_scores">High Scores</string>
+    <string name="quit">Quit</string>
 
 
 </resources>

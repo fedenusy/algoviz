@@ -18,20 +18,22 @@ public class AlgovizActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         ScoreBoard board = new ScoreBoard();
-        level=0;
+        level = 0;
     }
     
-    public void onStartClick(View v){
-    	this.level=1;
+    public void onStartClick(View v) {
+    	this.level = 1;
     	showLevel(this.level);
     }
     
+    public void onQuitClick(View v) {
+    	this.finish();
+    }
    
-    public void showLevel(int level){
+    public void showLevel(int level) {
     	Intent i = new Intent(this, BinPackingActivity.class);
     	startActivityForResult(i,
     			AlgovizActivity.ACTIVITY_BinPackingActivity);
     }
-  
     
 }

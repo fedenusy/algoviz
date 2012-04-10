@@ -1,44 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:text="Bin Packing" />
-
-        <Button
-            android:id="@+id/button7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onStartClick"
-            android:text="Start" />
- 
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             android:onClick="onLevel1Click"
-            android:text="High Scores" />
+	<LinearLayout android:id="@+id/LinearLayout1"
+		android:layout_width="match_parent" android:layout_height="wrap_content"
+		android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             android:onClick="onLevel1Click"
-            android:text="Quit" />
-    </LinearLayout>
-   
+		<TextView android:id="@+id/textView1" android:layout_width="match_parent"
+			android:layout_height="0dp" android:layout_gravity="center_horizontal"
+			android:layout_weight="1" android:text="@string/bin_packing" />
+
+		<Button android:id="@+id/button7" android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:onClick="onStartClick"
+			android:text="@string/start" />
+
+		<Button android:id="@+id/button2" android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:onClick="onLevel1Click"
+			android:text="@string/high_scores" />
+
+		<Button android:id="@+id/button3" android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:onClick="onQuitClick"
+			android:text="@string/quit" />
+
+	</LinearLayout>
+
 </LinearLayout>

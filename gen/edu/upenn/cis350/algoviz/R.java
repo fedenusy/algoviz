@@ -14,12 +14,13 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+        public static final int LinearLayout1=0x7f06000c;
         public static final int binview=0x7f060006;
         public static final int button1=0x7f060008;
         public static final int button2=0x7f060009;
         public static final int button3=0x7f06000b;
         public static final int button4=0x7f06000a;
-        public static final int button7=0x7f06000c;
+        public static final int button7=0x7f06000d;
         public static final int linearLayout1=0x7f060007;
         public static final int linearLayout2=0x7f060000;
         public static final int linearLayout3=0x7f060005;
@@ -34,8 +35,16 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f050000;
+        public static final int bin_packing=0x7f050009;
+        public static final int done=0x7f050008;
+        public static final int high_scores=0x7f05000b;
         public static final int level=0x7f050001;
         public static final int level_num=0x7f050002;
+        public static final int next=0x7f050007;
+        public static final int previous=0x7f050006;
+        public static final int quit=0x7f05000c;
+        public static final int reset=0x7f050005;
+        public static final int start=0x7f05000a;
         public static final int value=0x7f050003;
         public static final int value_num=0x7f050004;
     }

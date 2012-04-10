@@ -188,7 +188,17 @@ public class BinPackingView extends View {
 	}
 	
 	public void reset(){
-		reset=true;
+		reset = true;
+		BinObject[] objsInBin;
+		for (Bin bin : bins) {
+			objsInBin = new BinObject[bin.getContents().size()];
+			for (int i = 0; i < objsInBin.length; i++) {
+				objsInBin[i] = bin.getContents().get(i);
+			}
+			for (int i = 0; i < objsInBin.length; i++) {
+				bin.remove(objsInBin[i]);
+			}
+		}
 		invalidate();
 	}
 	
