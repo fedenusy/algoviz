@@ -15,6 +15,7 @@ public class Bin extends ShapeObject {
 	private double _capacity;
 	private double _weight;
 	private double _value;
+	private int _objWidth = 60;
 	private ArrayList<BinObject> _contents;
 	private BinObjectPaginator _paginator;
 	
@@ -50,7 +51,8 @@ public class Bin extends ShapeObject {
 			_value += obj.getValue();
 			_contents.add(obj);
 			_paginator.add(obj);
-			message = _weight + " ," + _value + " , Cap: " + _capacity; 
+			_objWidth = obj.getWidth();
+			message = _weight + " ," + _value + " , Cap: " + _capacity;
 			return true;
 		}
 	}
@@ -72,7 +74,7 @@ public class Bin extends ShapeObject {
 	}
 	
 	public void instantiatePaginator(int mid, String title) {
-		_paginator = new BinObjectPaginator(mid, title);
+		_paginator = new BinObjectPaginator(mid, _objWidth, _objWidth, title);
 		_paginator.setBin(this);
 	}
 	

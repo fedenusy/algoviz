@@ -12,16 +12,20 @@ public class BinObjectPaginator extends ShapeObject {
 	private int _numPages;
 	private int _currentPage;
 	private int _mid;
+	private int _objWidth;
+	private int _objHeight;
 	private String _title;
 	private Bin _bin;
 	
 	
 	///// Constructors /////
-	public BinObjectPaginator(int mid, String title) {
-		super(Color.BLACK, 15+70*4+15, mid*2, 0, 40, "");
+	public BinObjectPaginator(int mid, int objWidth, int objHeight, String title) {
+		super(Color.BLACK, 20+(objHeight+20)*4+30, mid*2, 0, 40, "");
 		_mid = mid;
 		_title = title;
 		_objects = new ArrayList<BinObject>();
+		_objWidth = objWidth;
+		_objHeight = objHeight;
 		_currentPage = 1;
 		updatePaginator();
 	}
@@ -90,8 +94,8 @@ public class BinObjectPaginator extends ShapeObject {
 		for (BinObject obj : getCurrentPageObjects()) {
 			if (col==4) { col = 0; row++; }
 			
-			int x = _mid - 135 + 70 * col;
-			int y = getY() + 15 + 70 * row;
+			int x = _mid - 2 * _objWidth - 30 + (_objWidth + 20) * col;
+			int y = 20 + getY() + (_objHeight + 20) * row;
 			obj.setX(x); obj.setOldX(x);
 			obj.setY(y); obj.setOldY(y);
 			

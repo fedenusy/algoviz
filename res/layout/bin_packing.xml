@@ -25,11 +25,11 @@
 	</LinearLayout>
 
 	<LinearLayout android:id="@+id/linearLayout3"
-		android:layout_width="match_parent" android:layout_height="380dp">
+		android:layout_width="match_parent" android:layout_height="500dp">
 
 		<edu.upenn.cis350.algoviz.BinPackingView
 			android:id="@+id/binview" android:layout_width="match_parent"
-			android:layout_height="380dp" />
+			android:layout_height="450dp" />
 
 	</LinearLayout>
 
