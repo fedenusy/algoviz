@@ -43,6 +43,7 @@ public class BinPackingActivity extends Activity {
     
     public void onNextLevelClick(View v){
     	nextLevelHelper();
+    	showDialog(READY_DIALOG);
     }
     
     
@@ -105,6 +106,7 @@ public class BinPackingActivity extends Activity {
     		((BinPackingView) this.findViewById(R.id.binview)).updateValue(0);
     		
     	}
+    	showDialog(READY_DIALOG);
     	
     }
     
@@ -159,7 +161,6 @@ public class BinPackingActivity extends Activity {
 			builder2.setMessage(text);     		
     	}
     	
-    	_mtime1=_mtime2;
     	
     	return builder2;
     }

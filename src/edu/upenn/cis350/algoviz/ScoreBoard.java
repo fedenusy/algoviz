@@ -5,20 +5,20 @@ import java.util.HashMap;
 
 
 public class ScoreBoard {
-	HashMap<Integer,Integer> highscores;
+	HashMap<String,Double> highscores;
 	
 	public ScoreBoard(){
-		highscores=new HashMap<Integer,Integer>();
+		highscores=new HashMap<String,Double>();
 	}
 	
 	
-	public int setScore(int level,int score){
+	public int setScore(String level,double score){
 		if (this.highscores.get(level)==null){
 			highscores.put(level,score);	
 			return 1;
 		}
 		else{
-			int time=highscores.get(level);
+			double time=highscores.get(level);
 			if (time<score){
 				highscores.put(level,score);
 				return 2;}
@@ -27,9 +27,9 @@ public class ScoreBoard {
 		}
 	}
 	
-	public Integer getScore(int level){
+	public Double getScore(String level){
 		if (highscores.get(level)==null)
-			return -1;
+			return -1.0;
 		else
 			return highscores.get(level);		
 	}
