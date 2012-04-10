@@ -10,7 +10,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,8 +32,7 @@ public class BinPackingView extends View {
 	///// Instance variables /////
 	private boolean reset;
 	private int current_value;
-	private Toast toast_rightSolution;
-	private Toast toast_wrongSolution;
+
 	private BinObjectPaginator _currentPaginator, _unallocatedObjectsPaginator;
 
 	
@@ -109,7 +107,8 @@ public class BinPackingView extends View {
 				
 		//init the value
 		current_value=0;
-						
+		
+		/*		
 		//init the toast
 		CharSequence text = "Great Job!!!";
 		CharSequence text2 = "Try Again!!!";
@@ -119,7 +118,7 @@ public class BinPackingView extends View {
 		toast_rightSolution.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
 		
 		toast_wrongSolution = Toast.makeText(this.getContext(),text2, duration);
-		toast_wrongSolution.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		toast_wrongSolution.setGravity(Gravity.CENTER_VERTICAL, 0, 0);*/
 				
 	}
 	
