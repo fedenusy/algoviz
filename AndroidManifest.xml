@@ -6,13 +6,12 @@
 
     <uses-sdk android:minSdkVersion="1" />
     
-    <supports-screens
-        android:resizeable="false"
-        android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:xlargeScreens="true"
-        android:anyDensity="true" />
+    <supports-screens android:resizeable="false"
+                  android:smallScreens="true"
+                  android:normalScreens="true"
+                  android:largeScreens="true"
+                  android:xlargeScreens="true"
+                  android:anyDensity="true" />
 
     <instrumentation android:name="android.test.InstrumentationTestRunner"
    	android:targetPackage="edu.upenn.cis350.algoviz"
