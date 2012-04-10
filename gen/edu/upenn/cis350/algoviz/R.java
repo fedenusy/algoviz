@@ -43,10 +43,12 @@ public final class R {
         public static final int next=0x7f050007;
         public static final int previous=0x7f050006;
         public static final int quit=0x7f05000c;
+        public static final int ready=0x7f05000d;
         public static final int reset=0x7f050005;
         public static final int start=0x7f05000a;
         public static final int value=0x7f050003;
         public static final int value_num=0x7f050004;
+        public static final int yes=0x7f05000e;
     }
     public static final class xml {
         public static final int problems=0x7f040000;

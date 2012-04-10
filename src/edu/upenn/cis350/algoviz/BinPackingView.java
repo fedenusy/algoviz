@@ -313,7 +313,7 @@ public class BinPackingView extends View {
 	
 	
 	//when the user press "done" button
-	public void submit(){
+	public int submit(){
 		//calculate the current value
 		current_value=0;
 		for (Bin bin : bins) 
@@ -323,11 +323,11 @@ public class BinPackingView extends View {
 				
 		
 		if (BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName())==current_value){
-			toast_rightSolution.show();
+			return 1;
 		}
 		else{
 			//supposedly if the user get a close answer, should show a toast
-			toast_wrongSolution.show();
+			return -1;
 		}
 		
 	}
