@@ -24,6 +24,7 @@ public class BinPackingActivity extends Activity {
 	private static final int INCORRECT_DIALOG = 3;
 	private ScoreBoard _sb;
 	private long _mtime1, _mtime2;
+
 	
 	/** Called when the activity is first created. */
     @Override
@@ -33,6 +34,7 @@ public class BinPackingActivity extends Activity {
    		_problemName = "Baby Packer";
    		_finished = new int[6];
    		showDialog(READY_DIALOG);
+   		_sb=new ScoreBoard();
     }
     
     public String getProblemName() {
@@ -45,7 +47,7 @@ public class BinPackingActivity extends Activity {
     
     
     
-    public void nextLevelHelper(){
+    private void nextLevelHelper(){
     	if (!"Pack Master".equalsIgnoreCase(_problemName)){ //There's a next level to be played
     		BinPackingView view = ((BinPackingView) this.findViewById(R.id.binview));
     		_factory = view.getFactory();
@@ -88,7 +90,6 @@ public class BinPackingActivity extends Activity {
     
     public void onResetClick(View v){
     	((BinPackingView) this.findViewById(R.id.binview)).reset();
-    	
     }
     
     public void onBackClick(View v){
@@ -136,6 +137,33 @@ public class BinPackingActivity extends Activity {
     }
     
     
+    private AlertDialog.Builder setCorrectResult(){
+    	AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+		
+		_mtime2=System.currentTimeMillis();
+    	double stime=(_mtime2-_mtime1)/1000.0;
+    	
+    	String str1=((Double)stime).toString();
+    	
+    	int result=this._sb.setScore(_problemName, stime);
+    	
+    	
+    	if (result==1){
+    		CharSequence text = "It's correct! You used "+str1+" seconds this time. You are the new top score! Click Yes to next level.";
+    		builder2.setMessage(text);    
+    		
+    	}
+    	else{
+    		String str2=_sb.getScore(_problemName).toString();
+			CharSequence text = "It's correct! You used"+str1+" seconds this time. The top score is"+str2+". Click Yes to next level.";
+			builder2.setMessage(text);     		
+    	}
+    	
+    	_mtime1=_mtime2;
+    	
+    	return builder2;
+    }
+    
     protected Dialog onCreateDialog(int id) {
     	if (id == READY_DIALOG) {
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -156,33 +184,8 @@ public class BinPackingActivity extends Activity {
     	
     	//create the correct dialog
     	if (id==CORRECT_DIALOG){
-    		AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+    		AlertDialog.Builder builder2 = setCorrectResult();
     		
-    		_mtime2=System.currentTimeMillis();
-        	double stime=(_mtime2-_mtime1)/1000.0;
-        	
-        	String str1=((Double)stime).toString();
-        	
-        	//this.sb.setScore(level, stime);
-        	
-        	if ((_first_run==1) && (stime<_top_score)){
-        		_top_score=stime;
-        		CharSequence text = "It's correct! You used "+str1+" seconds this time. You are the new top score! Click Yes to play again.";
-        		builder2.setMessage(text); 
-        	}
-        	else{
-        		if (_first_run==0){
-        			_first_run=1;
-        			_top_score=stime;
-        			CharSequence text = "It's correct! You used"+str1+". seconds this time. Click Yes to next level.";
-        			builder2.setMessage(text); 
-        		}
-        		else{
-        			String str2=((Double)_top_score).toString();
-        			CharSequence text = "It's correct! You used"+str1+" seconds this time. The top score is"+str2+". Click Yes to play again.";
-        			builder2.setMessage(text); 
-        		}
-        	}
         	
             // this is the button to display
     		builder2.setPositiveButton(R.string.yes,
