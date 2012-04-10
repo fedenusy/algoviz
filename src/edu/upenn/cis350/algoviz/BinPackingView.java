@@ -34,6 +34,10 @@ public class BinPackingView extends View {
 	private int current_value;
 
 	private BinObjectPaginator _currentPaginator, _unallocatedObjectsPaginator;
+	private int binWidth;
+	private int binHeight;
+	private int objWidth;
+	private int objHeight;
 
 	
 	///// Constructors /////
@@ -62,7 +66,24 @@ public class BinPackingView extends View {
 		// Location of center of View
 		int mid = this.getWidth() / 2;
 		
-		_unallocatedObjectsPaginator = new BinObjectPaginator(mid, "Unallocated Objects");
+		// Specify sizes of Bins and BinObjects relative to size of screen
+		binWidth = (int)(0.30 * this.getWidth());
+		binHeight = (int)(0.15 * this.getHeight());
+		objWidth = (int)(0.15 * this.getWidth());
+		objHeight = objWidth;
+		
+		// Set instances of Bins and BinObjects to appropriate size
+		for (Bin bin : bins) {
+			bin.setWidth(binWidth);
+			bin.setHeight(binHeight);
+		}
+		for (BinObject obj : objects) {
+			obj.setWidth(objWidth);
+			obj.setHeight(objHeight);
+		}
+		
+		
+		_unallocatedObjectsPaginator = new BinObjectPaginator(mid, objWidth, objHeight, "Unallocated Objects");
 		_unallocatedObjectsPaginator.addAll(objects);
 		
 		_currentPaginator = _unallocatedObjectsPaginator;
@@ -73,18 +94,18 @@ public class BinPackingView extends View {
 		case 1:
 			b1 = BinPackingView.bins.get(0);
 			b1.instantiatePaginator(mid, "Middle Bin");
-			b1.setX(mid - (b1.getWidth() / 2));
-			b1.setY(this.getHeight() - b1.getHeight());
+			b1.setX(mid - binWidth / 2);
+			b1.setY(this.getHeight() - binHeight);
 			break;
 		case 2:
 			b1 = BinPackingView.bins.get(0);
 			b1.instantiatePaginator(mid, "Left Bin");
 			b2 = BinPackingView.bins.get(1);
 			b2.instantiatePaginator(mid, "Right Bin");
-			b1.setX(mid - b1.getWidth() - 10);
-			b1.setY(this.getHeight() - b1.getHeight());
-			b2.setX(mid + 10);
-			b2.setY(this.getHeight() - b2.getHeight());
+			b1.setX((int)(mid - binWidth - 0.015 * this.getWidth()));
+			b1.setY(this.getHeight() - binHeight);
+			b2.setX((int)(mid + 0.015 * this.getWidth()));
+			b2.setY(this.getHeight() - binHeight);
 			break;
 		case 3:
 			b1 = BinPackingView.bins.get(0);
@@ -93,13 +114,13 @@ public class BinPackingView extends View {
 			b2.instantiatePaginator(mid, "Middle Bin");
 			b3 = BinPackingView.bins.get(2);
 			b3.instantiatePaginator(mid, "Right Bin");
-			b1.setX(mid - b2.getWidth() / 2 - b1.getWidth() - 20);
-			b1.setY(this.getHeight() - b1.getHeight());
-			b2.setX(mid - b2.getWidth() / 2);
-			b2.setY(this.getHeight() - b2.getHeight());
-			b3.setX(mid + b2.getWidth() / 2 + 20);
-			b3.setY(this.getHeight() - b3.getHeight());
-				break;
+			b1.setX((int)(mid - binWidth / 2 - binWidth - 0.03 * this.getWidth()));
+			b1.setY(this.getHeight() - binHeight);
+			b2.setX(mid - binWidth / 2);
+			b2.setY(this.getHeight() - binHeight);
+			b3.setX((int)(mid + binWidth / 2 + 0.03 * this.getWidth()));
+			b3.setY(this.getHeight() - binHeight);
+			break;
 		default:
 			Log.v("Bin number error", "Number of bins must be 1, 2, or 3!");
 			break;
@@ -142,14 +163,14 @@ public class BinPackingView extends View {
 		Paint paint = new Paint();
 		for (Bin bin : bins) {
 			paint.setColor(bin.getColor());
-			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + bin.getWidth(), bin.getY() + bin.getHeight(), paint);
+			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + binWidth, bin.getY() + binHeight, paint);
 			paint.setColor(Color.WHITE);
 			if (bin.getText().indexOf('C') == -1)
 				throw new UnsupportedOperationException("Unexpected Bin Text");
 			String text1 = bin.getText().substring(0,bin.getText().indexOf('C'));
 			String text2 = bin.getText().substring(bin.getText().indexOf('C'));
-			canvas.drawText(text1, bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight()/2, paint);
-			canvas.drawText(text2, bin.getX() + TEXT_X_OFFSET, bin.getY() + bin.getHeight()/2 + TEXT_Y_OFFSET, paint);
+			canvas.drawText(text1, bin.getX() + TEXT_X_OFFSET, bin.getY() + binHeight/2, paint);
+			canvas.drawText(text2, bin.getX() + TEXT_X_OFFSET, bin.getY() + binHeight/2 + TEXT_Y_OFFSET, paint);
 		}
 	}
 	
@@ -175,14 +196,14 @@ public class BinPackingView extends View {
 		Paint paint = new Paint();
 		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
 			paint.setColor(obj.getColor());
-			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + obj.getWidth(), obj.getY() + obj.getHeight(), paint);
+			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + objWidth, obj.getY() + objHeight, paint);
 			paint.setColor(Color.WHITE);
 			if (obj.getText().indexOf('$') == -1)
 				throw new UnsupportedOperationException("Unexpected Object Text");
 			String text1 = obj.getText().substring(0,obj.getText().indexOf('$'));
 			String text2 = obj.getText().substring(obj.getText().indexOf('$'));
-			canvas.drawText(text1, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2, paint);
-			canvas.drawText(text2, obj.getX() + TEXT_X_OFFSET, obj.getY() + obj.getHeight()/2 + TEXT_Y_OFFSET, paint);
+			canvas.drawText(text1, obj.getX() + TEXT_X_OFFSET, obj.getY() + objHeight/2, paint);
+			canvas.drawText(text2, obj.getX() + TEXT_X_OFFSET, obj.getY() + objHeight/2 + TEXT_Y_OFFSET, paint);
 		}
 	}
 	
@@ -312,21 +333,35 @@ public class BinPackingView extends View {
 	
 	
 	//when the user press "done" button
-	public int submit(){
+	public double submit(){
 		//calculate the current value
 		current_value=0;
 		for (Bin bin : bins) 
 			current_value += bin.getValue(); 	
 		
 		this.updateValue(current_value);
-				
+			
+		Double optimalSol=BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName());
 		
-		if (BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName())==current_value){
-			return 1;
+		if (optimalSol==current_value){
+			return 1.1;
 		}
 		else{
 			//supposedly if the user get a close answer, should show a toast
-			return -1;
+			double percent=current_value/optimalSol;
+			if (percent>=0.9)
+				return 0.9;
+			else 
+				if (percent>=0.75)
+				return 0.75;
+			else 
+				if (percent>=0.5)
+				return 0.5;
+			else 
+				if (percent>=0.3)
+					return 0.3;
+			else
+				return 0;
 		}
 		
 	}

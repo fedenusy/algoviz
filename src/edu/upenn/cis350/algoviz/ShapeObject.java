@@ -72,6 +72,14 @@ public class ShapeObject {
 	public void setColor(int color) {
 		this.color = color;
 	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
 	//check if two shapes collides
 	public boolean collidesWith(ShapeObject s2) {
