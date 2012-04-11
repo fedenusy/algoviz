@@ -232,6 +232,12 @@ public class BinPackingView extends View {
 		else return false;	
 	}
 	
+	/**
+	 * Handles ACTION_DOWN motion events.
+	 * @param x The x-coordinate of the touch event.
+	 * @param y The y-coordinate of the touch event.
+	 * @return True if object or bin is clicked, false otherwise.
+	 */
 	private boolean handleClick(float x, float y) {
 		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
 			if (obj.containsPoint(x, y)) {
@@ -282,6 +288,12 @@ public class BinPackingView extends View {
 		return true;
 	}
 	
+	/**
+	 * Handles ACTION_UP motion events.
+	 * @param x The x-coordinate of the touch event.
+	 * @param y The y-coordinate of the touch event.
+	 * @return
+	 */
 	private boolean handleDrop(float x, float y) {
 		if (objToMove == null) return true;
 		else objToMove.setColor(Color.BLUE);
@@ -333,21 +345,35 @@ public class BinPackingView extends View {
 	
 	
 	//when the user press "done" button
-	public int submit(){
+	public double submit(){
 		//calculate the current value
 		current_value=0;
 		for (Bin bin : bins) 
 			current_value += bin.getValue(); 	
 		
 		this.updateValue(current_value);
-				
+			
+		Double optimalSol=BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName());
 		
-		if (BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName())==current_value){
-			return 1;
+		if (optimalSol==current_value){
+			return 1.1;
 		}
 		else{
 			//supposedly if the user get a close answer, should show a toast
-			return -1;
+			double percent=current_value/optimalSol;
+			if (percent>=0.9)
+				return 0.9;
+			else 
+				if (percent>=0.75)
+				return 0.75;
+			else 
+				if (percent>=0.5)
+				return 0.5;
+			else 
+				if (percent>=0.3)
+					return 0.3;
+			else
+				return 0;
 		}
 		
 	}

@@ -24,6 +24,8 @@ public class BinPackingActivity extends Activity {
 	private static final int INCORRECT_DIALOG = 3;
 	private ScoreBoard _sb;
 	private long _mtime1, _mtime2;
+	
+	private double _percent;
 
 	
 	/** Called when the activity is first created. */
@@ -35,6 +37,7 @@ public class BinPackingActivity extends Activity {
    		_finished = new int[6];
    		showDialog(READY_DIALOG);
    		_sb=new ScoreBoard();
+   		_percent=0.0;
     }
     
     public String getProblemName() {
@@ -82,11 +85,12 @@ public class BinPackingActivity extends Activity {
     public void onDoneClick(View v){
     	//click to show done
     	//To-do
-    	int result=((BinPackingView) this.findViewById(R.id.binview)).submit();
-    	if (result==1)
+    	double result=((BinPackingView) this.findViewById(R.id.binview)).submit();
+    	if (result>=1)
     		showDialog(CORRECT_DIALOG);
-    	else
-    		showDialog(INCORRECT_DIALOG);
+    	else{
+    		_percent=result;
+    		showDialog(INCORRECT_DIALOG);}
     }
     
     public void onResetClick(View v){
@@ -207,8 +211,9 @@ public class BinPackingActivity extends Activity {
     		if (id==INCORRECT_DIALOG){
     			_mtime2=System.currentTimeMillis();
             	double stime=(_mtime2-_mtime1)/1000.0;
-            	String str1=((Double)stime).toString();
-    			CharSequence text = "Wrong. Check again! Click on Yes to restart.";
+            	double p=_percent*100;
+            	String str1=((Double)p).toString();
+    			CharSequence text = str1+"% to the best solution. Click on Yes to restart.";
     			
         		AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
                 // this is the message to display
