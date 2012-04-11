@@ -55,6 +55,12 @@ public class BinPackingView extends View {
 	
 	
 	///// Public methods /////
+	
+	/**
+	 * Initialize the app by fetching the list of Bins and BinObjects from
+	 * the BinPackingProblemFactory instantiated in the constructor.  Also,
+	 * set the size of each object to some percentage of the screen size.
+	 */
 	public void initialize() {
 		
 		objects = new ArrayList<BinObject>();
@@ -82,10 +88,9 @@ public class BinPackingView extends View {
 			obj.setHeight(objHeight);
 		}
 		
-		
+		// Initialize the paginator and set it to be the current one
 		_unallocatedObjectsPaginator = new BinObjectPaginator(mid, objWidth, objHeight, "Unallocated Objects");
-		_unallocatedObjectsPaginator.addAll(objects);
-		
+		_unallocatedObjectsPaginator.addAll(objects);		
 		_currentPaginator = _unallocatedObjectsPaginator;
 				
 		// Set locations for all Bins
@@ -126,20 +131,8 @@ public class BinPackingView extends View {
 			break;
 		} 
 				
-		//init the value
-		current_value=0;
-		
-		/*		
-		//init the toast
-		CharSequence text = "Great Job!!!";
-		CharSequence text2 = "Try Again!!!";
-		int duration = Toast.LENGTH_SHORT;
-
-		toast_rightSolution = Toast.makeText(this.getContext(), text, duration);
-		toast_rightSolution.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-		
-		toast_wrongSolution = Toast.makeText(this.getContext(),text2, duration);
-		toast_wrongSolution.setGravity(Gravity.CENTER_VERTICAL, 0, 0);*/
+		// Initialize the total value to 0
+		current_value = 0;
 				
 	}
 	
