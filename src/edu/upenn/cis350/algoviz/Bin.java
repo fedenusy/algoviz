@@ -52,7 +52,7 @@ public class Bin extends ShapeObject {
 			_contents.add(obj);
 			_paginator.add(obj);
 			_objWidth = obj.getWidth();
-			message = _weight + " ," + _value + " , Cap: " + _capacity;
+			message = _weight + " \n" + _value + " , Cap: " + _capacity;
 			return true;
 		}
 	}

@@ -78,6 +78,8 @@ public class BinPackingView extends View {
 		objWidth = (int)(0.15 * this.getWidth());
 		objHeight = objWidth;
 		
+		int bin_loc_offset=100;
+		
 		// Set instances of Bins and BinObjects to appropriate size
 		for (Bin bin : bins) {
 			bin.setWidth(binWidth);
@@ -100,7 +102,7 @@ public class BinPackingView extends View {
 			b1 = BinPackingView.bins.get(0);
 			b1.instantiatePaginator(mid, "Middle Bin");
 			b1.setX(mid - binWidth / 2);
-			b1.setY(this.getHeight() - binHeight);
+			b1.setY(this.getHeight() - binHeight-bin_loc_offset);
 			break;
 		case 2:
 			b1 = BinPackingView.bins.get(0);
@@ -110,7 +112,7 @@ public class BinPackingView extends View {
 			b1.setX((int)(mid - binWidth - 0.015 * this.getWidth()));
 			b1.setY(this.getHeight() - binHeight);
 			b2.setX((int)(mid + 0.015 * this.getWidth()));
-			b2.setY(this.getHeight() - binHeight);
+			b2.setY(this.getHeight() - binHeight-bin_loc_offset);
 			break;
 		case 3:
 			b1 = BinPackingView.bins.get(0);
@@ -120,11 +122,11 @@ public class BinPackingView extends View {
 			b3 = BinPackingView.bins.get(2);
 			b3.instantiatePaginator(mid, "Right Bin");
 			b1.setX((int)(mid - binWidth / 2 - binWidth - 0.03 * this.getWidth()));
-			b1.setY(this.getHeight() - binHeight);
+			b1.setY(this.getHeight() - binHeight-bin_loc_offset);
 			b2.setX(mid - binWidth / 2);
-			b2.setY(this.getHeight() - binHeight);
+			b2.setY(this.getHeight() - binHeight-bin_loc_offset);
 			b3.setX((int)(mid + binWidth / 2 + 0.03 * this.getWidth()));
-			b3.setY(this.getHeight() - binHeight);
+			b3.setY(this.getHeight() - binHeight-bin_loc_offset);
 			break;
 		default:
 			Log.v("Bin number error", "Number of bins must be 1, 2, or 3!");
@@ -154,6 +156,7 @@ public class BinPackingView extends View {
 	
 	private void drawBins(Canvas canvas) {
 		Paint paint = new Paint();
+		paint.setTextSize(30);
 		for (Bin bin : bins) {
 			paint.setColor(bin.getColor());
 			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + binWidth, bin.getY() + binHeight, paint);
@@ -187,6 +190,7 @@ public class BinPackingView extends View {
 	
 	private void drawObjects(Canvas canvas) {
 		Paint paint = new Paint();
+		paint.setTextSize(30);
 		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
 			paint.setColor(obj.getColor());
 			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + objWidth, obj.getY() + objHeight, paint);
@@ -329,12 +333,7 @@ public class BinPackingView extends View {
 
 	
 	
-	//TODO: fix this part
-	public void updateValue(int value){
-    	TextView count_text=(TextView)this.findViewById(R.id.textView4);
-    	if (count_text!=null)//now it's returning null
-    		count_text.setText(Integer.toString(value));
-    }
+	
 	
 	
 	//when the user press "done" button
@@ -343,8 +342,7 @@ public class BinPackingView extends View {
 		current_value=0;
 		for (Bin bin : bins) 
 			current_value += bin.getValue(); 	
-		
-		this.updateValue(current_value);
+
 			
 		Double optimalSol=BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName());
 		

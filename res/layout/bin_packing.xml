@@ -3,55 +3,86 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:orientation="vertical">
 
-	<LinearLayout android:id="@+id/linearLayout2"
-		android:layout_width="match_parent" android:layout_height="wrap_content">
+    	<LinearLayout
+    	    android:id="@+id/linearLayout1"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content" >
 
-		<TextView android:id="@+id/textView1" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/level"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
+    	    <Button
+    	        android:id="@+id/button1"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="0.01"
+    	        android:onClick="onResetClick"
+    	        android:text="@string/reset" />
 
-		<TextView android:id="@+id/textView2" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/level_num"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
+    	    <Button
+    	        android:id="@+id/button2"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="0.01"
+    	        android:onClick="onDoneClick"
+    	        android:text="@string/done" />
 
-		<TextView android:id="@+id/textView3" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/value"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
+    	    <Button
+    	        android:id="@+id/button4"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="0.01"
+    	        android:onClick="onBackClick"
+    	        android:text="@string/previous" />
 
-		<TextView android:id="@+id/textView4" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="@string/value_num"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
+    	    <Button
+    	        android:id="@+id/button3"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_weight="0.01"
+    	        android:onClick="onNextLevelClick"
+    	        android:text="@string/next" />
 
+    	</LinearLayout>
+	
+	<LinearLayout
+	    android:id="@+id/linearLayout2"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.00"
+	        android:text="@string/level"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	    <TextView
+	        android:id="@+id/textView2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.03"
+	        android:text="@string/level_num"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	    <Chronometer
+	        android:id="@+id/chronometer1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.01"
+	        android:text="Chronometer" />
 	</LinearLayout>
 
-	<LinearLayout android:id="@+id/linearLayout3"
-		android:layout_width="match_parent" android:layout_height="500dp">
+		<LinearLayout
+	    android:id="@+id/linearLayout3"
+	    android:layout_width="match_parent"
+	    android:layout_height="1000dp" >
 
 		<edu.upenn.cis350.algoviz.BinPackingView
-			android:id="@+id/binview" android:layout_width="match_parent"
-			android:layout_height="450dp" />
-
+		    android:id="@+id/binview"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" />
+		
 	</LinearLayout>
 
-	<LinearLayout android:id="@+id/linearLayout1"
-		android:layout_width="match_parent" android:layout_height="wrap_content">
 
-		<Button android:id="@+id/button1" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:onClick="onResetClick"
-			android:text="@string/reset" />
-
-		<Button android:id="@+id/button2" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:onClick="onDoneClick"
-			android:text="@string/done" />
-
-		<Button android:id="@+id/button4" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:onClick="onBackClick"
-			android:text="@string/previous" />
-
-		<Button android:id="@+id/button3" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:onClick="onNextLevelClick"
-			android:text="@string/next" />
-
-	</LinearLayout>
 
 </LinearLayout>

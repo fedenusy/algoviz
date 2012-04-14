@@ -24,7 +24,9 @@
         android:label="@string/app_name" >
         <activity
             android:name=".AlgovizActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:configChanges="orientation"
+       		 android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +40,9 @@
              
         </activity>
         
-         <activity android:name="edu.upenn.cis350.algoviz.BinPackingActivity" />
+         <activity android:name="edu.upenn.cis350.algoviz.BinPackingActivity" 
+             android:configChanges="orientation"
+       		 android:screenOrientation="portrait"/>
 
         
         

@@ -6,8 +6,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,8 @@ public class BinPackingActivity extends Activity {
 	String _problemName;
 	int[] _finished;
 	BinPackingProblemFactory _factory;
+	
+	private Chronometer _mChronometer;
 	
 	private int _first_run;
 	private double _top_score;
@@ -38,6 +42,7 @@ public class BinPackingActivity extends Activity {
    		showDialog(READY_DIALOG);
    		_sb=new ScoreBoard();
    		_percent=0.0;
+   		_mChronometer=(Chronometer) findViewById(R.id.chronometer1);
     }
     
     public String getProblemName() {
@@ -63,7 +68,6 @@ public class BinPackingActivity extends Activity {
     		TextView count_text=(TextView)findViewById(R.id.textView2);
     		count_text.setText(Integer.toString(getLevelCount()));
     		
-    		((BinPackingView) this.findViewById(R.id.binview)).updateValue(0);
     	}
     	else
     	{
@@ -106,9 +110,7 @@ public class BinPackingActivity extends Activity {
     	
     		TextView count_text=(TextView)findViewById(R.id.textView2);
     		count_text.setText(Integer.toString(getLevelCount()));
-    		
-    		((BinPackingView) this.findViewById(R.id.binview)).updateValue(0);
-    		
+
     	}
     	showDialog(READY_DIALOG);
     	
@@ -181,6 +183,8 @@ public class BinPackingActivity extends Activity {
 	    	           public void onClick(DialogInterface dialog, int id) {
                                    // this will hide the dialog
 	    	        	   dialog.cancel();
+	    	        	   _mChronometer.setBase(SystemClock.elapsedRealtime());
+	    	        	   _mChronometer.start();
 	    	        	   _mtime1=System.currentTimeMillis();
 	    	           }
 	    	         });
@@ -200,6 +204,7 @@ public class BinPackingActivity extends Activity {
                                // this will hide the dialog
     	        	   dialog.cancel();      	   
     	        	   showDialog(READY_DIALOG);
+    	        	   _mChronometer.setBase(SystemClock.elapsedRealtime());
     	        	   nextLevelHelper();
     	           }
     	         });
@@ -214,7 +219,7 @@ public class BinPackingActivity extends Activity {
             	double p=_percent*100;
             	String str1=((Double)p).toString();
     			CharSequence text = str1+"% to the best solution. Click on Yes to restart.";
-    			
+    			_mChronometer.stop();
         		AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
                 // this is the message to display
         		builder3.setMessage(text); 
@@ -225,6 +230,7 @@ public class BinPackingActivity extends Activity {
         	           public void onClick(DialogInterface dialog, int id) {
                                    // this will hide the dialog
         	        	   ((BinPackingView) findViewById(R.id.binview)).reset();
+        	        	   _mChronometer.start();
         	        	   dialog.cancel();
         	           }
         	         });
