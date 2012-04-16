@@ -180,12 +180,14 @@ public class BinPackingView extends View {
 		paint.setColor(Color.WHITE);
 		String title = _currentPaginator.getTitle();
 		canvas.drawText(title, xPos + width/2 - title.length()/2 * 6, yPos, paint);
-		String currentPage = _currentPaginator.getText();
-		canvas.drawText(currentPage, xPos + width/2 - currentPage.length()/2 * 6, yPos+height-10, paint);
 		
-		canvas.drawText("Next Page >>", width/2 + 80, yPos+height-10, paint);
-		canvas.drawText("<< Previous Page", width/2 - 80 - 16*6, yPos+height-10, paint);
-		if (!_currentPaginator.equals(_unallocatedObjectsPaginator)) canvas.drawText("X", width-50, yPos, paint);
+		String currentPage = _currentPaginator.getText();
+		if (!currentPage.endsWith("1")) {
+			canvas.drawText(currentPage, xPos + width/2 - currentPage.length()/2 * 6, yPos+height-10, paint);
+			canvas.drawText("Next Page >>", width/2 + 80, yPos+height-10, paint);
+			canvas.drawText("<< Previous Page", width/2 - 80 - 16*6, yPos+height-10, paint);
+			if (!_currentPaginator.equals(_unallocatedObjectsPaginator)) canvas.drawText("X", width-50, yPos, paint);
+		}
 	}
 	
 	private void drawObjects(Canvas canvas) {
