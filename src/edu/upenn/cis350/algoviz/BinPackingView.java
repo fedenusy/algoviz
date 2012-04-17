@@ -155,11 +155,17 @@ public class BinPackingView extends View {
 	}
 	
 	private void drawBins(Canvas canvas) {
+		int fill_height;
 		Paint paint = new Paint();
 		paint.setTextSize(30);
 		for (Bin bin : bins) {
+			paint.setStyle(Paint.Style.STROKE);
 			paint.setColor(bin.getColor());
 			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + binWidth, bin.getY() + binHeight, paint);
+			paint.setStyle(Paint.Style.FILL);
+			fill_height = (int)(bin.getHeight() * bin.getWeight() / bin.getCapacity());
+			canvas.drawRect(bin.getX(), bin.getY() + binHeight - fill_height,
+					bin.getX() + binWidth, bin.getY() + binHeight, paint);
 			paint.setColor(Color.WHITE);
 			if (bin.getText().indexOf('C') == -1)
 				throw new UnsupportedOperationException("Unexpected Bin Text");
@@ -263,9 +269,9 @@ public class BinPackingView extends View {
 		int xPos = _currentPaginator.getX(), yPos = _currentPaginator.getY(),
 				width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();
 		
-		ShapeObject prev = new ShapeObject(Color.MAGENTA, 12, 16*6, width/2 - 80 - 16*6, yPos+height-24, "");
-		ShapeObject next = new ShapeObject(Color.MAGENTA, 12, 12*6, width/2 + 80, yPos+height-24, "");
-		ShapeObject exit = new ShapeObject(Color.MAGENTA, 16, 12, width - 52, yPos-14, "");
+		ShapeObject prev = new ShapeObject(Color.MAGENTA, 25, 16*6, width/2 - 80 - 16*6, yPos+height-24, "");
+		ShapeObject next = new ShapeObject(Color.MAGENTA, 25, 12*6, width/2 + 80, yPos+height-24, "");
+		ShapeObject exit = new ShapeObject(Color.MAGENTA, 20, 20, width - 52, yPos-14, "");
 		
 		if (prev.containsPoint(x, y)) {
 			_currentPaginator.previousPage();
