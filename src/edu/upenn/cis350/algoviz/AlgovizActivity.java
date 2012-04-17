@@ -11,6 +11,8 @@ public class AlgovizActivity extends Activity {
 	ScoreBoard board;
 	int level;
 	public static final int ACTIVITY_BinPackingActivity = 1;
+	public static final int ACTIVITY_highScoreActivity = 2;
+	
 
 	
     @Override
@@ -24,6 +26,13 @@ public class AlgovizActivity extends Activity {
     public void onStartClick(View v) {
     	this.level = 1;
     	showLevel(this.level);
+    }
+    
+    public void onScoreClick(View v){
+    	Intent i = new Intent(this, highScoreActivity.class);
+    	startActivityForResult(i,
+    			AlgovizActivity.ACTIVITY_highScoreActivity);
+    	
     }
     
     public void onQuitClick(View v) {

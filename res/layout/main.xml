@@ -20,7 +20,7 @@
 			android:text="@string/start" />
 
 		<Button android:id="@+id/button2" android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:onClick="onLevel1Click"
+			android:layout_height="wrap_content" android:onClick="onScoreClick"
 			android:text="@string/high_scores" />
 
 		<Button android:id="@+id/button3" android:layout_width="match_parent"

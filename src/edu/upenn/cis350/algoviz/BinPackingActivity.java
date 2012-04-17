@@ -28,8 +28,9 @@ public class BinPackingActivity extends Activity {
 	private static final int READY_DIALOG = 1;
 	private static final int CORRECT_DIALOG = 2;
 	private static final int INCORRECT_DIALOG = 3;
-	private ScoreBoard _sb;
+	//private ScoreBoard _sb;
 	private long _mtime1, _mtime2;
+	private SharedPreferences scores;
 	
 	private double _percent;
 
@@ -42,13 +43,12 @@ public class BinPackingActivity extends Activity {
    		_problemName = "Baby Packer";
    		_finished = new int[6];
    		showDialog(READY_DIALOG);
-   		_sb=new ScoreBoard();
+   		
    		_percent=0.0;
    		_mChronometer=(Chronometer) findViewById(R.id.chronometer1);
    		
    		
-   		SharedPreferences scores = getSharedPreferences(PREFS_NAME, 0);
-       // boolean silent = settings.getBoolean("silentMode", false);
+   		scores = getSharedPreferences(PREFS_NAME, 0);
       
     }
     
@@ -73,7 +73,7 @@ public class BinPackingActivity extends Activity {
     		view.reset();
     	
     		TextView count_text=(TextView)findViewById(R.id.textView2);
-    		count_text.setText(Integer.toString(getLevelCount()));
+    		count_text.setText(_problemName);
     		
     	}
     	else
@@ -109,6 +109,7 @@ public class BinPackingActivity extends Activity {
     }
     
     public void onBackClick(View v){
+    	if (!"Baby Packer".equalsIgnoreCase(_problemName)){
     	String previousProblem = previousProblem(_problemName);
     	if (previousProblem != null){
     		_problemName = previousProblem;
@@ -120,7 +121,10 @@ public class BinPackingActivity extends Activity {
 
     	}
     	showDialog(READY_DIALOG);
-    	
+    	}
+    	else{
+    		super.onBackPressed();    		
+    	}
     }
     
     
@@ -156,11 +160,12 @@ public class BinPackingActivity extends Activity {
     	AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
 		
 		_mtime2=System.currentTimeMillis();
-    	double stime=(_mtime2-_mtime1)/1000.0;
+		long time1=_mChronometer.getBase();
+    	int stime=(int) ((_mtime2-_mtime1)/1000.0);
     	
-    	String str1=((Double)stime).toString();
+    	String str1=((Integer)stime).toString();
     	
-    	int result=this._sb.setScore(_problemName, stime);
+    	int result=storeScore(stime);
     	
     	
     	if (result==1){
@@ -169,8 +174,7 @@ public class BinPackingActivity extends Activity {
     		
     	}
     	else{
-    		String str2=_sb.getScore(_problemName).toString();
-			CharSequence text = "It's correct! You used"+str1+" seconds this time. The top score is"+str2+". Click Yes to next level.";
+			CharSequence text = "It's correct! You used "+str1+" seconds this time. Click Yes to next level.";
 			builder2.setMessage(text);     		
     	}
     	
@@ -248,4 +252,35 @@ public class BinPackingActivity extends Activity {
     	else return null;
     }
 
+    private int storeScore(int time){
+    	scores = getSharedPreferences(PREFS_NAME, 0);
+    	
+    	int currScore=scores.getInt(_problemName, 20000);
+    	
+    	if (currScore<0){
+    	    	SharedPreferences.Editor editor = scores.edit();
+    	    	editor.putInt(_problemName, time);
+
+    	    	// Commit the edits!
+    	    	editor.commit();
+    	    	return 1;}
+    	else{
+    		if (currScore>time){
+    			SharedPreferences.Editor editor = scores.edit();
+    			editor.putInt(_problemName, time);
+    			editor.commit();
+    			return 1;    			
+    		}
+    		else{
+    			
+    			return -1;
+    			
+    			
+    		}
+    	}
+
+    }
+    
 }
+
+

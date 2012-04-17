@@ -43,6 +43,10 @@
          <activity android:name="edu.upenn.cis350.algoviz.BinPackingActivity" 
              android:configChanges="orientation"
        		 android:screenOrientation="portrait"/>
+         
+         <activity android:name="edu.upenn.cis350.algoviz.highScoreActivity" 
+             android:configChanges="orientation"
+       		 android:screenOrientation="portrait"/>
 
         
         

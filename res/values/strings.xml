@@ -13,7 +13,18 @@
     <string name="start">Start</string>
     <string name="high_scores">High Scores</string>
     <string name="quit">Quit</string>
-	 <string name="ready">ready?</string>
-	  <string name="yes">yes!</string>
+	<string name="ready">ready?</string>
+	<string name="level1">Baby Packer</string>
+	<string name="level2">Pack Rat</string>
+	<string name="level3">Experienced Packer</string>
+	<string name="level4">Packing Connoisseur</string>
+	<string name="level5">Pack Master</string>
+	<string name="yes">yes!</string>
+	<string name="level1r">--</string>
+	<string name="level2r">--</string>
+	<string name="level3r">--</string>
+	<string name="level4r">--</string>
+	<string name="level5r">--</string>
+	
 
 </resources>
