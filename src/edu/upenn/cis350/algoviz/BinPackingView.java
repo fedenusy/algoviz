@@ -350,7 +350,7 @@ public class BinPackingView extends View {
 			
 		Double optimalSol=BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName());
 		
-		if (optimalSol==current_value){
+		if (optimalSol>=current_value){
 			return 1.1;
 		}
 		else{

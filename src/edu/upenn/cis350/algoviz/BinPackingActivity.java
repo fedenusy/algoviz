@@ -257,7 +257,7 @@ public class BinPackingActivity extends Activity {
     	
     	int currScore=scores.getInt(_problemName, 20000);
     	
-    	if (currScore<0){
+    	if ((currScore<0)||(currScore==20000)){
     	    	SharedPreferences.Editor editor = scores.edit();
     	    	editor.putInt(_problemName, time);
 
