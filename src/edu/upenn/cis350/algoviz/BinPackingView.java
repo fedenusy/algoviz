@@ -160,8 +160,10 @@ public class BinPackingView extends View {
 		paint.setTextSize(30);
 		for (Bin bin : bins) {
 			paint.setStyle(Paint.Style.STROKE);
-			paint.setColor(bin.getColor());
+			paint.setStrokeWidth(5);
+			paint.setColor(Color.BLACK);
 			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + binWidth, bin.getY() + binHeight, paint);
+			paint.setColor(bin.getColor());
 			paint.setStyle(Paint.Style.FILL);
 			fill_height = (int)(bin.getHeight() * bin.getWeight() / bin.getCapacity());
 			canvas.drawRect(bin.getX(), bin.getY() + binHeight - fill_height,
