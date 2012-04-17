@@ -155,11 +155,17 @@ public class BinPackingView extends View {
 	}
 	
 	private void drawBins(Canvas canvas) {
+		int fill_height;
 		Paint paint = new Paint();
 		paint.setTextSize(30);
 		for (Bin bin : bins) {
+			paint.setStyle(Paint.Style.STROKE);
 			paint.setColor(bin.getColor());
 			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + binWidth, bin.getY() + binHeight, paint);
+			paint.setStyle(Paint.Style.FILL);
+			fill_height = (int)(bin.getHeight() * bin.getWeight() / bin.getCapacity());
+			canvas.drawRect(bin.getX(), bin.getY() + binHeight - fill_height,
+					bin.getX() + binWidth, bin.getY() + binHeight, paint);
 			paint.setColor(Color.WHITE);
 			if (bin.getText().indexOf('C') == -1)
 				throw new UnsupportedOperationException("Unexpected Bin Text");
