@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ public class BinPackingActivity extends Activity {
 	
 	private Chronometer _mChronometer;
 	
+	public static final String PREFS_NAME = "MyPrefsFile";
 	private int _first_run;
 	private double _top_score;
 	private static final int READY_DIALOG = 1;
@@ -43,6 +45,11 @@ public class BinPackingActivity extends Activity {
    		_sb=new ScoreBoard();
    		_percent=0.0;
    		_mChronometer=(Chronometer) findViewById(R.id.chronometer1);
+   		
+   		
+   		SharedPreferences scores = getSharedPreferences(PREFS_NAME, 0);
+       // boolean silent = settings.getBoolean("silentMode", false);
+      
     }
     
     public String getProblemName() {

@@ -110,7 +110,7 @@ public class BinPackingView extends View {
 			b2 = BinPackingView.bins.get(1);
 			b2.instantiatePaginator(mid, "Right Bin");
 			b1.setX((int)(mid - binWidth - 0.015 * this.getWidth()));
-			b1.setY(this.getHeight() - binHeight);
+			b1.setY(this.getHeight() - binHeight-bin_loc_offset);
 			b2.setX((int)(mid + 0.015 * this.getWidth()));
 			b2.setY(this.getHeight() - binHeight-bin_loc_offset);
 			break;
