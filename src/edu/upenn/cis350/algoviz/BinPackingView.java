@@ -263,9 +263,9 @@ public class BinPackingView extends View {
 		int xPos = _currentPaginator.getX(), yPos = _currentPaginator.getY(),
 				width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();
 		
-		ShapeObject prev = new ShapeObject(Color.MAGENTA, 12, 16*6, width/2 - 80 - 16*6, yPos+height-24, "");
-		ShapeObject next = new ShapeObject(Color.MAGENTA, 12, 12*6, width/2 + 80, yPos+height-24, "");
-		ShapeObject exit = new ShapeObject(Color.MAGENTA, 16, 12, width - 52, yPos-14, "");
+		ShapeObject prev = new ShapeObject(Color.MAGENTA, 25, 16*6, width/2 - 80 - 16*6, yPos+height-24, "");
+		ShapeObject next = new ShapeObject(Color.MAGENTA, 25, 12*6, width/2 + 80, yPos+height-24, "");
+		ShapeObject exit = new ShapeObject(Color.MAGENTA, 20, 20, width - 52, yPos-14, "");
 		
 		if (prev.containsPoint(x, y)) {
 			_currentPaginator.previousPage();
