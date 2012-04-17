@@ -20,7 +20,7 @@ public class BinObjectPaginator extends ShapeObject {
 	
 	///// Constructors /////
 	public BinObjectPaginator(int mid, int objWidth, int objHeight, String title) {
-		super(Color.BLACK, 20+(objHeight+20)*4+30, mid*2, 0, 40, "");
+		super(Color.TRANSPARENT, 20+(objHeight+20)*4+30, mid*2, 0, 40, "");
 		_mid = mid;
 		_title = title;
 		_objects = new ArrayList<BinObject>();
