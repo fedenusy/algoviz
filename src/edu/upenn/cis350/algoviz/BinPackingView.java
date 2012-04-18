@@ -159,15 +159,15 @@ public class BinPackingView extends View {
 		Paint paint = new Paint();
 		paint.setTextSize(30);
 		for (Bin bin : bins) {
-			paint.setStyle(Paint.Style.STROKE);
-			paint.setStrokeWidth(5);
-			paint.setColor(Color.BLACK);
-			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + binWidth, bin.getY() + binHeight, paint);
+			
+	
 			paint.setColor(bin.getColor());
+			
+			
 			paint.setStyle(Paint.Style.FILL);
-			fill_height = (int)(bin.getHeight() * bin.getWeight() / bin.getCapacity());
-			canvas.drawRect(bin.getX(), bin.getY() + binHeight - fill_height,
-					bin.getX() + binWidth, bin.getY() + binHeight, paint);
+			fill_height = (int)((bin.getHeight()) * bin.getWeight() / bin.getCapacity());
+			canvas.drawRect(bin.getX()+2, bin.getY() + 2+binHeight - fill_height,
+					bin.getX()-2 + binWidth, bin.getY()-2 + binHeight, paint);
 			paint.setColor(Color.WHITE);
 			if (bin.getText().indexOf('C') == -1)
 				throw new UnsupportedOperationException("Unexpected Bin Text");
@@ -175,6 +175,11 @@ public class BinPackingView extends View {
 			String text2 = bin.getText().substring(bin.getText().indexOf('C'));
 			canvas.drawText(text1, bin.getX() + TEXT_X_OFFSET, bin.getY() + binHeight/2, paint);
 			canvas.drawText(text2, bin.getX() + TEXT_X_OFFSET, bin.getY() + binHeight/2 + TEXT_Y_OFFSET, paint);
+			
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setStrokeWidth(5);
+			paint.setColor(Color.BLACK);
+			canvas.drawRect(bin.getX(), bin.getY(), bin.getX() + binWidth, bin.getY() + binHeight, paint);
 		}
 	}
 	
@@ -358,7 +363,7 @@ public class BinPackingView extends View {
 			
 		Double optimalSol=BinPackingView.factory.getOptimalSolution(((BinPackingActivity) this.getContext()).getProblemName());
 		
-		if (optimalSol>=current_value){
+		if (optimalSol<=current_value){
 			return 1.1;
 		}
 		else{

@@ -22,7 +22,8 @@ public class Bin extends ShapeObject {
 	
 	///// Constructors /////
 	Bin(double capacity) {
-		super(Color.RED, 80, 60, 0, 0, "0, 0, Cap:" + capacity);
+		//int c=Color.rgb(218,165,32);
+		super(Color.rgb(218,165,32), 80, 60, 0, 0, "0, 0, Cap:" + capacity);
 		_capacity = capacity;
 		_weight = 0;
 		_value = 0;	
@@ -52,7 +53,7 @@ public class Bin extends ShapeObject {
 			_contents.add(obj);
 			_paginator.add(obj);
 			_objWidth = obj.getWidth();
-			message = _weight + " \n" + _value + " , Cap: " + _capacity;
+			message = _weight + ", $" + _value + " , Cap: " + _capacity;
 			return true;
 		}
 	}
@@ -68,7 +69,7 @@ public class Bin extends ShapeObject {
 			_value -= obj.getValue();
 			_contents.remove(obj);
 			_paginator.remove(obj);
-			message = _weight + " ," + _value + " , Cap: " + _capacity; 
+			message = _weight + ", $" + _value + " , Cap: " + _capacity; 
 			return true;
 		} else return false;
 	}

@@ -23,12 +23,13 @@ public class BinPackingActivity extends Activity {
 	private Chronometer _mChronometer;
 	
 	public static final String PREFS_NAME = "MyPrefsFile";
-	private int _first_run;
-	private double _top_score;
+
 	private static final int READY_DIALOG = 1;
 	private static final int CORRECT_DIALOG = 2;
 	private static final int INCORRECT_DIALOG = 3;
-	//private ScoreBoard _sb;
+	
+	private CharSequence _text;
+	
 	private long _mtime1, _mtime2;
 	private SharedPreferences scores;
 	
@@ -49,6 +50,7 @@ public class BinPackingActivity extends Activity {
    		
    		
    		scores = getSharedPreferences(PREFS_NAME, 0);
+   		
       
     }
     
@@ -93,12 +95,29 @@ public class BinPackingActivity extends Activity {
     }
     
     
-    public void onDoneClick(View v){
-    	//click to show done
-    	//To-do
+    @SuppressWarnings("deprecation")
+	public void onDoneClick(View v){
     	double result=((BinPackingView) this.findViewById(R.id.binview)).submit();
-    	if (result>=1)
-    		showDialog(CORRECT_DIALOG);
+    	
+    	if (result>=1){
+    		
+    		_mtime2=System.currentTimeMillis();
+        	int stime=(int) ((_mtime2-_mtime1)/1000.0);
+        	
+        	String str1=((Integer)stime).toString();
+        	int result2=storeScore(stime);
+        	
+
+        	if (result2==1){
+        		_text = "It's correct! You used "+str1+" seconds this time. You are the new top score! Click Yes to next level.";
+        	}
+        	else{
+    			_text = "It's correct! You used "+str1+" seconds this time. Click Yes to next level.";  		
+        	}
+        	removeDialog(CORRECT_DIALOG);
+        	showDialog(CORRECT_DIALOG);
+    	
+    	}
     	else{
     		_percent=result;
     		showDialog(INCORRECT_DIALOG);}
@@ -156,33 +175,9 @@ public class BinPackingActivity extends Activity {
     }
     
     
-    private AlertDialog.Builder setCorrectResult(){
-    	AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-		
-		_mtime2=System.currentTimeMillis();
-		long time1=_mChronometer.getBase();
-    	int stime=(int) ((_mtime2-_mtime1)/1000.0);
-    	
-    	String str1=((Integer)stime).toString();
-    	
-    	int result=storeScore(stime);
-    	
-    	
-    	if (result==1){
-    		CharSequence text = "It's correct! You used "+str1+" seconds this time. You are the new top score! Click Yes to next level.";
-    		builder2.setMessage(text);    
-    		
-    	}
-    	else{
-			CharSequence text = "It's correct! You used "+str1+" seconds this time. Click Yes to next level.";
-			builder2.setMessage(text);     		
-    	}
-    	
-    	
-    	return builder2;
-    }
     
-    protected Dialog onCreateDialog(int id) {
+    
+    protected Dialog onCreateDialog(int id, Bundle savedInstanceState) {
     	if (id == READY_DIALOG) {
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 // this is the message to display
@@ -193,30 +188,32 @@ public class BinPackingActivity extends Activity {
                            // this is the method to call when the button is clicked 
 	    	           public void onClick(DialogInterface dialog, int id) {
                                    // this will hide the dialog
-	    	        	   dialog.cancel();
+	    	        	   
 	    	        	   _mChronometer.setBase(SystemClock.elapsedRealtime());
 	    	        	   _mChronometer.start();
 	    	        	   _mtime1=System.currentTimeMillis();
+	    	        	   dialog.cancel();
 	    	           }
 	    	         });
     		return builder.create();
     	}
-    	
+    	else
     	//create the correct dialog
     	if (id==CORRECT_DIALOG){
-    		AlertDialog.Builder builder2 = setCorrectResult();
-    		
-        	
+    		AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+    		builder2.setMessage(_text);  
+   		
             // this is the button to display
     		builder2.setPositiveButton(R.string.yes,
     		new DialogInterface.OnClickListener() {
                        // this is the method to call when the button is clicked 
     	           public void onClick(DialogInterface dialog, int id) {
                                // this will hide the dialog
-    	        	   dialog.cancel();      	   
+    	        	      	   
     	        	   showDialog(READY_DIALOG);
     	        	   _mChronometer.setBase(SystemClock.elapsedRealtime());
     	        	   nextLevelHelper();
+    	        	   dialog.cancel();   
     	           }
     	         });
     		return builder2.create();
@@ -225,11 +222,11 @@ public class BinPackingActivity extends Activity {
     	else
     		//create the incorrect dialog
     		if (id==INCORRECT_DIALOG){
-    			_mtime2=System.currentTimeMillis();
-            	double stime=(_mtime2-_mtime1)/1000.0;
+    		
             	double p=_percent*100;
             	String str1=((Double)p).toString();
-    			CharSequence text = str1+"% to the best solution. Click on Yes to restart.";
+    			//CharSequence text = str1+"% to the best solution. Click on Yes to restart.";
+            	CharSequence text = "Incorrect. Click on Yes to restart.";
     			_mChronometer.stop();
         		AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
                 // this is the message to display
@@ -240,9 +237,11 @@ public class BinPackingActivity extends Activity {
                            // this is the method to call when the button is clicked 
         	           public void onClick(DialogInterface dialog, int id) {
                                    // this will hide the dialog
+        	        	  
         	        	   ((BinPackingView) findViewById(R.id.binview)).reset();
         	        	   _mChronometer.start();
         	        	   dialog.cancel();
+        	        	   
         	           }
         	         });
         		return builder3.create();
@@ -255,9 +254,9 @@ public class BinPackingActivity extends Activity {
     private int storeScore(int time){
     	scores = getSharedPreferences(PREFS_NAME, 0);
     	
-    	int currScore=scores.getInt(_problemName, 20000);
+    	int currScore=scores.getInt(_problemName, -1);
     	
-    	if ((currScore<0)||(currScore==20000)){
+    	if ((currScore<0)){
     	    	SharedPreferences.Editor editor = scores.edit();
     	    	editor.putInt(_problemName, time);
 

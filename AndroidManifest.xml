@@ -44,7 +44,7 @@
              android:configChanges="orientation"
        		 android:screenOrientation="portrait"/>
          
-         <activity android:name="edu.upenn.cis350.algoviz.highScoreActivity" 
+         <activity android:name="edu.upenn.cis350.algoviz.HighScoreActivity" 
              android:configChanges="orientation"
        		 android:screenOrientation="portrait"/>
 

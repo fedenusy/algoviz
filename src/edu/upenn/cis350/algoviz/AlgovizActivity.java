@@ -8,7 +8,7 @@ import android.view.View;
 
 public class AlgovizActivity extends Activity {
     /** Called when the activity is first created. */
-	ScoreBoard board;
+	
 	int level;
 	public static final int ACTIVITY_BinPackingActivity = 1;
 	public static final int ACTIVITY_HighScoreActivity = 2;
@@ -19,7 +19,7 @@ public class AlgovizActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ScoreBoard board = new ScoreBoard();
+       
         level = 0;
     }
     
