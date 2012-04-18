@@ -5,28 +5,39 @@
     android:background="@drawable/bg"
     android:orientation="vertical" >
 
-	<LinearLayout android:id="@+id/LinearLayout1"
-		android:layout_width="match_parent" android:layout_height="wrap_content"
-		android:orientation="vertical">
-
-		<ImageView
-		    android:id="@+id/imageView1"
-		    android:layout_width="match_parent"
-		    android:layout_height="754dp"
-		    android:src="@drawable/b2" />
-
-		<Button android:id="@+id/button7" android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:onClick="onStartClick"
-			android:text="@string/start" />
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.98"
+        android:src="@drawable/knapsack" />
 
-		<Button android:id="@+id/button2" android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:onClick="onScoreClick"
-			android:text="@string/high_scores" />
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-		<Button android:id="@+id/button3" android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:onClick="onQuitClick"
-			android:text="@string/quit" />
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onStartClick"
+            android:text="@string/start" />
 
-	</LinearLayout>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onScoreClick"
+            android:text="@string/high_scores" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onQuitClick"
+            android:text="@string/quit" />
+    </LinearLayout>
 
 </LinearLayout>

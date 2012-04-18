@@ -185,13 +185,14 @@ public class BinPackingView extends View {
 	
 	private void drawPaginator(Canvas canvas) {
 		Paint paint = new Paint();
-		paint.setTextSize(12);
+		
 		paint.setColor(_currentPaginator.getColor());	
 		int xPos = _currentPaginator.getX(), yPos = _currentPaginator.getY(),
 				width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();		
 		canvas.drawRect(xPos, yPos, xPos + width, yPos + height, paint);
 		
 		paint.setColor(Color.WHITE);
+		paint.setTextSize(14);
 		String title = _currentPaginator.getTitle();
 		canvas.drawText(title, xPos + width/2 - title.length()/2 * 6, yPos, paint);
 		
@@ -201,7 +202,14 @@ public class BinPackingView extends View {
 			canvas.drawText("Next Page >>", width/2 + 80, yPos+height-10, paint);
 			canvas.drawText("<< Previous Page", width/2 - 80 - 16*6, yPos+height-10, paint);}
 		
-		if (!_currentPaginator.equals(_unallocatedObjectsPaginator)) canvas.drawText("X", width-50, yPos, paint);
+		
+		if (!_currentPaginator.equals(_unallocatedObjectsPaginator)){ 
+			paint.setTextSize(30);
+			paint.setColor(Color.BLACK);
+			canvas.drawRect(xPos+width-80, yPos, xPos + width-50, yPos+30, paint);
+			paint.setColor(Color.RED);
+			canvas.drawText("X", width-74, yPos+28, paint);
+		}
 		
 	}
 	
@@ -274,12 +282,12 @@ public class BinPackingView extends View {
 		}
 		
 		int xPos = _currentPaginator.getX(), yPos = _currentPaginator.getY(),
-				width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();
+		width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();
 		
 		ShapeObject prev = new ShapeObject(Color.MAGENTA, 25, 16*6, width/2 - 80 - 16*6, yPos+height-24, "");
 		ShapeObject next = new ShapeObject(Color.MAGENTA, 25, 12*6, width/2 + 80, yPos+height-24, "");
-		ShapeObject exit = new ShapeObject(Color.MAGENTA, 20, 20, width - 52, yPos-14, "");
-		
+		ShapeObject exit = new ShapeObject(Color.MAGENTA, 30, 30, xPos+width - 80, yPos, "");
+		//canvas.drawRect(xPos+width-80, yPos, xPos + width-50, yPos+30, paint);
 		if (prev.containsPoint(x, y)) {
 			_currentPaginator.previousPage();
 			invalidate();
