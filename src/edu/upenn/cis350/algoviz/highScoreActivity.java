@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class highScoreActivity extends Activity {
+public class HighScoreActivity extends Activity {
 	public static final String PREFS_NAME = "MyPrefsFile";
 	
 	 @Override
