@@ -10,6 +10,7 @@ import edu.upenn.cis350.algoviz.R;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.graphics.Color;
 
 /**
  * Generates the Bins and BinObjects for each Bin Packing problem difficulty, 
@@ -128,11 +129,51 @@ public class BinPackingProblemFactory {
 		_bins.put(lastProblem(), bins);
 	}
 	
+	
+	//generate color of objects in order
+	private int nextColor(int cn){
+		int c=Color.BLUE;
+
+		switch (cn){
+		case 0:
+			c=Color.BLUE;
+			break;
+		case 1:
+			c=Color.RED;
+			break;
+		case 2:
+			c=Color.MAGENTA;
+			break;
+		case 3:
+			c=Color.rgb(255,106,106);
+			break;
+		case 4:
+			c=Color.rgb(255,155,0);
+			break;
+		case 5:
+			c=Color.BLACK;
+			break;
+		case 6:
+			c=Color.GREEN;
+			break;
+		case 7:
+			c=Color.rgb(139,119,101);
+		case 8:
+			c=Color.rgb(51, 161, 201);
+		case 9:
+			c=Color.rgb(220, 20, 60);
+		case 10:
+			c=Color.rgb(205, 0, 0);
+		}
+		return c;
+	}
+	
 	private void parseObject() {
 		Double weight = new Double(_parser.getAttributeValue(null, "weight"));
 		Double value = new Double(_parser.getAttributeValue(null, "value"));
 		String type = _parser.getAttributeValue(null, "type");
-		BinObject object = new BinObject(weight, value, type);
+		int color_num=(((Double)(value+weight)).intValue())%11;
+		BinObject object = new BinObject(weight, value, type, nextColor(color_num));
 		
 		Collection<BinObject> objects = _objects.get(lastProblem());
 		objects.add(object);

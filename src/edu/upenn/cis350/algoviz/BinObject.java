@@ -16,6 +16,13 @@ public class BinObject extends ShapeObject {
 		this.type = type;
 	}
 	
+	BinObject(double weight, double value, String type, int c) {
+		super(c, 60, 60, 0, 0, weight + ", $" + value);
+		this.weight = weight;
+		this.value = value;
+		this.type = type;
+	}
+	
 	public double getWeight() { return weight; }
 	public double getValue() { return value; }
 	public double getXDiff() { return xdiff; }

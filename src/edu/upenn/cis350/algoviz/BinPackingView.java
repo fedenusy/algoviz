@@ -153,16 +153,18 @@ public class BinPackingView extends View {
 		drawPaginator(canvas);
 		drawObjects(canvas);
 	}
+
 	
 	private void drawBins(Canvas canvas) {
 		int fill_height;
 		Paint paint = new Paint();
 		paint.setTextSize(30);
+		
+		
 		for (Bin bin : bins) {
 			
 	
 			paint.setColor(bin.getColor());
-			
 			
 			paint.setStyle(Paint.Style.FILL);
 			fill_height = (int)((bin.getHeight()) * bin.getWeight() / bin.getCapacity());
@@ -216,8 +218,16 @@ public class BinPackingView extends View {
 	private void drawObjects(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setTextSize(30);
+		
+		int color_num=0;
 		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
+		
+			
 			paint.setColor(obj.getColor());
+			color_num++;
+			if (color_num>7)
+				color_num=0;
+			
 			canvas.drawRect(obj.getX(), obj.getY(), obj.getX() + objWidth, obj.getY() + objHeight, paint);
 			paint.setColor(Color.WHITE);
 			if (obj.getText().indexOf('$') == -1)
@@ -265,7 +275,7 @@ public class BinPackingView extends View {
 			if (obj.containsPoint(x, y)) {
 				obj.setXDiff(x - obj.getX());
 				obj.setYDiff(y - obj.getY());
-				obj.setColor(Color.YELLOW);
+				//obj.setColor(Color.YELLOW);
 				objToMove = obj;
 				invalidate();
 				return true;
@@ -318,7 +328,7 @@ public class BinPackingView extends View {
 	 */
 	private boolean handleDrop(float x, float y) {
 		if (objToMove == null) return true;
-		else objToMove.setColor(Color.BLUE);
+		else objToMove.setColor(objToMove.getColor());
 		
 		Bin currentBin = _currentPaginator.getBin();
 		
