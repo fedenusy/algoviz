@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Chronometer;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class HighScoreActivity extends Activity {
 	public static final String PREFS_NAME = "MyPrefsFile";

@@ -3,18 +3,12 @@ package edu.upenn.cis350.algoviz;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-
-import org.junit.Before;
 import org.junit.Test;
 
 public class BinPackingProblemFactoryTest {
-	
-	@Before
-	public void setUp() throws Exception {
-	}
 
 	@Test
-	public void testOptimalSolution() {
+	public void testFactory() {
 		ArrayList<Bin> bins1 = new ArrayList<Bin>();
 		ArrayList<BinObject> objs1 = new ArrayList<BinObject>();
 		bins1.add(new Bin(25));

@@ -6,15 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import edu.upenn.cis350.algoviz.R;
 
 /**
  * View where user packs objects into bins.
