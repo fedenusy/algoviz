@@ -199,7 +199,7 @@ public class BinPackingProblemFactory {
 	 * @param objects The collection of objects to choose from.
 	 * @return The value of the optimal solution to the Bin-Packing problem.
 	 */
-	private double calculateSolution(Collection<Bin> bins, Collection<BinObject> objects) {
+	public static double calculateSolution(Collection<Bin> bins, Collection<BinObject> objects) {
 		double sol = 0;
 		
 		ArrayList<BinObject> tempObjects = new ArrayList<BinObject>();
@@ -232,7 +232,7 @@ public class BinPackingProblemFactory {
 	 * optimal solution. If the ith element of the array is false, then the ith object in the collection
 	 * was not included in the optimal solution.
 	 */
-	private boolean[] knapsack(Bin bin, Collection<BinObject> objects) {
+	private static boolean[] knapsack(Bin bin, Collection<BinObject> objects) {
 		Object[] objs = objects.toArray();
 		int numObjs = objs.length;
 		int capacity = (int) Math.floor(bin.getCapacity()); //Bins are allowed to hold decimal-value weight 
