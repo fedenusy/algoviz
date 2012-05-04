@@ -202,8 +202,8 @@ public class BinPackingProblemFactory {
 	public static double calculateSolution(Collection<Bin> bins, Collection<BinObject> objects) {
 		double sol = 0;
 		
-		ArrayList<BinObject> tempObjects = new ArrayList<BinObject>();
-		tempObjects.addAll(objects);
+		ArrayList<BinObject> tempObjects = new ArrayList<BinObject>(objects);
+
 		
 		for (Bin bin : bins) {
 			boolean[] chosenObjectIndex = knapsack(bin, tempObjects);
@@ -239,28 +239,28 @@ public class BinPackingProblemFactory {
 		//capacities; however, for the sake of computing this algorithm in a reasonable amount of time, we 
 		//work with the rounded-down bin capacity.
 
-		double[][] optSol = new double[numObjs+1][capacity+1]; //This array contains the optimal solution value 
+		double[][] optSol = new double[numObjs + 1][capacity + 1]; //This array contains the optimal solution value 
 		//for packing objects from the set of objs[0] to objs[n] into a bin with capacity from 0 to j
 		
-		for (int c=0; c<capacity+1; c++) optSol[0][c] = 0; //Since packing from the choice set of 0 items has 
+		for (int c = 0; c < capacity + 1; c++) optSol[0][c] = 0; //Since packing from the choice set of 0 items has 
 		//0 value regardless of the bin's capacity
 		
-		boolean[][] solChoice = new boolean[numObjs+1][capacity+1]; //Array keeping track of whether the corresponding
+		boolean[][] solChoice = new boolean[numObjs + 1][capacity + 1]; //Array keeping track of whether the corresponding
 		//optSol[][] value includes item n
 		
-		for (int c=0; c<capacity+1; c++) solChoice[0][c] = false; //Since you are packing no items when you pick from the
+		for (int c = 0; c < capacity + 1; c++) solChoice[0][c] = false; //Since you are packing no items when you pick from the
 		//set of 0 objects
 
-		for (int n=1; n<numObjs+1; n++) {
+		for (int n = 1; n < numObjs + 1; n++) {
 			//Get the object's weight and value, rounding weight to the corresponding integer once again
-			int itemWeight = (int) Math.ceil(((BinObject)objs[n-1]).getWeight());
-			double itemValue = ((BinObject)objs[n-1]).getValue();
+			int itemWeight = (int) Math.ceil(((BinObject)objs[n - 1]).getWeight());
+			double itemValue = ((BinObject)objs[n - 1]).getValue();
 
-			for (int c=0; c<capacity+1; c++) {
-				double leaveItemSolVal = optSol[n-1][c]; //Solution value if we were to leave item n
+			for (int c = 0; c < capacity + 1; c++) {
+				double leaveItemSolVal = optSol[n - 1][c]; //Solution value if we were to leave item n
 
 				double takeItemSolVal = 0; //Solution value if we were to take item n
-				if (itemWeight <= c) takeItemSolVal = itemValue + optSol[n-1][c-itemWeight];
+				if (itemWeight <= c) takeItemSolVal = itemValue + optSol[n - 1][c - itemWeight];
 
 				//Select optimal choice: take or leave the item
 				if (takeItemSolVal > leaveItemSolVal) {
@@ -276,11 +276,11 @@ public class BinPackingProblemFactory {
 		
 		//Now we calculate which items were chosen in the optimal solution
 		boolean[] choices = new boolean[numObjs]; //choices[i]=true indicates we took the ith item
-		for (int n=numObjs, c=capacity; n>0; n--) {
+		for (int n = numObjs, c = capacity; n > 0; n--) {
 			if (solChoice[n][c]) {
 				choices[n-1] = true;
-				c = c - (int) Math.ceil(((BinObject)objs[n-1]).getWeight());
-			} else choices[n-1] = false;
+				c = c - (int) Math.ceil(((BinObject)objs[n - 1]).getWeight());
+			} else choices[n - 1] = false;
 		}
 		
 		return choices;

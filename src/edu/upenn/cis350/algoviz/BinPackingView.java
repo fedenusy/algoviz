@@ -29,6 +29,7 @@ public class BinPackingView extends View {
 	private int current_value;
 
 	private BinObjectPaginator _currentPaginator, _unallocatedObjectsPaginator;
+	
 	private int binWidth;
 	private int binHeight;
 	private int objWidth;
@@ -61,8 +62,10 @@ public class BinPackingView extends View {
 		objects = new ArrayList<BinObject>();
 		bins = new ArrayList<Bin>();
 		
-		bins.addAll(factory.getBins(((BinPackingActivity) this.getContext()).getProblemName()));
-		objects.addAll(factory.getBinObjects(((BinPackingActivity) this.getContext()).getProblemName()));
+		BinPackingActivity currentContext=(BinPackingActivity) this.getContext();
+		
+		bins.addAll(factory.getBins(currentContext.getProblemName()));
+		objects.addAll(factory.getBinObjects(currentContext.getProblemName()));
 		
 		// Location of center of View
 		int mid = this.getWidth() / 2;
@@ -89,6 +92,9 @@ public class BinPackingView extends View {
 		_unallocatedObjectsPaginator = new BinObjectPaginator(mid, objWidth, objHeight, "Unallocated Objects");
 		_unallocatedObjectsPaginator.addAll(objects);		
 		_currentPaginator = _unallocatedObjectsPaginator;
+		
+		
+		
 				
 		// Set locations for all Bins
 		Bin b1, b2, b3;
@@ -124,7 +130,7 @@ public class BinPackingView extends View {
 			b3.setY(this.getHeight() - binHeight-bin_loc_offset);
 			break;
 		default:
-			Log.v("Bin number error", "Number of bins must be 1, 2, or 3!");
+			Log.e("Bin number error", "Number of bins must be 1, 2, or 3!");
 			break;
 		} 
 				
@@ -266,11 +272,12 @@ public class BinPackingView extends View {
 	 * @return True if object or bin is clicked, false otherwise.
 	 */
 	private boolean handleClick(float x, float y) {
+		
+		//check if a object is selected
 		for (BinObject obj : _currentPaginator.getCurrentPageObjects()) {
 			if (obj.containsPoint(x, y)) {
 				obj.setXDiff(x - obj.getX());
 				obj.setYDiff(y - obj.getY());
-				//obj.setColor(Color.YELLOW);
 				objToMove = obj;
 				invalidate();
 				return true;
@@ -289,20 +296,24 @@ public class BinPackingView extends View {
 		int xPos = _currentPaginator.getX(), yPos = _currentPaginator.getY(),
 		width =  _currentPaginator.getWidth(), height = _currentPaginator.getHeight();
 		
-		ShapeObject prev = new ShapeObject(Color.MAGENTA, 25, 16*6, width/2 - 80 - 16*6, yPos+height-24, "");
-		ShapeObject next = new ShapeObject(Color.MAGENTA, 25, 12*6, width/2 + 80, yPos+height-24, "");
+		//draw the area of prev, next, exit buttons
+		ShapeObject prev = new ShapeObject(Color.MAGENTA, 25, 16 * 6, width/2 - 80 - 16 * 6, yPos + height - 24, "");
+		ShapeObject next = new ShapeObject(Color.MAGENTA, 25, 12 * 6, width/2 + 80, yPos + height - 24, "");
 		ShapeObject exit = new ShapeObject(Color.MAGENTA, 30, 30, xPos+width - 80, yPos, "");
-		//canvas.drawRect(xPos+width-80, yPos, xPos + width-50, yPos+30, paint);
+		
+		//check if the click in the area of prev, next, exit buttons
 		if (prev.containsPoint(x, y)) {
 			_currentPaginator.previousPage();
-			invalidate();
+			
 		} else if (next.containsPoint(x, y)) {
 			_currentPaginator.nextPage();
-			invalidate();
+			
 		} else if (exit.containsPoint(x,y)) {
 			_currentPaginator = _unallocatedObjectsPaginator;
-			invalidate();
+			
 		}
+		
+		invalidate();
 		
 		return false;
 	}
@@ -315,6 +326,11 @@ public class BinPackingView extends View {
 		return true;
 	}
 	
+	private void resetObjXY(){
+		objToMove.setX(objToMove.oldx);
+		objToMove.setY(objToMove.oldy);	
+	}
+	
 	/**
 	 * Handles ACTION_UP motion events.
 	 * @param x The x-coordinate of the touch event.
@@ -322,20 +338,19 @@ public class BinPackingView extends View {
 	 * @return
 	 */
 	private boolean handleDrop(float x, float y) {
-		if (objToMove == null) return true;
+		if (objToMove == null) return false;
 		else objToMove.setColor(objToMove.getColor());
 		
 		Bin currentBin = _currentPaginator.getBin();
 		
 		// If object collides with current paginator or current bin
 		if (objToMove.collidesWith(_currentPaginator) || objToMove.collidesWith(currentBin)) { 
-			objToMove.setX(objToMove.oldx);
-			objToMove.setY(objToMove.oldy);
+			resetObjXY();
 			invalidate();
 			return true;
 		}
 		
-		// If object collides with a different bin
+		// If object collides with a different bin, update the value
 		for (Bin bin : bins) {
 			if (objToMove.collidesWith(bin)) {
 				boolean inserted = bin.insert(objToMove);
@@ -343,20 +358,20 @@ public class BinPackingView extends View {
 					if (currentBin != null) currentBin.remove(objToMove);
 					else _unallocatedObjectsPaginator.remove(objToMove);
 				} else {
-					objToMove.setX(objToMove.oldx);
-					objToMove.setY(objToMove.oldy);
+					resetObjXY();
 				}
 				invalidate();
-				//TODO check if the solution is right
 				return true;
 			}
 		}
 		
 		// If object was dropped outside current paginator and did not collide with a bin, remove it and
 		// add to unallocatedObjectsPaginator
-		if (currentBin != null) currentBin.remove(objToMove);
-		else _unallocatedObjectsPaginator.remove(objToMove);
-		_unallocatedObjectsPaginator.add(objToMove);
+		if (currentBin != null) {
+			currentBin.remove(objToMove);
+			_unallocatedObjectsPaginator.add(objToMove);
+		}
+		
 		invalidate();
 		return true;
 	}
