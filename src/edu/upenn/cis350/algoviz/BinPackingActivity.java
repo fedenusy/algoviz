@@ -134,7 +134,7 @@ public class BinPackingActivity extends Activity {
     		((BinPackingView) this.findViewById(R.id.binview)).reset();
     	
     		TextView count_text=(TextView)findViewById(R.id.textView2);
-    		count_text.setText(Integer.toString(getLevelCount()));
+    		count_text.setText(_problemName);
 
     	}
     	showDialog(READY_DIALOG);
