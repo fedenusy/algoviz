@@ -1,0 +1,115 @@
+%% Casey Davis
+%% Prof. Christian Murphy
+%% CIS 350-001
+%% February 2, 2012
+%%
+%% HOMEWORK 2
+
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage[colorlinks]{hyperref}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{capt-of}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{bbm}
+\usepackage{latexsym}
+\usepackage{xspace}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{newclude}
+\usepackage{enumerate}
+\usepackage{ae,aecompl}
+\usepackage{alltt}
+
+\pagestyle{fancy}
+
+\lhead{\textbf{CIS 350: Software Engineering}}
+
+\title{Algorithm Visualization Second Iteration Report}
+\author{Casey Davis, Johnathan Mell, Di Mu, Federico Nusymowicz \\\\
+\texttt{\{davisca, jmell, dimu, fnusy\}@seas.upenn.edu}}
+\date{April 10, 2012}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview}
+
+This project is an Android application that is used as a tool for students to
+interactively learn about algorithms in computer science.  Specifically, this
+tool allows users to solve bin-packing and max-flow problems in the form of a
+game.
+
+In this iteration, we have added increased functionality to the basic operation
+of the bin-packing problem application introduced in the first iteration.
+Namely, we have implemented an algorithm that calculates the optimal solution
+to the specified problems, removed the limit on the number of objects available
+for each configuration of the problem, and allowed the removal of one object
+at a time from bins.  The complete list of user stories we have completed can
+be found in the Features section below.
+
+\section{Features}
+
+\subsection{User stories}
+
+Below is a list of the user stories we have completed as of the end of this
+iteration, as well as the point values we have assigned to each.
+
+\begin{enumerate}
+
+\item As a user, I would like a metric of how optimal my solution is compared to
+the algorithm solution (1 point).
+\item As a user, I should see my high score (1 point).
+\item As a user, I would prefer larger size of bins and bin objects for devices
+(e.g. tablets) whose screen size is larger (2 points).
+\item As a user who selected a difficulty level, I should see a paginated panel
+that displays all corresponding objects (3 points).
+\item As a user, I should be able to remove objects from bins one at a time
+using the paginator (2 points).
+\item As a user, I should be able to move objects from bin to bin (1 point).
+\item As a user, I should be confronted with tricky problems on harder
+difficulties, wherein greedy algorithms won't work (1 point).
+
+\end{enumerate}
+
+\textbf{Total points completed:  11} \\
+
+There are no user stories that we planned to complete before this iteration demo
+that we have not completed.
+
+\subsection{Project Velocity}
+
+With four people working on this project for several weeks, and having completed
+a total of 11 points, our project velocity is calculated to be 2.75, which is
+slightly below the target velocity we hoped to work at.  The reason for this is
+the development of test cases which carried no point value as they do not have
+corresponding user stories.
+
+\section{Testing, bugs, issues, etc.}
+
+Some JUnit test cases have been developed for the application, but they are not
+yet comprehensive.  A full test suite will be available by the end of the next
+iteration.
+
+There is also currently a bug in running the application on devices with a
+smaller screen sizes (e.g., a typical Android smartphone).  The height of the
+view in which the objects and bins are displayed are currently hard-coded into
+the application, causing some parts of the app not to be displayed when it is
+run on a smaller device.  This will be resolved in the next iteration.
+
+Another minor bug in the application involves the display of text on the bins.
+When objects are removed from the bin, and the amount inside is reset, the
+text will occasionally display a very small number in scientific notation
+rather than simply zero.  This should easily be resolved by rounding the
+displayed numbers properly.
+
+
+\end{document}
