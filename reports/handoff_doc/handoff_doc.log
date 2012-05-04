@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  4 MAY 2012 05:22
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  4 MAY 2012 05:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -518,31 +518,26 @@ LaTeX Font Info:    Try loading font information for T1+aett on input line 53.
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 ) [1
 
-{/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 78--83
+{/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./hand
+off_doc.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 2.
 
- []
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 2.
 
-<splash_screen.png, id=49, 273.6624pt x 434.1018pt>
-File: splash_screen.png Graphic file (type png)
- <use splash_screen.png>
-Package pdftex.def Info: splash_screen.png used on input line 86.
-(pdftex.def)             Requested size: 177.87843pt x 282.16283pt.
+(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 2.
 
-<high_scores.png, id=51, 253.4268pt x 157.5486pt>
-File: high_scores.png Graphic file (type png)
- <use high_scores.png>
-Package pdftex.def Info: high_scores.png used on input line 100.
-(pdftex.def)             Requested size: 164.72546pt x 102.40536pt.
+(/usr/local/texlive/2011/texmf-dist/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+))
+\tf@toc=\write4
+\openout4 = `handoff_doc.toc'.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<level_start.png, id=52, 270.7716pt x 434.1018pt>
-File: level_start.png Graphic file (type png)
- <use level_start.png>
-Package pdftex.def Info: level_start.png used on input line 112.
-(pdftex.def)             Requested size: 175.99945pt x 282.16283pt.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -554,69 +549,72 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.114 \end{figure}
-                   [1 <./splash_screen.png>]
-<gameplay.png, id=62, 274.1442pt x 423.984pt>
+l.65 \newpage
+              [1]
+Underfull \hbox (badness 10000) in paragraph at lines 82--87
+
+ []
+
+<splash_screen.png, id=69, 273.6624pt x 434.1018pt>
+File: splash_screen.png Graphic file (type png)
+ <use splash_screen.png>
+Package pdftex.def Info: splash_screen.png used on input line 90.
+(pdftex.def)             Requested size: 177.87843pt x 282.16283pt.
+
+<high_scores.png, id=71, 253.4268pt x 157.5486pt>
+File: high_scores.png Graphic file (type png)
+ <use high_scores.png>
+Package pdftex.def Info: high_scores.png used on input line 104.
+(pdftex.def)             Requested size: 164.72546pt x 102.40536pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<level_start.png, id=72, 270.7716pt x 434.1018pt>
+File: level_start.png Graphic file (type png)
+ <use level_start.png>
+Package pdftex.def Info: level_start.png used on input line 116.
+(pdftex.def)             Requested size: 175.99945pt x 282.16283pt.
+
+[2 <./splash_screen.png>] <gameplay.png, id=80, 274.1442pt x 423.984pt>
 File: gameplay.png Graphic file (type png)
- <use gameplay.png>
-Package pdftex.def Info: gameplay.png used on input line 129.
+
+<use gameplay.png>
+Package pdftex.def Info: gameplay.png used on input line 133.
 (pdftex.def)             Requested size: 178.1916pt x 275.58632pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[2 <./high_scores.png> <./level_start.png>]
-<inside_bin.png, id=71, 283.2984pt x 434.1018pt>
+[3 <./high_scores.png> <./level_start.png>]
+<inside_bin.png, id=89, 283.2984pt x 434.1018pt>
 File: inside_bin.png Graphic file (type png)
  <use inside_bin.png>
-Package pdftex.def Info: inside_bin.png used on input line 142.
+Package pdftex.def Info: inside_bin.png used on input line 146.
 (pdftex.def)             Requested size: 184.14177pt x 282.16283pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3 <./gameplay.png>] [4 <./inside_bin.png>]
-LaTeX Font Info:    Try loading font information for U+msa on input line 217.
-
-(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2009/06/22 v3.00 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 217.
-
-(/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2009/06/22 v3.00 AMS symbols B
-)
-LaTeX Font Info:    Try loading font information for U+lasy on input line 217.
-
-(/usr/local/texlive/2011/texmf-dist/tex/latex/base/ulasy.fd
-File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 234.
- [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 234.
-
-(./handoff_doc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 234.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 234.
-
-
-Package rerunfilecheck Warning: File `handoff_doc.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `handoff_doc.out':
-(rerunfilecheck)             Before: A854C02948D5147C81148A3B2ED4C8E5;560
-(rerunfilecheck)             After:  F7B1FA98098089607442609783D5AF30;629.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 234.
+[4 <./gameplay.png>] [5 <./inside_bin.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 238.
+ [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 238.
+ (./handoff_doc.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 238.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 238.
+Package rerunfilecheck Info: File `handoff_doc.out' has not changed.
+(rerunfilecheck)             Checksum: F7B1FA98098089607442609783D5AF30;629.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 238.
  ) 
 Here is how much of TeX's memory you used:
- 8493 strings out of 493633
- 119406 string characters out of 3143378
+ 8496 strings out of 493633
+ 119452 string characters out of 3143378
  227377 words of memory out of 3000000
- 11591 multiletter control sequences out of 15000+200000
+ 11592 multiletter control sequences out of 15000+200000
  37437 words of font info for 86 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 29i,11n,43p,229b,355s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,11n,43p,245b,355s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -627,10 +625,10 @@ sr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 ocal/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/loc
 al/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/loca
 l/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on handoff_doc.pdf (6 pages, 2825599 bytes).
+Output written on handoff_doc.pdf (7 pages, 2828880 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
- 101 compressed objects within 2 object streams
- 21 named destinations out of 1000 (max. 500000)
- 98 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 150 PDF objects out of 1000 (max. 8388607)
+ 119 compressed objects within 2 object streams
+ 22 named destinations out of 1000 (max. 500000)
+ 106 words of extra memory for PDF output out of 10000 (max. 10000000)
 
